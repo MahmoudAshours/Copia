@@ -3,6 +3,21 @@
 part of 'table.dart';
 
 // **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+BookmarkList _$BookmarkListFromJson(Map<String, dynamic> json) {
+  return BookmarkList(
+    (json['bookmarked'] as List)?.map((e) => e as int)?.toList(),
+  );
+}
+
+Map<String, dynamic> _$BookmarkListToJson(BookmarkList instance) =>
+    <String, dynamic>{
+      'bookmarked': instance.bookmarked,
+    };
+
+// **************************************************************************
 // MoorGenerator
 // **************************************************************************
 
@@ -15,6 +30,7 @@ class PDFSData extends DataClass implements Insertable<PDFSData> {
   final int totalHours;
   final DateTime insertedDate;
   final DateTime lastSeenDate;
+  final BookmarkList bookmarked;
   PDFSData(
       {@required this.id,
       @required this.pdfName,
@@ -22,7 +38,8 @@ class PDFSData extends DataClass implements Insertable<PDFSData> {
       @required this.pdfAsset,
       @required this.totalHours,
       @required this.insertedDate,
-      this.lastSeenDate});
+      this.lastSeenDate,
+      this.bookmarked});
   factory PDFSData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -43,6 +60,8 @@ class PDFSData extends DataClass implements Insertable<PDFSData> {
           .mapFromDatabaseResponse(data['${effectivePrefix}inserted_date']),
       lastSeenDate: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}last_seen_date']),
+      bookmarked: $PDFSTable.$converter0.mapToDart(stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}bookmarked'])),
     );
   }
   @override
@@ -69,6 +88,10 @@ class PDFSData extends DataClass implements Insertable<PDFSData> {
     if (!nullToAbsent || lastSeenDate != null) {
       map['last_seen_date'] = Variable<DateTime>(lastSeenDate);
     }
+    if (!nullToAbsent || bookmarked != null) {
+      final converter = $PDFSTable.$converter0;
+      map['bookmarked'] = Variable<String>(converter.mapToSql(bookmarked));
+    }
     return map;
   }
 
@@ -83,6 +106,7 @@ class PDFSData extends DataClass implements Insertable<PDFSData> {
       totalHours: serializer.fromJson<int>(json['totalHours']),
       insertedDate: serializer.fromJson<DateTime>(json['insertedDate']),
       lastSeenDate: serializer.fromJson<DateTime>(json['lastSeenDate']),
+      bookmarked: serializer.fromJson<BookmarkList>(json['bookmarked']),
     );
   }
   @override
@@ -96,6 +120,7 @@ class PDFSData extends DataClass implements Insertable<PDFSData> {
       'totalHours': serializer.toJson<int>(totalHours),
       'insertedDate': serializer.toJson<DateTime>(insertedDate),
       'lastSeenDate': serializer.toJson<DateTime>(lastSeenDate),
+      'bookmarked': serializer.toJson<BookmarkList>(bookmarked),
     };
   }
 
@@ -106,7 +131,8 @@ class PDFSData extends DataClass implements Insertable<PDFSData> {
           String pdfAsset,
           int totalHours,
           DateTime insertedDate,
-          DateTime lastSeenDate}) =>
+          DateTime lastSeenDate,
+          BookmarkList bookmarked}) =>
       PDFSData(
         id: id ?? this.id,
         pdfName: pdfName ?? this.pdfName,
@@ -115,6 +141,7 @@ class PDFSData extends DataClass implements Insertable<PDFSData> {
         totalHours: totalHours ?? this.totalHours,
         insertedDate: insertedDate ?? this.insertedDate,
         lastSeenDate: lastSeenDate ?? this.lastSeenDate,
+        bookmarked: bookmarked ?? this.bookmarked,
       );
   @override
   String toString() {
@@ -125,7 +152,8 @@ class PDFSData extends DataClass implements Insertable<PDFSData> {
           ..write('pdfAsset: $pdfAsset, ')
           ..write('totalHours: $totalHours, ')
           ..write('insertedDate: $insertedDate, ')
-          ..write('lastSeenDate: $lastSeenDate')
+          ..write('lastSeenDate: $lastSeenDate, ')
+          ..write('bookmarked: $bookmarked')
           ..write(')'))
         .toString();
   }
@@ -139,8 +167,12 @@ class PDFSData extends DataClass implements Insertable<PDFSData> {
               thumb.hashCode,
               $mrjc(
                   pdfAsset.hashCode,
-                  $mrjc(totalHours.hashCode,
-                      $mrjc(insertedDate.hashCode, lastSeenDate.hashCode)))))));
+                  $mrjc(
+                      totalHours.hashCode,
+                      $mrjc(
+                          insertedDate.hashCode,
+                          $mrjc(lastSeenDate.hashCode,
+                              bookmarked.hashCode))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -151,7 +183,8 @@ class PDFSData extends DataClass implements Insertable<PDFSData> {
           other.pdfAsset == this.pdfAsset &&
           other.totalHours == this.totalHours &&
           other.insertedDate == this.insertedDate &&
-          other.lastSeenDate == this.lastSeenDate);
+          other.lastSeenDate == this.lastSeenDate &&
+          other.bookmarked == this.bookmarked);
 }
 
 class PDFSCompanion extends UpdateCompanion<PDFSData> {
@@ -162,6 +195,7 @@ class PDFSCompanion extends UpdateCompanion<PDFSData> {
   final Value<int> totalHours;
   final Value<DateTime> insertedDate;
   final Value<DateTime> lastSeenDate;
+  final Value<BookmarkList> bookmarked;
   const PDFSCompanion({
     this.id = const Value.absent(),
     this.pdfName = const Value.absent(),
@@ -170,6 +204,7 @@ class PDFSCompanion extends UpdateCompanion<PDFSData> {
     this.totalHours = const Value.absent(),
     this.insertedDate = const Value.absent(),
     this.lastSeenDate = const Value.absent(),
+    this.bookmarked = const Value.absent(),
   });
   PDFSCompanion.insert({
     this.id = const Value.absent(),
@@ -179,6 +214,7 @@ class PDFSCompanion extends UpdateCompanion<PDFSData> {
     @required int totalHours,
     @required DateTime insertedDate,
     this.lastSeenDate = const Value.absent(),
+    this.bookmarked = const Value.absent(),
   })  : pdfName = Value(pdfName),
         thumb = Value(thumb),
         pdfAsset = Value(pdfAsset),
@@ -192,6 +228,7 @@ class PDFSCompanion extends UpdateCompanion<PDFSData> {
     Expression<int> totalHours,
     Expression<DateTime> insertedDate,
     Expression<DateTime> lastSeenDate,
+    Expression<String> bookmarked,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -201,6 +238,7 @@ class PDFSCompanion extends UpdateCompanion<PDFSData> {
       if (totalHours != null) 'total_hours': totalHours,
       if (insertedDate != null) 'inserted_date': insertedDate,
       if (lastSeenDate != null) 'last_seen_date': lastSeenDate,
+      if (bookmarked != null) 'bookmarked': bookmarked,
     });
   }
 
@@ -211,7 +249,8 @@ class PDFSCompanion extends UpdateCompanion<PDFSData> {
       Value<String> pdfAsset,
       Value<int> totalHours,
       Value<DateTime> insertedDate,
-      Value<DateTime> lastSeenDate}) {
+      Value<DateTime> lastSeenDate,
+      Value<BookmarkList> bookmarked}) {
     return PDFSCompanion(
       id: id ?? this.id,
       pdfName: pdfName ?? this.pdfName,
@@ -220,6 +259,7 @@ class PDFSCompanion extends UpdateCompanion<PDFSData> {
       totalHours: totalHours ?? this.totalHours,
       insertedDate: insertedDate ?? this.insertedDate,
       lastSeenDate: lastSeenDate ?? this.lastSeenDate,
+      bookmarked: bookmarked ?? this.bookmarked,
     );
   }
 
@@ -246,6 +286,11 @@ class PDFSCompanion extends UpdateCompanion<PDFSData> {
     }
     if (lastSeenDate.present) {
       map['last_seen_date'] = Variable<DateTime>(lastSeenDate.value);
+    }
+    if (bookmarked.present) {
+      final converter = $PDFSTable.$converter0;
+      map['bookmarked'] =
+          Variable<String>(converter.mapToSql(bookmarked.value));
     }
     return map;
   }
@@ -340,9 +385,29 @@ class $PDFSTable extends PDFS with TableInfo<$PDFSTable, PDFSData> {
     );
   }
 
+  final VerificationMeta _bookmarkedMeta = const VerificationMeta('bookmarked');
+  GeneratedTextColumn _bookmarked;
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, pdfName, thumb, pdfAsset, totalHours, insertedDate, lastSeenDate];
+  GeneratedTextColumn get bookmarked => _bookmarked ??= _constructBookmarked();
+  GeneratedTextColumn _constructBookmarked() {
+    return GeneratedTextColumn(
+      'bookmarked',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        pdfName,
+        thumb,
+        pdfAsset,
+        totalHours,
+        insertedDate,
+        lastSeenDate,
+        bookmarked
+      ];
   @override
   $PDFSTable get asDslTable => this;
   @override
@@ -397,6 +462,7 @@ class $PDFSTable extends PDFS with TableInfo<$PDFSTable, PDFSData> {
           lastSeenDate.isAcceptableOrUnknown(
               data['last_seen_date'], _lastSeenDateMeta));
     }
+    context.handle(_bookmarkedMeta, const VerificationResult.success());
     return context;
   }
 
@@ -412,6 +478,9 @@ class $PDFSTable extends PDFS with TableInfo<$PDFSTable, PDFSData> {
   $PDFSTable createAlias(String alias) {
     return $PDFSTable(_db, alias);
   }
+
+  static TypeConverter<BookmarkList, String> $converter0 =
+      const ListConverter();
 }
 
 abstract class _$AppDatabase extends GeneratedDatabase {

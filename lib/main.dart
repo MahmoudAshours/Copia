@@ -1,4 +1,5 @@
 import 'package:copia/Moor/table.dart';
+import 'package:copia/Provider/uppdf_bloc.dart';
 import 'package:copia/Screens/HomeScreen/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,15 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UploadPdfBloc()),
+        Provider(create: (_)=>AppDatabase())
+      ],
+      child: CupertinoApp(
+        debugShowCheckedModeBanner: false,
+        home: MyHomePage(),
+      ),
     );
   }
 }
