@@ -2,10 +2,13 @@ import 'package:moor_flutter/moor_flutter.dart';
 part 'table.g.dart';
 
 class PDFS extends Table {
-  TextColumn get pdfName => text()();
   IntColumn get id => integer().autoIncrement()();
+  TextColumn get pdfName => text()();
   TextColumn get thumb => text()();
   TextColumn get pdfAsset => text()();
+  IntColumn get totalHours => integer()();
+  DateTimeColumn get insertedDate => dateTime()();
+  DateTimeColumn get lastSeenDate => dateTime().nullable()();
 }
 
 @UseMoor(tables: [PDFS])
