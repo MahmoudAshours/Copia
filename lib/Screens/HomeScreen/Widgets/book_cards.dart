@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:copia/Moor/table.dart';
+import 'package:copia/Screens/PDFScreen/pdfscreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,52 +33,63 @@ class BookCards extends StatelessWidget {
                 physics: BouncingScrollPhysics(),
                 itemCount: snapshot.data.length,
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (_, int index) => Container(
-                  width: 200,
-                  child: Center(
-                    child: Container(
-                      height: 300,
-                      width: 200,
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          width: 200,
-                          height: 50,
-                          color: Colors.grey[300],
-                          child: Center(
-                              child: Text('${snapshot.data[index].pdfName}')),
-                        ),
+                itemBuilder: (_, int index) => GestureDetector(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => PDFScreen(
+                        index: index,
+                        snapshot: snapshot,
                       ),
-                      foregroundDecoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.white10,
-                            spreadRadius: 0.1,
-                            blurRadius: 3,
-                            offset: Offset.zero,
-                          )
-                        ],
-                      ),
-                      decoration: BoxDecoration(
-                        color: Color(0xffEEEEED),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          bottomLeft: Radius.circular(5),
-                          bottomRight: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black38,
-                            spreadRadius: 1,
-                            blurRadius: 3,
-                            offset: Offset.zero,
+                    ),
+                  ),
+                  child: Container(
+                    width: 200,
+                    child: Center(
+                      child: Container(
+                        height: 300,
+                        width: 200,
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            width: 200,
+                            height: 50,
+                            color: Colors.grey[300],
+                            child: Center(
+                                child: Text('${snapshot.data[index].pdfName}')),
                           ),
-                        ],
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: MemoryImage(
-                            base64Decode(snapshot.data[index].thumb.toString()),
+                        ),
+                        foregroundDecoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white10,
+                              spreadRadius: 0.1,
+                              blurRadius: 3,
+                              offset: Offset.zero,
+                            )
+                          ],
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color(0xffEEEEED),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            bottomLeft: Radius.circular(5),
+                            bottomRight: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black38,
+                              spreadRadius: 1,
+                              blurRadius: 3,
+                              offset: Offset.zero,
+                            ),
+                          ],
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: MemoryImage(
+                              base64Decode(
+                                  snapshot.data[index].thumb.toString()),
+                            ),
                           ),
                         ),
                       ),
@@ -106,8 +118,8 @@ class BookCards extends StatelessWidget {
         ),
         Text(
           'There is no books yet..Add one!',
-          style:
-              GoogleFonts.cormorant(fontSize: 21, fontWeight: FontWeight.w800 , color: Colors.blue),
+          style: GoogleFonts.cormorant(
+              fontSize: 21, fontWeight: FontWeight.w800, color: Colors.blue),
         )
       ],
     );
