@@ -3,7 +3,8 @@ import 'package:copia/Provider/uppdf_bloc.dart';
 import 'package:copia/Screens/HomeScreen/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:majesty/MajestySubtleNav/subtle_bottomnavbar.dart';
+import 'package:majesty/MajestySwipeNav/swipe_nav.dart';
+import 'package:majesty/MajestySwipeNav/swipe_scaffold.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UploadPdfBloc()),
-        Provider(create: (_)=>AppDatabase())
+        Provider(create: (_) => AppDatabase())
       ],
       child: CupertinoApp(
         debugShowCheckedModeBanner: false,
@@ -36,34 +37,37 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Provider(
       create: (_) => AppDatabase(),
-      child: Scaffold(
-        backgroundColor: Color(0xff090708),
-        body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            color: Color(0xffEEEEED),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(70),
-              bottomRight: Radius.circular(70),
+      child: MajestySwipeScaffold(
+        child: Scaffold(
+          backgroundColor: Color(0xff090708),
+          body: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              color: Color(0xffEEEEED),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(70),
+                bottomRight: Radius.circular(70),
+              ),
             ),
+            child: HomeScreen(),
           ),
-          child: HomeScreen(),
+          bottomNavigationBar: _bottomNavBar(),
         ),
-        bottomNavigationBar: _bottomNavBar(),
       ),
     );
   }
 
-  MajestySubtleBottomNavBar _bottomNavBar() {
-    return MajestySubtleBottomNavBar(
+  MajestySwipeNavigationBar _bottomNavBar() {
+    return MajestySwipeNavigationBar(
       backgroundColor: Color(0xff090708),
-      animationCurve: Curves.bounceOut,
+      animationCurve: Curves.easeInOutBack,
       selectorColor: Colors.redAccent,
       captions: ['Home', 'Search', 'Bookmarks'],
       selectedItemColor: Colors.white,
+      swipedHeight: MediaQuery.of(context).size.height/5,
       nonSelectedIconColor: Color(0xff616064),
-      captionsTextStyles: TextStyle(color: Colors.white),
+      captionsTextStyle: TextStyle(color: Colors.white),
       items: <Widget>[
         Icon(Icons.home, size: 24),
         Icon(Icons.search),

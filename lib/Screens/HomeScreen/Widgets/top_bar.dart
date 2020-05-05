@@ -15,10 +15,13 @@ class TopBar extends StatelessWidget {
           child: Stack(
             children: <Widget>[
               Positioned(
-                child: Text(
-                  '${DateTime.now().day}',
-                  style: GoogleFonts.cormorant(
-                      fontSize: 42, fontWeight: FontWeight.w600),
+                child: Padding(
+                  padding: const EdgeInsets.only(left:10.0),
+                  child: Text(
+                    '${DateTime.now().day}',
+                    style: GoogleFonts.cormorant(
+                        fontSize: 42, fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
               Positioned(
