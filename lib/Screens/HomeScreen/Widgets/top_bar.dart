@@ -10,13 +10,13 @@ class TopBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Container(
-          width: 100,
+          width: MediaQuery.of(context).size.width / 1.5,
           height: 100,
           child: Stack(
             children: <Widget>[
               Positioned(
                 child: Padding(
-                  padding: const EdgeInsets.only(left:10.0),
+                  padding: const EdgeInsets.only(left: 10.0),
                   child: Text(
                     '${DateTime.now().day}',
                     style: GoogleFonts.cormorant(
@@ -40,7 +40,7 @@ class TopBar extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: () => Navigator.of(context)
-                .push(CupertinoPageRoute(builder: (_) => UploadPDF())),
+                .push(MaterialPageRoute(builder: (_) => UploadPDF())),
             child: Container(
               child: Text(
                 'Add new PDF',

@@ -13,10 +13,7 @@ class UploadPdfBloc with ChangeNotifier {
   String get getPdfTitle => _pdfTitle;
   String get getImage => _imageUploaded;
   String get getPdf => _pdf;
-
-  var imageUploaded = UploadImage.notUploading;
-  var pdfUploaded = UploadPDF.notUploading;
-
+ 
   Future<Null> getPDF() async {
     try {
       File _file = await FilePicker.getFile(
@@ -44,6 +41,4 @@ class UploadPdfBloc with ChangeNotifier {
     }
   }
 }
-
-enum UploadImage { notUploading, uploading }
-enum UploadPDF { notUploading, uploading }
+  

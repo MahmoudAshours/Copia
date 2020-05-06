@@ -34,14 +34,9 @@ class BookCards extends StatelessWidget {
                 itemCount: snapshot.data.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (_, int index) => GestureDetector(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => PDFScreen(
-                        index: index,
-                        snapshot: snapshot,
-                      ),
-                    ),
-                  ),
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => PDFScreen(index: index, snapshot: snapshot),
+                  )),
                   child: Container(
                     width: 200,
                     child: Center(
@@ -49,15 +44,14 @@ class BookCards extends StatelessWidget {
                         height: 300,
                         width: 200,
                         child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            width: 200,
-                            height: 50,
-                            color: Colors.grey[300],
-                            child: Center(
-                                child: Text('${snapshot.data[index].pdfName}')),
-                          ),
-                        ),
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                                width: 200,
+                                height: 50,
+                                color: Colors.grey[300],
+                                child: Center(
+                                    child: Text(
+                                        '${snapshot.data[index].pdfName}')))),
                         foregroundDecoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(

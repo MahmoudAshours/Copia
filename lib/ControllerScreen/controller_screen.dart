@@ -39,7 +39,7 @@ class ControllerScreen extends StatelessWidget {
         selectorColor: Colors.redAccent,
         captions: _captions,
         selectedItemColor: Colors.white,
-        swipedHeight: MediaQuery.of(context).size.height / 5,
+        swipedHeight: 200,
         nonSelectedIconColor: const Color(0xff616064),
         captionsTextStyle: TextStyle(color: Colors.white),
         items: _items,
