@@ -1,10 +1,13 @@
+import 'package:copia/Moor/table.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class LastOpened extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _bloc = Provider.of<AppDatabase>(context);
     return Padding(
       padding: const EdgeInsets.all(7.0),
       child: Column(
@@ -20,17 +23,24 @@ class LastOpened extends StatelessWidget {
           Divider(),
           Opacity(
             opacity: 0.4,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Color(0xff584846),
-                  borderRadius: BorderRadius.circular(30)),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: <Widget>[Text('book!')],
-                ),
-              ),
-            ),
+            child: StreamBuilder(
+                stream: _bloc.checkLastSeen(),
+                builder: (_, snapshot) {
+                  print(snapshot.data);
+                  return snapshot.connectionState == ConnectionState.waiting
+                      ? CircularProgressIndicator()
+                      : Container(
+                          decoration: BoxDecoration(
+                              color: Color(0xff584846),
+                              borderRadius: BorderRadius.circular(30)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: <Widget>[Text('${snapshot.data.pdfName??'nothing'}')],
+                            ),
+                          ),
+                        );
+                }),
           )
         ],
       ),

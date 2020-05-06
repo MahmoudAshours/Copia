@@ -13,16 +13,14 @@ class UploadPdfBloc with ChangeNotifier {
   String get getPdfTitle => _pdfTitle;
   String get getImage => _imageUploaded;
   String get getPdf => _pdf;
- 
+
   Future<Null> getPDF() async {
     try {
       File _file = await FilePicker.getFile(
         allowedExtensions: ['pdf'],
         type: FileType.custom,
       );
-      List<int> pdfBytes = _file.readAsBytesSync();
-      String pdf = base64Encode(pdfBytes);
-      _pdf = pdf;
+      _pdf = _file.path;
       notifyListeners();
     } catch (e) {
       return null;
@@ -32,13 +30,10 @@ class UploadPdfBloc with ChangeNotifier {
   Future<Null> getImageFromGallery() async {
     try {
       File _image = await ImagePicker.pickImage(source: ImageSource.gallery);
-      List<int> imageBytes = _image.readAsBytesSync();
-      String imageB64 = base64Encode(imageBytes);
-      _imageUploaded = imageB64;
+      _imageUploaded = _image.path;
       notifyListeners();
     } catch (e) {
       return null;
     }
   }
 }
-  

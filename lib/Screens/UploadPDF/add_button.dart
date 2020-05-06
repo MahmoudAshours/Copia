@@ -18,6 +18,7 @@ class UploadButton extends StatelessWidget {
             thumb: _bloc.getImage,
             pdfAsset: _bloc.getPdf,
             totalHours: 0,
+            lastSeenDate: DateTime.now(),
             insertedDate: DateTime.now(),
           );
           _dbloc.insertPDF(_pdf).then(

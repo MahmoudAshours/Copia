@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:copia/Moor/table.dart';
 import 'package:copia/Screens/PDFScreen/pdfscreen.dart';
@@ -80,10 +81,7 @@ class BookCards extends StatelessWidget {
                           ],
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: MemoryImage(
-                              base64Decode(
-                                  snapshot.data[index].thumb.toString()),
-                            ),
+                            image: FileImage(File(snapshot.data[index].thumb)),
                           ),
                         ),
                       ),

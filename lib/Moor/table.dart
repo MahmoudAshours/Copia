@@ -6,14 +6,17 @@ import 'package:json_annotation/json_annotation.dart' as j;
 part 'table.g.dart';
 
 class PDFS extends Table {
-  IntColumn get id => integer().autoIncrement()();
-  TextColumn get pdfName => text()();
-  TextColumn get thumb => text()();
-  TextColumn get pdfAsset => text()();
-  IntColumn get totalHours => integer()();
-  DateTimeColumn get insertedDate => dateTime()();
+  IntColumn get id => integer().autoIncrement().nullable()();
+  TextColumn get pdfName => text().nullable()();
+  TextColumn get thumb => text().nullable()();
+  TextColumn get pdfAsset => text().nullable()();
+  IntColumn get totalHours => integer().nullable()();
+  DateTimeColumn get insertedDate => dateTime().nullable()();
   DateTimeColumn get lastSeenDate => dateTime().nullable()();
   TextColumn get bookmarked => text().map(const ListConverter()).nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
 }
 
 class ListConverter extends TypeConverter<BookmarkList, String> {
@@ -63,5 +66,19 @@ class AppDatabase extends _$AppDatabase {
 
   Future insertPDF(PDFSData data) => (into(pdfs).insert(data));
 
+  Future updatePDF(PDFSData data) => update(pdfs).replace(data);
+
+  Future updates(Insertable<PDFSData> pdf) => update(pdfs).replace(pdf);
+
   Future deletePDf(PDFSData data) => (delete(pdfs).delete(data));
+
+  Stream<PDFSData> checkLastSeen() {
+    return (select(pdfs)
+          ..orderBy([
+            (t) => OrderingTerm(
+                expression: t.lastSeenDate, mode: OrderingMode.desc)
+          ])
+          ..limit(1))
+        .watchSingle();
+  }
 }

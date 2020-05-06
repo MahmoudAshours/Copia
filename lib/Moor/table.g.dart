@@ -32,12 +32,12 @@ class PDFSData extends DataClass implements Insertable<PDFSData> {
   final DateTime lastSeenDate;
   final BookmarkList bookmarked;
   PDFSData(
-      {@required this.id,
-      @required this.pdfName,
-      @required this.thumb,
-      @required this.pdfAsset,
-      @required this.totalHours,
-      @required this.insertedDate,
+      {this.id,
+      this.pdfName,
+      this.thumb,
+      this.pdfAsset,
+      this.totalHours,
+      this.insertedDate,
       this.lastSeenDate,
       this.bookmarked});
   factory PDFSData.fromData(Map<String, dynamic> data, GeneratedDatabase db,
