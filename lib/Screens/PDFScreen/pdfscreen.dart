@@ -13,7 +13,9 @@ class PDFScreen extends StatefulWidget {
 }
 
 class _PDFScreenState extends State<PDFScreen> {
-  bool _isloaded = false;
+  bool isReady = false;
+  String errorMessage = '';
+
   @override
   void didChangeDependencies() {
     final singlePDF = widget.snapshot != null
@@ -21,34 +23,43 @@ class _PDFScreenState extends State<PDFScreen> {
         : widget.lastOpenedSnapshot.data;
     final _dbProvider = Provider.of<AppDatabase>(context);
     _dbProvider.updatePDF(singlePDF.copyWith(lastSeenDate: DateTime.now()));
-
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: PDFView(
-          filePath: filePath(),
-          enableSwipe: true,
-          fitPolicy: FitPolicy.BOTH,
-          swipeHorizontal: true,
-          onError: (err) {
-            print("error is : $err");
-          },
-          pageFling: true,
-          fitEachPage: true,
-          onViewCreated: (s) {
-            print('Hello');
-          },
-          onRender: (_pages) {
-            setState(() {
-              // pages = _pages;
-              // isReady = true;
-            });
-          },
-        ),
+      body: Stack(
+        children: <Widget>[
+          PDFView(
+            filePath: filePath(),
+            enableSwipe: true,
+            fitPolicy: FitPolicy.BOTH,
+            swipeHorizontal: true,
+            onError: (error) {
+              setState(() {
+                errorMessage = error.toString();
+              });
+              print(error.toString());
+            },
+            pageFling: true,
+            fitEachPage: true,
+            autoSpacing: true,
+            onViewCreated: (s) {
+              print('Hello');
+            },
+            onRender: (_pages) {
+              setState(() {
+                isReady = true;
+              });
+            },
+          ),
+          errorMessage.isEmpty
+              ? !isReady
+                  ? Center(child: CircularProgressIndicator())
+                  : Container()
+              : Center(child: Text(errorMessage)),
+        ],
       ),
     );
   }

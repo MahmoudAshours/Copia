@@ -1,4 +1,4 @@
- import 'dart:io';
+import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -22,6 +22,7 @@ class UploadPdfBloc with ChangeNotifier {
       _pdf = _file.path;
       notifyListeners();
     } catch (e) {
+      print(e);
       return null;
     }
   }

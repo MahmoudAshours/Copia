@@ -2,12 +2,11 @@ import 'dart:io';
 
 import 'package:copia/Moor/table.dart';
 import 'package:copia/Screens/PDFScreen/pdfscreen.dart';
+import 'package:copia/Utils/no_books.dart';
+import 'package:copia/Utils/skeleton_loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:skeleton_text/skeleton_text.dart';
 
 class BookCards extends StatelessWidget {
   @override
@@ -22,21 +21,19 @@ class BookCards extends StatelessWidget {
           stream: _bloc.watchAllPDfs(),
           builder: (_, AsyncSnapshot<List<PDFSData>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return _skeleteon();
+              return SkeletonLoading();
             } else if (snapshot.data.length == 0) {
-              return _noItems();
+              return NoBooks();
             } else {
               return ListView.separated(
-                separatorBuilder: (_, int i) => VerticalDivider(
-                  width: 20,
-                ),
+                separatorBuilder: (_, int i) => VerticalDivider(width: 20),
                 physics: BouncingScrollPhysics(),
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data.length < 5 ? snapshot.data.length : 5,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (_, int index) => GestureDetector(
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => PDFScreen(index: index, snapshot: snapshot),
-                  )),
+                      builder: (_) =>
+                          PDFScreen(index: index, snapshot: snapshot))),
                   child: Container(
                     width: 200,
                     child: Center(
@@ -92,98 +89,6 @@ class BookCards extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
-
-  Column _noItems() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Container(
-          width: 100,
-          height: 100,
-          child: SvgPicture.asset(
-            'assets/images/book.svg',
-            fit: BoxFit.cover,
-          ),
-        ),
-        Text(
-          'There is no books yet..Add one!',
-          style: GoogleFonts.cormorant(
-              fontSize: 21, fontWeight: FontWeight.w800, color: Colors.blue),
-        )
-      ],
-    );
-  }
-
-  ListView _skeleteon() {
-    return ListView.builder(
-      scrollDirection: Axis.horizontal,
-      physics: BouncingScrollPhysics(),
-      itemCount: 10,
-      itemBuilder: (BuildContext context, int index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-            child: Container(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  SkeletonAnimation(
-                    child: Container(
-                      width: 70.0,
-                      height: 70.0,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                      ),
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15.0, bottom: 5.0),
-                        child: SkeletonAnimation(
-                          child: Container(
-                            height: 15,
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Colors.grey[300]),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15.0),
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 5.0),
-                          child: SkeletonAnimation(
-                            child: Container(
-                              width: 60,
-                              height: 13,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: Colors.grey[300],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }
