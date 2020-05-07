@@ -19,8 +19,10 @@ class TopBar extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Text(
                     '${DateTime.now().day}',
-                    style: GoogleFonts.cormorant(
-                        fontSize: 42, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        fontFamily: 'cormorant',
+                        fontSize: 42,
+                        fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -29,8 +31,10 @@ class TopBar extends StatelessWidget {
                 top: 30,
                 child: Text(
                   _getYear() + ' ${DateTime.now().year}',
-                  style: GoogleFonts.cormorant(
-                      fontSize: 18, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      fontFamily: 'cormorant',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600),
                 ),
               ),
             ],
@@ -45,7 +49,8 @@ class TopBar extends StatelessWidget {
               child: Text(
                 'Add new PDF',
                 style: GoogleFonts.cormorant(
-                    fontSize: 18, fontWeight: FontWeight.w600),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600),
               ),
             ),
           ),

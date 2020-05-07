@@ -13,13 +13,15 @@ class ViewCards extends StatelessWidget {
           Text(
             'Your books',
             style: GoogleFonts.cormorant(
-                fontSize: 30, fontWeight: FontWeight.w700),
+                fontSize: 30,
+                fontWeight: FontWeight.w700),
           ),
           Row(
             children: [
               Text(
                 'View all',
-                style: GoogleFonts.copse(color: Color(0xffF3BB84)),
+                style: TextStyle(
+                    fontFamily: 'cormorant', color: Color(0xffF3BB84)),
               ),
               Icon(
                 Icons.arrow_forward_ios,

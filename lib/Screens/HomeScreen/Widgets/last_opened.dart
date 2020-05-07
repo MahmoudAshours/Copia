@@ -31,6 +31,8 @@ class LastOpened extends StatelessWidget {
                 final _pdf = snapshot.data;
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
+                } else if (!snapshot.hasData) {
+                  return Center(child: Text('There is no recent books yet.'));
                 } else {
                   return GestureDetector(
                     onTap: () => Navigator.of(context).push(MaterialPageRoute(
@@ -85,7 +87,8 @@ class LastOpened extends StatelessWidget {
                                 child: Container(
                                   child: Text(
                                     '${_pdf.pdfName}',
-                                    style: GoogleFonts.cormorant(
+                                    style: TextStyle(
+                                        fontFamily: 'cormorant',
                                         fontSize: 25,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white),

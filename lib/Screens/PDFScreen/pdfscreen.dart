@@ -1,7 +1,6 @@
 import 'package:copia/Moor/table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:moor_flutter/moor_flutter.dart';
 import 'package:provider/provider.dart';
 
 class PDFScreen extends StatefulWidget {
@@ -14,6 +13,7 @@ class PDFScreen extends StatefulWidget {
 }
 
 class _PDFScreenState extends State<PDFScreen> {
+  bool _isloaded = false;
   @override
   void didChangeDependencies() {
     final singlePDF = widget.snapshot != null
@@ -30,9 +30,7 @@ class _PDFScreenState extends State<PDFScreen> {
     return Scaffold(
       body: Container(
         child: PDFView(
-          filePath: widget.snapshot != null
-              ? widget.snapshot.data[widget.index].pdfAsset
-              : widget.lastOpenedSnapshot.data.pdfAsset,
+          filePath: filePath(),
           enableSwipe: true,
           fitPolicy: FitPolicy.BOTH,
           swipeHorizontal: true,
@@ -55,13 +53,9 @@ class _PDFScreenState extends State<PDFScreen> {
     );
   }
 
-  void update() {
-    final _dbBloc = Provider.of<AppDatabase>(context);
-    _dbBloc.updates(
-      PDFSData(
-        lastSeenDate: DateTime.now(),
-        id: widget.snapshot.data[widget.index].id,
-      ),
-    );
+  filePath() {
+    return widget.snapshot != null
+        ? widget.snapshot.data[widget.index].pdfAsset
+        : widget.lastOpenedSnapshot.data.pdfAsset;
   }
 }
