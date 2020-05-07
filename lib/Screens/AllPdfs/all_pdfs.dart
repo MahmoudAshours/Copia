@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:copia/Moor/table.dart';
+import 'package:copia/Screens/PDFScreen/pdfscreen.dart';
 import 'package:copia/Utils/no_books.dart';
 import 'package:copia/Utils/skeleton_loading.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class AllPDFs extends StatelessWidget {
@@ -11,6 +13,7 @@ class AllPDFs extends StatelessWidget {
   Widget build(BuildContext context) {
     final _bloc = Provider.of<AppDatabase>(context);
     return Scaffold(
+      appBar: AppBar(),
       body: StreamBuilder(
         stream: _bloc.watchAllPDfs(),
         builder: (_, AsyncSnapshot<List<PDFSData>> snapshot) {
@@ -29,6 +32,12 @@ class AllPDFs extends StatelessWidget {
                 return Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: ListTile(
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            PDFScreen(index: index, snapshot: snapshot),
+                      ),
+                    ),
                     leading: Card(
                       elevation: 10,
                       shadowColor: Colors.black54,
@@ -68,13 +77,20 @@ class AllPDFs extends StatelessWidget {
                         ),
                       ),
                     ),
-                    title: Text('${_pdfSnapshot.pdfName}'),
+                    title: Text(
+                      '${_pdfSnapshot.pdfName}',
+                      style: GoogleFonts.cormorant(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 20,
+                          color: Colors.grey),
+                    ),
                     trailing: IconButton(
                       icon: Icon(
                         Icons.delete,
                         color: Colors.red,
                       ),
-                      onPressed: () => _bloc.deletePDf(_pdfSnapshot),
+                      onPressed: () =>
+                          _deleteDialog(context, _bloc, _pdfSnapshot),
                     ),
                   ),
                 );
@@ -83,6 +99,31 @@ class AllPDFs extends StatelessWidget {
           }
         },
       ),
+    );
+  }
+
+  void _deleteDialog(
+      BuildContext context, AppDatabase bloc, PDFSData pdfSnapshot) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          content: Text('Are you sure you want to delete this book?'),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+                bloc.deletePDf(pdfSnapshot);
+                Navigator.pop(context);
+              },
+              child: Text('Yes', style: TextStyle(color: Colors.red)),
+            ),
+            FlatButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('No'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

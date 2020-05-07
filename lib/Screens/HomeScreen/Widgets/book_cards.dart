@@ -6,6 +6,7 @@ import 'package:copia/Utils/no_books.dart';
 import 'package:copia/Utils/skeleton_loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class BookCards extends StatelessWidget {
@@ -90,7 +91,9 @@ class BookCards extends StatelessWidget {
     );
   }
 
-  void _showBookDetails(snapshot, index, context) {
+  void _showBookDetails(
+      AsyncSnapshot<List<PDFSData>> snapshot, int index, BuildContext context) {
+    final _pdf = snapshot.data[index];
     showBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -160,7 +163,7 @@ class BookCards extends StatelessWidget {
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
                                     image: FileImage(
-                                      File(snapshot.data[index].thumb),
+                                      File(_pdf.thumb),
                                     ),
                                   ),
                                 ),
@@ -192,22 +195,55 @@ class BookCards extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Text('${snapshot.data[index].pdfName}')
+                    Expanded(
+                      child: Container(
+                        child: Text(
+                          '${_pdf.pdfName}',
+                          style: GoogleFonts.cormorant(
+                              fontWeight: FontWeight.w700, fontSize: 26),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 40.0),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) =>
+                              PDFScreen(snapshot: snapshot, index: index))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: Text(
+                              'View pdf',
+                              style: GoogleFonts.cormorant(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20,
+                                  color: Colors.blue),
+                            )),
+                      ),
+                    )
                   ],
                 ),
-                Text('${snapshot.data[index].insertedDate}'),
-                Text('${snapshot.data[index].lastSeenDate}'),
                 Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: GestureDetector(
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (_) =>
-                            PDFScreen(snapshot: snapshot, index: index))),
-                    child: Align(
-                        alignment: Alignment.bottomRight,
-                        child: Text('View pdf')),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Created on : ${_pdf.insertedDate.day}/${_pdf.insertedDate.month}/${_pdf.insertedDate.year}',
+                    style: GoogleFonts.cormorant(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 20,
+                        color: Colors.grey),
                   ),
-                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Last opened on :  ${_pdf.lastSeenDate.day}/${_pdf.lastSeenDate.month}/${_pdf.lastSeenDate.year}',
+                    style: GoogleFonts.cormorant(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 20,
+                        color: Colors.grey),
+                  ),
+                ),
               ],
             ),
           ),
