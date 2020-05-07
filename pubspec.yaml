@@ -37,7 +37,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/magazine.pdf
-    - assets/maths.pdf
     - assets/images/
     
