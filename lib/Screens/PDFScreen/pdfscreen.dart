@@ -18,11 +18,7 @@ class _PDFScreenState extends State<PDFScreen> {
 
   @override
   void didChangeDependencies() {
-    final singlePDF = widget.snapshot != null
-        ? widget.snapshot.data[widget.index]
-        : widget.lastOpenedSnapshot.data;
-    final _dbProvider = Provider.of<AppDatabase>(context);
-    _dbProvider.updatePDF(singlePDF.copyWith(lastSeenDate: DateTime.now()));
+    _update();
     super.didChangeDependencies();
   }
 
@@ -32,7 +28,7 @@ class _PDFScreenState extends State<PDFScreen> {
       body: Stack(
         children: <Widget>[
           PDFView(
-            filePath: filePath(),
+            filePath: _filePath(),
             enableSwipe: true,
             fitPolicy: FitPolicy.BOTH,
             swipeHorizontal: true,
@@ -64,9 +60,15 @@ class _PDFScreenState extends State<PDFScreen> {
     );
   }
 
-  filePath() {
-    return widget.snapshot != null
-        ? widget.snapshot.data[widget.index].pdfAsset
-        : widget.lastOpenedSnapshot.data.pdfAsset;
+  String _filePath() => widget.snapshot != null
+      ? widget.snapshot.data[widget.index].pdfAsset
+      : widget.lastOpenedSnapshot.data.pdfAsset;
+
+  void _update() {
+    final singlePDF = widget.snapshot != null
+        ? widget.snapshot.data[widget.index]
+        : widget.lastOpenedSnapshot.data;
+    final _dbProvider = Provider.of<AppDatabase>(context);
+    _dbProvider.updatePDF(singlePDF.copyWith(lastSeenDate: DateTime.now()));
   }
 }
