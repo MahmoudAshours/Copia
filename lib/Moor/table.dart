@@ -72,13 +72,11 @@ class AppDatabase extends _$AppDatabase {
 
   Future deletePDf(PDFSData data) => (delete(pdfs).delete(data));
 
-  Stream<PDFSData> checkLastSeen() {
-    return (select(pdfs)
-          ..orderBy([
-            (t) => OrderingTerm(
-                expression: t.lastSeenDate, mode: OrderingMode.desc)
-          ])
-          ..limit(1))
-        .watchSingle();
-  }
+  Stream<PDFSData> checkLastSeen() => (select(pdfs)
+        ..orderBy([
+          (t) =>
+              OrderingTerm(expression: t.lastSeenDate, mode: OrderingMode.desc)
+        ])
+        ..limit(1))
+      .watchSingle();
 }

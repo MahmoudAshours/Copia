@@ -7,18 +7,32 @@ import 'package:provider/provider.dart';
 class PDFScreen extends StatefulWidget {
   final AsyncSnapshot<List<PDFSData>> snapshot;
   final int index;
-  PDFScreen({@required this.snapshot, @required this.index});
+  final AsyncSnapshot<PDFSData> lastOpenedSnapshot;
+  PDFScreen({this.snapshot, this.index, this.lastOpenedSnapshot});
   @override
   _PDFScreenState createState() => _PDFScreenState();
 }
 
 class _PDFScreenState extends State<PDFScreen> {
   @override
+  void didChangeDependencies() {
+    final singlePDF = widget.snapshot != null
+        ? widget.snapshot.data[widget.index]
+        : widget.lastOpenedSnapshot.data;
+    final _dbProvider = Provider.of<AppDatabase>(context);
+    _dbProvider.updatePDF(singlePDF.copyWith(lastSeenDate: DateTime.now()));
+
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         child: PDFView(
-          filePath: widget.snapshot.data[widget.index].pdfAsset,
+          filePath: widget.snapshot != null
+              ? widget.snapshot.data[widget.index].pdfAsset
+              : widget.lastOpenedSnapshot.data.pdfAsset,
           enableSwipe: true,
           fitPolicy: FitPolicy.BOTH,
           swipeHorizontal: true,

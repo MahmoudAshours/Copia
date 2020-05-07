@@ -1,4 +1,4 @@
-import 'package:copia/ControllerScreen/controller_screen.dart';
+import 'package:copia/Screens/ControllerScreen/controller_screen.dart';
 import 'package:copia/providers.dart';
 import 'package:flutter/cupertino.dart';
 
