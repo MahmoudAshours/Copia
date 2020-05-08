@@ -31,6 +31,9 @@ class _PDFScreenState extends State<PDFScreen> {
             filePath: _filePath(),
             enableSwipe: true,
             fitPolicy: FitPolicy.BOTH,
+            onPageError: (s, d) {
+              print(s);
+            },
             swipeHorizontal: true,
             onError: (error) {
               setState(() {

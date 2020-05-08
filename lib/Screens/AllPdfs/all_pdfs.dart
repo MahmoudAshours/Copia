@@ -38,42 +38,38 @@ class AllPDFs extends StatelessWidget {
                             PDFScreen(index: index, snapshot: snapshot),
                       ),
                     ),
-                    leading: Card(
-                      elevation: 10,
-                      shadowColor: Colors.black54,
-                      child: Container(
-                        height: 300,
-                        width: 100,
-                        foregroundDecoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white10,
-                              spreadRadius: 0.1,
-                              blurRadius: 3,
-                              offset: Offset.zero,
-                            )
-                          ],
+                    leading: Container(
+                      height: 300,
+                      width: 100,
+                      foregroundDecoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.white10,
+                            spreadRadius: 0.1,
+                            blurRadius: 3,
+                            offset: Offset.zero,
+                          )
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                        color: Color(0xffEEEEED),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          bottomLeft: Radius.circular(5),
+                          bottomRight: Radius.circular(10),
+                          topRight: Radius.circular(10),
                         ),
-                        decoration: BoxDecoration(
-                          color: Color(0xffEEEEED),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            bottomLeft: Radius.circular(5),
-                            bottomRight: Radius.circular(10),
-                            topRight: Radius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black38,
+                            spreadRadius: 1,
+                            blurRadius: 3,
+                            offset: Offset.zero,
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black38,
-                              spreadRadius: 1,
-                              blurRadius: 3,
-                              offset: Offset.zero,
-                            ),
-                          ],
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: FileImage(File(_pdfSnapshot.thumb)),
-                          ),
+                        ],
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: FileImage(File(_pdfSnapshot.thumb)),
                         ),
                       ),
                     ),

@@ -4,7 +4,6 @@ import 'package:copia/Moor/table.dart';
 import 'package:copia/Screens/PDFScreen/pdfscreen.dart';
 import 'package:copia/Utils/no_books.dart';
 import 'package:copia/Utils/skeleton_loading.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -162,9 +161,7 @@ class BookCards extends StatelessWidget {
                                   ],
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image: FileImage(
-                                      File(_pdf.thumb),
-                                    ),
+                                    image: FileImage(File(_pdf.thumb)),
                                   ),
                                 ),
                               ),
@@ -234,8 +231,8 @@ class BookCards extends StatelessWidget {
                         color: Colors.grey),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
+                SafeArea(
+                  minimum: const EdgeInsets.all(8.0),
                   child: Text(
                     'Last opened on :  ${_pdf.lastSeenDate.day}/${_pdf.lastSeenDate.month}/${_pdf.lastSeenDate.year}',
                     style: GoogleFonts.cormorant(
