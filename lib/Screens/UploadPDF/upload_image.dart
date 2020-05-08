@@ -12,7 +12,7 @@ class UploadImage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text('Upload a image preview'),
+          Text('Upload an image preview'),
           SizedBox(height: 10.0),
           Icon(Icons.image),
         ],

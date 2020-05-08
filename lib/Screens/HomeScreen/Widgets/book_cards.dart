@@ -30,58 +30,60 @@ class BookCards extends StatelessWidget {
                 physics: BouncingScrollPhysics(),
                 itemCount: snapshot.data.length < 5 ? snapshot.data.length : 5,
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (_, int index) => GestureDetector(
-                  onTap: () => _showBookDetails(snapshot, index, context),
-                  child: Container(
-                    width: 200,
-                    child: Center(
-                      child: Container(
-                        height: 300,
-                        width: 200,
-                        child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Container(
-                                width: 200,
-                                height: 50,
-                                color: Colors.grey[300],
-                                child: Center(
-                                    child: Text(
-                                        '${snapshot.data[index].pdfName}')))),
-                        foregroundDecoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.white10,
-                              spreadRadius: 0.1,
-                              blurRadius: 3,
-                              offset: Offset.zero,
-                            )
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                          color: Color(0xffEEEEED),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            bottomLeft: Radius.circular(5),
-                            bottomRight: Radius.circular(10),
-                            topRight: Radius.circular(10),
+                itemBuilder: (_, int index) {
+                  final _pdf = snapshot.data[index];
+                  return GestureDetector(
+                    onTap: () => _showBookDetails(snapshot, index, context),
+                    child: Container(
+                      width: 200,
+                      child: Center(
+                        child: Container(
+                          height: 300,
+                          width: 200,
+                          child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                  width: 200,
+                                  height: 50,
+                                  color: Colors.grey[300],
+                                  child:
+                                      Center(child: Text('${_pdf.pdfName}')))),
+                          foregroundDecoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.white10,
+                                spreadRadius: 0.1,
+                                blurRadius: 3,
+                                offset: Offset.zero,
+                              )
+                            ],
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black38,
-                              spreadRadius: 1,
-                              blurRadius: 3,
-                              offset: Offset.zero,
+                          decoration: BoxDecoration(
+                            color: Color(0xffEEEEED),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              bottomLeft: Radius.circular(5),
+                              bottomRight: Radius.circular(10),
+                              topRight: Radius.circular(10),
                             ),
-                          ],
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: FileImage(File(snapshot.data[index].thumb)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black38,
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: Offset.zero,
+                              ),
+                            ],
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: FileImage(File(_pdf.thumb)),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                },
               );
             }
           },
