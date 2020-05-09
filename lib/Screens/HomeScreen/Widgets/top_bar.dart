@@ -16,7 +16,7 @@ class TopBar extends StatelessWidget {
             children: <Widget>[
               Positioned(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
+                  padding: const EdgeInsets.only(left: 10.0, right: 5.0),
                   child: Text(
                     '${DateTime.now().day}',
                     style: TextStyle(
@@ -49,8 +49,7 @@ class TopBar extends StatelessWidget {
               child: Text(
                 'Add new PDF',
                 style: GoogleFonts.cormorant(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600),
+                    fontSize: 18, fontWeight: FontWeight.w600),
               ),
             ),
           ),

@@ -23,6 +23,7 @@ dependencies:
   json_annotation: ^3.0.1
   flutter_svg: ^0.17.4
   file_picker: ^1.9.0+1
+  fab_circular_menu: ^1.0.0
 
   cupertino_icons: ^0.1.3
 
