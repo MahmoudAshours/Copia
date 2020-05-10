@@ -1,4 +1,3 @@
-import 'package:copia/Moor/table.dart';
 import 'package:copia/Provider/pdfscreen_bloc.dart';
 import 'package:copia/Provider/uppdf_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,7 +12,6 @@ class Providers extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UploadPdfBloc()),
         ChangeNotifierProvider(create: (_) => PDFScreenBloc()),
-        Provider(create: (_) => AppDatabase())
       ],
       child: child,
     );

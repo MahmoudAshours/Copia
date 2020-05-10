@@ -1,7 +1,8 @@
 import 'package:copia/Screens/HomeScreen/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:majesty/MajestySubtleNav/subtle_bottomnavbar.dart'; 
+import 'package:majesty/MajestySubtleNav/subtle_bottomnavbar.dart';
+
 class ControllerScreen extends StatelessWidget {
   final _items = List<Widget>.unmodifiable([
     Icon(Icons.home, size: 24),

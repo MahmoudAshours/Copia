@@ -1,15 +1,15 @@
-import 'package:copia/Moor/table.dart';
+import 'package:copia/Hive/database.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
-import 'package:provider/provider.dart';
+import 'package:hive/hive.dart';
 
 class PDFScreen extends StatefulWidget {
-  final AsyncSnapshot<List<PDFSData>> snapshot;
+  final snapshot;
   final int index;
-  final AsyncSnapshot<PDFSData> lastOpenedSnapshot;
+  final lastOpenedSnapshot;
   PDFScreen({this.snapshot, this.index, this.lastOpenedSnapshot});
   @override
   _PDFScreenState createState() => _PDFScreenState();
@@ -34,10 +34,9 @@ class _PDFScreenState extends State<PDFScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _filePath();
     return Scaffold(
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      floatingActionButton: _circularFab(),
+      floatingActionButton: _circularFab(_controller),
       body: Stack(
         children: <Widget>[
           GestureDetector(
@@ -101,17 +100,29 @@ class _PDFScreenState extends State<PDFScreen> {
     }
   }
 
-  _circularFab() {
+  _circularFab(controller) {
+    var currentpage;
+    _controller.getCurrentPage().then((value) => currentpage = value);
     return AnimatedCrossFade(
       crossFadeState: _crossFadeState,
       duration: Duration(seconds: 1),
       firstChild: FabCircularMenu(
         children: <Widget>[
           IconButton(
-              icon: Icon(Icons.home),
-              onPressed: () {
-                print('Home');
-              }),
+            icon: Icon(Icons.home),
+            onPressed: () {
+              Hive.box('name').putAt(
+                0,
+                PDFDB(
+                  bookmarked: [
+                    ...Hive.box('name').getAt(0).bookmarked,
+                    currentpage
+                  ],
+                ),
+              );
+              print(Hive.box('name').getAt(0).bookmarked);
+            },
+          ),
           IconButton(
             icon: Icon(Icons.favorite),
             onPressed: () {
@@ -126,10 +137,9 @@ class _PDFScreenState extends State<PDFScreen> {
   }
 
   void _update() {
-    final singlePDF = widget.snapshot != null
-        ? widget.snapshot.data[widget.index]
-        : widget.lastOpenedSnapshot.data;
-    final _dbProvider = Provider.of<AppDatabase>(context);
-    _dbProvider.updatePDF(singlePDF.copyWith(lastSeenDate: DateTime.now()));
+    Hive.box('name').putAt(
+      0,
+      PDFDB(),
+    );
   }
 }
