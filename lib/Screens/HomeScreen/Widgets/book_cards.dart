@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:copia/Screens/PDFScreen/pdfscreen.dart';
+import 'package:copia/Utils/no_books.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -17,6 +18,7 @@ class BookCards extends StatelessWidget {
         child: ValueListenableBuilder(
           valueListenable: Hive.box('name').listenable(),
           builder: (_, Box snapshot, Widget child) {
+            if (snapshot.isEmpty) return NoBooks();
             return ListView.separated(
               separatorBuilder: (_, int i) => VerticalDivider(width: 20),
               physics: BouncingScrollPhysics(),
@@ -196,8 +198,8 @@ class BookCards extends StatelessWidget {
                     SizedBox(width: 40.0),
                     GestureDetector(
                       onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) =>
-                              PDFScreen(snapshot: snapshot, index: index))),
+                          builder: (_) => PDFScreen(
+                              snapshot: snapshot.getAt(index), index: index))),
                       child: Padding(
                         padding: const EdgeInsets.all(18.0),
                         child: Align(

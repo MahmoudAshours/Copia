@@ -27,7 +27,7 @@ class AllPDFs extends StatelessWidget {
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) =>
-                          PDFScreen(index: index, snapshot: snapshot),
+                          PDFScreen(index: index, snapshot: _pdfSnapshot),
                     ),
                   ),
                   leading: Container(
@@ -77,8 +77,7 @@ class AllPDFs extends StatelessWidget {
                       Icons.delete,
                       color: Colors.red,
                     ),
-                    onPressed: () =>
-                        _deleteDialog(context, _pdfSnapshot, index),
+                    onPressed: () => _deleteDialog(context, snapshot, index),
                   ),
                 ),
               );
@@ -89,7 +88,7 @@ class AllPDFs extends StatelessWidget {
     );
   }
 
-  void _deleteDialog(BuildContext context, Box pdfSnapshot, index) {
+  void _deleteDialog(BuildContext context, Box snapshot, index) {
     showDialog(
       context: context,
       builder: (_) {
@@ -98,8 +97,9 @@ class AllPDFs extends StatelessWidget {
           actions: <Widget>[
             FlatButton(
               onPressed: () {
-                pdfSnapshot.deleteAt(index);
-                Navigator.pop(context);
+                snapshot
+                    .deleteAt(index)
+                    .whenComplete(() => Navigator.pop(context));
               },
               child: Text('Yes', style: TextStyle(color: Colors.red)),
             ),

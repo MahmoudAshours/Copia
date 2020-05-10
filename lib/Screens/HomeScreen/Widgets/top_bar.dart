@@ -16,7 +16,7 @@ class TopBar extends StatelessWidget {
             children: <Widget>[
               Positioned(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 5.0),
+                  padding: const EdgeInsets.only(left: 10.0, right: 20.0 , bottom: 20.0),
                   child: Text(
                     '${DateTime.now().day}',
                     style: TextStyle(
@@ -29,12 +29,15 @@ class TopBar extends StatelessWidget {
               Positioned(
                 left: 30,
                 top: 30,
-                child: Text(
-                  _getYear() + ' ${DateTime.now().year}',
-                  style: TextStyle(
-                      fontFamily: 'cormorant',
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    _getYear() + ' ${DateTime.now().year}',
+                    style: TextStyle(
+                        fontFamily: 'cormorant',
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
             ],

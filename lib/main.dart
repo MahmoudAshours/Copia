@@ -9,6 +9,6 @@ void main() async {
   final dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
   Hive.registerAdapter(PDFDBAdapter());
-  Hive.openBox('name');
+  await Hive.openBox('name');
   runApp(MyApp());
 }

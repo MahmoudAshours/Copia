@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:copia/Hive/database.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/foundation.dart';
@@ -7,9 +9,9 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:hive/hive.dart';
 
 class PDFScreen extends StatefulWidget {
-  final snapshot;
+  final PDFDB snapshot;
   final int index;
-  final lastOpenedSnapshot;
+  final PDFDB lastOpenedSnapshot;
   PDFScreen({this.snapshot, this.index, this.lastOpenedSnapshot});
   @override
   _PDFScreenState createState() => _PDFScreenState();
@@ -19,8 +21,10 @@ class _PDFScreenState extends State<PDFScreen> {
   bool isReady = false;
   String errorMessage = '';
   bool s = true;
+  var currPage = 0;
   CrossFadeState _crossFadeState = CrossFadeState.showFirst;
-  PDFViewController _controller;
+  final Completer<PDFViewController> _controller =
+      Completer<PDFViewController>();
   @override
   void initState() {
     super.initState();
@@ -51,6 +55,7 @@ class _PDFScreenState extends State<PDFScreen> {
               fitPolicy: FitPolicy.BOTH,
               onPageError: (s, d) => print(s),
               defaultPage: 0,
+              onPageChanged: (s, ss) => setState(() => currPage = s),
               swipeHorizontal: s,
               onError: (error) {
                 setState(() {
@@ -61,7 +66,7 @@ class _PDFScreenState extends State<PDFScreen> {
               pageFling: true,
               fitEachPage: true,
               autoSpacing: true,
-              onViewCreated: (s) => _controller = s,
+              onViewCreated: (s) => _controller.complete(s),
               onRender: (_pages) {
                 setState(() {
                   isReady = true;
@@ -81,8 +86,8 @@ class _PDFScreenState extends State<PDFScreen> {
 
   String _filePath() {
     final path = widget.snapshot != null
-        ? widget.snapshot.data[widget.index].pdfAsset
-        : widget.lastOpenedSnapshot.data.pdfAsset;
+        ? widget.snapshot.pdfAsset
+        : widget.lastOpenedSnapshot.pdfAsset;
     return path;
   }
 
@@ -101,8 +106,6 @@ class _PDFScreenState extends State<PDFScreen> {
   }
 
   _circularFab(controller) {
-    var currentpage;
-    _controller.getCurrentPage().then((value) => currentpage = value);
     return AnimatedCrossFade(
       crossFadeState: _crossFadeState,
       duration: Duration(seconds: 1),
@@ -110,17 +113,26 @@ class _PDFScreenState extends State<PDFScreen> {
         children: <Widget>[
           IconButton(
             icon: Icon(Icons.home),
+            color: Hive.box('name').getAt(widget.index).bookmarked != null
+                ? Hive.box('name')
+                        .getAt(widget.index)
+                        .bookmarked
+                        .contains(currPage)
+                    ? Colors.yellow
+                    : Colors.black
+                : Colors.black87,
             onPressed: () {
               Hive.box('name').putAt(
                 0,
                 PDFDB(
-                  bookmarked: [
-                    ...Hive.box('name').getAt(0).bookmarked,
-                    currentpage
-                  ],
-                ),
+                    insertedDate: widget.snapshot.insertedDate,
+                    lastSeenDate: DateTime.now(),
+                    pdfAsset: widget.snapshot.pdfAsset,
+                    pdfName: widget.snapshot.pdfName,
+                    totalHours: widget.snapshot.totalHours,
+                    thumb: widget.snapshot.thumb,
+                    bookmarked: test(currPage)),
               );
-              print(Hive.box('name').getAt(0).bookmarked);
             },
           ),
           IconButton(
@@ -136,10 +148,40 @@ class _PDFScreenState extends State<PDFScreen> {
     );
   }
 
+  List<int> test(currentpage) {
+    if (widget.snapshot.bookmarked != null) {
+      return [
+        currentpage,
+        ...Hive.box('name')?.getAt(widget.index)?.bookmarked
+      ];
+    } else {
+      return [currentpage];
+    }
+  }
+
   void _update() {
-    Hive.box('name').putAt(
-      0,
-      PDFDB(),
-    );
+    widget.snapshot != null
+        ? Hive.box('name').putAt(
+            widget.index,
+            PDFDB(
+                insertedDate: widget.snapshot.insertedDate,
+                lastSeenDate: DateTime.now(),
+                pdfAsset: widget.snapshot.pdfAsset,
+                pdfName: widget.snapshot.pdfName,
+                totalHours: widget.snapshot.totalHours,
+                thumb: widget.snapshot.thumb,
+                bookmarked: widget.snapshot.bookmarked),
+          )
+        : Hive.box('name').putAt(
+            widget.index,
+            PDFDB(
+                insertedDate: widget.lastOpenedSnapshot.insertedDate,
+                lastSeenDate: DateTime.now(),
+                pdfAsset: widget.lastOpenedSnapshot.pdfAsset,
+                pdfName: widget.lastOpenedSnapshot.pdfName,
+                totalHours: widget.lastOpenedSnapshot.totalHours,
+                thumb: widget.lastOpenedSnapshot.thumb,
+                bookmarked: widget.lastOpenedSnapshot.bookmarked),
+          );
   }
 }
