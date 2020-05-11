@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 class PDFScreenBloc with ChangeNotifier {
   String _path = '';
-  int _currentPage;
+  int _currentPage = 0;
   bool _isReady = false;
   String _errorMessage = '';
 
