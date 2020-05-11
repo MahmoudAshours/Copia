@@ -25,6 +25,7 @@ dependencies:
   fab_circular_menu: ^1.0.0
   hive_flutter: ^0.3.0+2
   hive: ^1.4.1+1
+  native_pdf_view: ^3.1.0
 
   cupertino_icons: ^0.1.3
 
