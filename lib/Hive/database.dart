@@ -19,6 +19,8 @@ class PDFDB {
   DateTime lastSeenDate;
   @HiveField(7)
   List<int> bookmarked = new List<int>();
+  @HiveField(9)
+  int lastVisitedPage;
   PDFDB(
       {this.bookmarked,
       this.id,
@@ -27,5 +29,6 @@ class PDFDB {
       this.pdfAsset,
       this.pdfName,
       this.thumb,
-      this.totalHours});
+      this.totalHours,
+      this.lastVisitedPage});
 }

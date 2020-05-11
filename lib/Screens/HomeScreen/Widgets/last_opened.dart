@@ -38,7 +38,7 @@ class LastOpened extends StatelessWidget {
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => PDFScreen(
-                        lastOpenedSnapshot: _pdf,
+                        snapshot: _pdf,
                         index: Hive.box('name')
                             .values
                             .toList()

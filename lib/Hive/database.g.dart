@@ -25,13 +25,14 @@ class PDFDBAdapter extends TypeAdapter<PDFDB> {
       pdfName: fields[1] as String,
       thumb: fields[2] as String,
       totalHours: fields[4] as int,
+      lastVisitedPage: fields[9] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, PDFDB obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,6 +48,8 @@ class PDFDBAdapter extends TypeAdapter<PDFDB> {
       ..writeByte(6)
       ..write(obj.lastSeenDate)
       ..writeByte(7)
-      ..write(obj.bookmarked);
+      ..write(obj.bookmarked)
+      ..writeByte(9)
+      ..write(obj.lastVisitedPage);
   }
 }
