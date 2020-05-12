@@ -4,31 +4,31 @@ part 'database.g.dart';
 @HiveType(typeId: 0)
 class PDFDB {
   @HiveField(0)
-  int id;
-  @HiveField(1)
   String pdfName;
-  @HiveField(2)
+  @HiveField(1)
   String thumb;
-  @HiveField(3)
+  @HiveField(2)
   String pdfAsset;
-  @HiveField(4)
+  @HiveField(3)
   int totalHours;
-  @HiveField(5)
+  @HiveField(4)
   DateTime insertedDate;
-  @HiveField(6)
+  @HiveField(5)
   DateTime lastSeenDate;
-  @HiveField(7)
+  @HiveField(6)
   List<int> bookmarked = new List<int>();
-  @HiveField(9)
+  @HiveField(7)
   int lastVisitedPage;
+  @HiveField(8)
+  String pageNote;
   PDFDB(
-      {this.bookmarked,
-      this.id,
+      {this.pdfName,
+      this.thumb,
+      this.pdfAsset,
+      this.totalHours,
       this.insertedDate,
       this.lastSeenDate,
-      this.pdfAsset,
-      this.pdfName,
-      this.thumb,
-      this.totalHours,
-      this.lastVisitedPage});
+      this.bookmarked,
+      this.lastVisitedPage,
+      this.pageNote});
 }

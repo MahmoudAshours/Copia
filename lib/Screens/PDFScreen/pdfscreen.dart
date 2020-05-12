@@ -2,6 +2,7 @@ import 'package:copia/Hive/database.dart';
 import 'package:copia/Provider/prov_db.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
@@ -19,10 +20,13 @@ class _PDFScreenState extends State<PDFScreen> {
   int index;
   PdfController _pdfController;
   int currentPage;
+  double height = 100;
   Axis direction = Axis.horizontal;
+  ScrollController _controller;
   @override
   void initState() {
     initPage();
+    _controller = ScrollController();
     super.initState();
   }
 
@@ -119,6 +123,42 @@ class _PDFScreenState extends State<PDFScreen> {
             );
           },
         ),
+        IconButton(
+          icon: Icon(Icons.note),
+          onPressed: () => showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            useRootNavigator: true,
+            builder: (BuildContext context) {
+              return StatefulBuilder(
+                builder: (_, StateSetter setState) {
+                  _controller.addListener(
+                    () {
+                      if (_controller.position.userScrollDirection ==
+                          ScrollDirection.reverse) {
+                        setState(
+                            () => height = MediaQuery.of(context).size.height);
+                      }
+                    },
+                  );
+                  return AnimatedContainer(
+                    height: height,
+                    duration: Duration(seconds: 1),
+                    child: SingleChildScrollView(
+                      controller: _controller,
+                      child: Column(
+                        children: <Widget>[
+                          TextField(),
+                          FloatingActionButton(onPressed: () {})
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        )
       ],
     );
   }
@@ -136,13 +176,22 @@ class _PDFScreenState extends State<PDFScreen> {
   }
 
   void bookmark(ProviderDB _bloc, PDFDB _pdf) {
-    if (_pdf.bookmarked.contains(currentPage)) {
-      _bloc.addBookmark(
-        false,
-        currPage: currentPage,
-        index: index,
-        snapshot: _pdf,
-      );
+    if (_pdf.bookmarked != null) {
+      if (_pdf.bookmarked.contains(currentPage)) {
+        _bloc.addBookmark(
+          false,
+          currPage: currentPage,
+          index: index,
+          snapshot: _pdf,
+        );
+      } else {
+        _bloc.addBookmark(
+          true,
+          currPage: currentPage,
+          index: index,
+          snapshot: _pdf,
+        );
+      }
     } else {
       _bloc.addBookmark(
         true,

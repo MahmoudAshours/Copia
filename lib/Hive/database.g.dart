@@ -17,15 +17,15 @@ class PDFDBAdapter extends TypeAdapter<PDFDB> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return PDFDB(
-      bookmarked: (fields[7] as List)?.cast<int>(),
-      id: fields[0] as int,
-      insertedDate: fields[5] as DateTime,
-      lastSeenDate: fields[6] as DateTime,
-      pdfAsset: fields[3] as String,
-      pdfName: fields[1] as String,
-      thumb: fields[2] as String,
-      totalHours: fields[4] as int,
-      lastVisitedPage: fields[9] as int,
+      pdfName: fields[0] as String,
+      thumb: fields[1] as String,
+      pdfAsset: fields[2] as String,
+      totalHours: fields[3] as int,
+      insertedDate: fields[4] as DateTime,
+      lastSeenDate: fields[5] as DateTime,
+      bookmarked: (fields[6] as List)?.cast<int>(),
+      lastVisitedPage: fields[7] as int,
+      pageNote: fields[8] as String,
     );
   }
 
@@ -34,22 +34,22 @@ class PDFDBAdapter extends TypeAdapter<PDFDB> {
     writer
       ..writeByte(9)
       ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
       ..write(obj.pdfName)
-      ..writeByte(2)
+      ..writeByte(1)
       ..write(obj.thumb)
-      ..writeByte(3)
+      ..writeByte(2)
       ..write(obj.pdfAsset)
-      ..writeByte(4)
+      ..writeByte(3)
       ..write(obj.totalHours)
-      ..writeByte(5)
+      ..writeByte(4)
       ..write(obj.insertedDate)
-      ..writeByte(6)
+      ..writeByte(5)
       ..write(obj.lastSeenDate)
-      ..writeByte(7)
+      ..writeByte(6)
       ..write(obj.bookmarked)
-      ..writeByte(9)
-      ..write(obj.lastVisitedPage);
+      ..writeByte(7)
+      ..write(obj.lastVisitedPage)
+      ..writeByte(8)
+      ..write(obj.pageNote);
   }
 }
