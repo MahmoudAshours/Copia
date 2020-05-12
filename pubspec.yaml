@@ -25,6 +25,7 @@ dependencies:
   image_gallery_saver: ^1.2.2
   flutter_sound: ^4.0.4+1
   flutter_tts: ^1.2.0
+  flutter_filereader: ^2.1.0
 
 
   cupertino_icons: ^0.1.3
