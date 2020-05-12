@@ -18,13 +18,11 @@ class PDFScreen extends StatefulWidget {
 class _PDFScreenState extends State<PDFScreen> {
   int index;
   PdfController _pdfController;
-  int currentPage = 1;
+  int currentPage;
   Axis direction = Axis.horizontal;
   @override
   void initState() {
-    _pdfController =
-        PdfController(document: PdfDocument.openFile(widget.snapshot.pdfAsset));
-    setState(() => index = widget.index);
+    initPage();
     super.initState();
   }
 
@@ -36,15 +34,16 @@ class _PDFScreenState extends State<PDFScreen> {
 
   @override
   void dispose() {
+    final _lastPdf = Hive.box('name').getAt(index);
     final _pdf = PDFDB(
-      bookmarked: Hive.box('name').getAt(index).bookmarked,
-      insertedDate: Hive.box('name').getAt(index).insertedDate,
-      lastSeenDate: Hive.box('name').getAt(index).lastSeenDate,
-      lastVisitedPage: _pdfController.page,
-      pdfAsset: Hive.box('name').getAt(index).pdfAsset,
-      pdfName: Hive.box('name').getAt(index).pdfName,
-      thumb: Hive.box('name').getAt(index).thumb,
-      totalHours: Hive.box('name').getAt(index).totalHours,
+      bookmarked: _lastPdf.bookmarked,
+      insertedDate: _lastPdf.insertedDate,
+      lastSeenDate: _lastPdf.lastSeenDate,
+      lastVisitedPage: currentPage,
+      pdfAsset: _lastPdf.pdfAsset,
+      pdfName: _lastPdf.pdfName,
+      thumb: _lastPdf.thumb,
+      totalHours: _lastPdf.totalHours,
     );
     Hive.box('name')
         .putAt(index, _pdf)
@@ -58,26 +57,35 @@ class _PDFScreenState extends State<PDFScreen> {
     return Scaffold(
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButton: _circularFab(_dbProvider, index),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: PdfView(
-          controller: _pdfController,
-          onDocumentLoaded: (PdfDocument document) {
-            _pdfController.jumpToPage(10);
-          },
-          documentLoader: Center(child: CircularProgressIndicator()),
-          pageLoader: Center(child: CircularProgressIndicator()),
-          onDocumentError: (err) {
-            print("error is : $err");
-          },
-          pageSnapping: true,
-          scrollDirection: direction,
-          physics: BouncingScrollPhysics(),
-          onPageChanged: (int currPage) {
-            print("current : $currPage");
-            setState(() => currentPage = currPage);
-          },
+      body: GestureDetector(
+        onTap: () => print('Here'),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: PdfView(
+            controller: _pdfController,
+            documentLoader: Center(child: CircularProgressIndicator()),
+            pageLoader: Center(child: CircularProgressIndicator()),
+            onDocumentError: (err) => Navigator.of(context).pop(),
+            renderer: (PdfPage page) => page.render(
+              width: page.width * 2,
+              height: page.height * 2,
+              format: PdfPageFormat.JPEG,
+              backgroundColor: '#FFFFFF',
+            ),
+            errorBuilder: (e) {
+              return Container(
+                child: Text('error'),
+                width: 200,
+                height: 200,
+              );
+            },
+            pageSnapping: true,
+            scrollDirection: direction,
+            physics: BouncingScrollPhysics(),
+            onPageChanged: (int currPage) =>
+                setState(() => currentPage = currPage),
+          ),
         ),
       ),
     );
@@ -89,40 +97,60 @@ class _PDFScreenState extends State<PDFScreen> {
         ValueListenableBuilder(
           valueListenable: Hive.box('name').listenable(),
           builder: (_, Box snapshot, Widget child) {
+            final PDFDB _pdf = Hive.box('name').getAt(index);
             return IconButton(
-              icon: Icon(Icons.favorite),
-              color: Hive.box('name').getAt(index).bookmarked != null
-                  ? Hive.box('name')
-                          .getAt(index)
-                          .bookmarked
-                          .contains(currentPage)
-                      ? Colors.red
-                      : Colors.white
-                  : Colors.white,
-              onPressed: () {
-                _bloc.addBookmark(
-                  currPage: currentPage,
-                  index: index,
-                  snapshot: Hive.box('name').getAt(index),
-                );
-              },
-            );
+                icon: Icon(Icons.favorite),
+                color: _bookmarkColorChecker(_pdf),
+                onPressed: () => bookmark(_bloc, _pdf));
           },
         ),
         IconButton(icon: Icon(Icons.list), onPressed: () => _bookmarksSheet()),
         IconButton(
-            icon: Icon(Icons.border_horizontal),
-            onPressed: () {
-              setState(() {
+          icon: Icon(Icons.border_horizontal),
+          onPressed: () {
+            setState(
+              () {
                 if (direction == Axis.horizontal) {
                   direction = Axis.vertical;
                 } else {
                   direction = Axis.horizontal;
                 }
-              });
-            }),
+              },
+            );
+          },
+        ),
       ],
     );
+  }
+
+  Color _bookmarkColorChecker(PDFDB _pdf) {
+    if (_pdf.bookmarked != null) {
+      if (_pdf.bookmarked.contains(currentPage)) {
+        return Colors.red;
+      } else {
+        return Colors.white;
+      }
+    } else {
+      return Colors.white;
+    }
+  }
+
+  void bookmark(ProviderDB _bloc, PDFDB _pdf) {
+    if (_pdf.bookmarked.contains(currentPage)) {
+      _bloc.addBookmark(
+        false,
+        currPage: currentPage,
+        index: index,
+        snapshot: _pdf,
+      );
+    } else {
+      _bloc.addBookmark(
+        true,
+        currPage: currentPage,
+        index: index,
+        snapshot: _pdf,
+      );
+    }
   }
 
   void _bookmarksSheet() {
@@ -143,9 +171,7 @@ class _PDFScreenState extends State<PDFScreen> {
                         .animateToPage(e,
                             duration: Duration(seconds: 1),
                             curve: Curves.easeInOutBack)
-                        .then(
-                          (value) => Navigator.of(context).pop(),
-                        ),
+                        .then((_) => Navigator.of(context).pop()),
                   ),
                 )
                 .toList(),
@@ -158,5 +184,14 @@ class _PDFScreenState extends State<PDFScreen> {
   void _update() {
     final _bloc = Provider.of<ProviderDB>(context);
     _bloc.updateLastSeen(widget.snapshot, widget.index);
+  }
+
+  void initPage() {
+    setState(() => index = widget.index);
+    _pdfController = PdfController(
+        document: PdfDocument.openFile(widget.snapshot.pdfAsset),
+        initialPage: Hive.box('name').getAt(index).lastVisitedPage ?? 1,
+        viewportFraction: 2);
+    setState(() => currentPage = _pdfController.initialPage);
   }
 }
