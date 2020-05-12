@@ -21,11 +21,13 @@ class _PDFScreenState extends State<PDFScreen> {
   PdfController _pdfController;
   int currentPage;
   double height = 100;
+  bool hideFab = false;
   Axis direction = Axis.horizontal;
   ScrollController _controller;
   @override
   void initState() {
     initPage();
+
     _controller = ScrollController();
     super.initState();
   }
@@ -62,7 +64,7 @@ class _PDFScreenState extends State<PDFScreen> {
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButton: _circularFab(_dbProvider, index),
       body: GestureDetector(
-        onTap: () => print('Here'),
+        onTap: () => _hideFloatingActionBar(),
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
@@ -95,71 +97,88 @@ class _PDFScreenState extends State<PDFScreen> {
     );
   }
 
-  FabCircularMenu _circularFab(ProviderDB _bloc, int index) {
-    return FabCircularMenu(
-      children: <Widget>[
-        ValueListenableBuilder(
-          valueListenable: Hive.box('name').listenable(),
-          builder: (_, Box snapshot, Widget child) {
-            final PDFDB _pdf = Hive.box('name').getAt(index);
-            return IconButton(
-                icon: Icon(Icons.favorite),
-                color: _bookmarkColorChecker(_pdf),
-                onPressed: () => bookmark(_bloc, _pdf));
-          },
-        ),
-        IconButton(icon: Icon(Icons.list), onPressed: () => _bookmarksSheet()),
-        IconButton(
-          icon: Icon(Icons.border_horizontal),
-          onPressed: () {
-            setState(
-              () {
-                if (direction == Axis.horizontal) {
-                  direction = Axis.vertical;
-                } else {
-                  direction = Axis.horizontal;
-                }
-              },
-            );
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.note),
-          onPressed: () => showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            useRootNavigator: true,
-            builder: (BuildContext context) {
-              return StatefulBuilder(
-                builder: (_, StateSetter setState) {
-                  _controller.addListener(
-                    () {
-                      if (_controller.position.userScrollDirection ==
-                          ScrollDirection.reverse) {
-                        setState(
-                            () => height = MediaQuery.of(context).size.height);
-                      }
-                    },
-                  );
-                  return AnimatedContainer(
-                    height: height,
-                    duration: Duration(seconds: 1),
-                    child: SingleChildScrollView(
-                      controller: _controller,
-                      child: Column(
-                        children: <Widget>[
-                          TextField(),
-                          FloatingActionButton(onPressed: () {})
-                        ],
-                      ),
-                    ),
-                  );
+  _hideFloatingActionBar() {
+    if (hideFab) {
+      setState(() {
+        hideFab = false;
+      });
+    } else {
+      setState(() {
+        hideFab = true;
+      });
+    }
+  }
+
+  AnimatedOpacity _circularFab(ProviderDB _bloc, int index) {
+    return AnimatedOpacity(
+      opacity: hideFab ? 0.0 : 1.0,
+      duration: Duration(milliseconds: 400),
+      child: FabCircularMenu(
+        children: <Widget>[
+          ValueListenableBuilder(
+            valueListenable: Hive.box('name').listenable(),
+            builder: (_, Box snapshot, Widget child) {
+              final PDFDB _pdf = Hive.box('name').getAt(index);
+              return IconButton(
+                  icon: Icon(Icons.favorite),
+                  color: _bookmarkColorChecker(_pdf),
+                  onPressed: () => bookmark(_bloc, _pdf));
+            },
+          ),
+          IconButton(
+              icon: Icon(Icons.list), onPressed: () => _bookmarksSheet()),
+          IconButton(
+            icon: Icon(Icons.border_horizontal),
+            onPressed: () {
+              setState(
+                () {
+                  if (direction == Axis.horizontal) {
+                    direction = Axis.vertical;
+                  } else {
+                    direction = Axis.horizontal;
+                  }
                 },
               );
             },
           ),
-        )
-      ],
+          IconButton(
+            icon: Icon(Icons.note),
+            onPressed: () => showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              useRootNavigator: true,
+              builder: (BuildContext context) {
+                return StatefulBuilder(
+                  builder: (_, StateSetter setState) {
+                    _controller.addListener(
+                      () {
+                        if (_controller.position.userScrollDirection ==
+                            ScrollDirection.reverse) {
+                          setState(() =>
+                              height = MediaQuery.of(context).size.height);
+                        }
+                      },
+                    );
+                    return AnimatedContainer(
+                      height: height,
+                      duration: Duration(seconds: 1),
+                      child: SingleChildScrollView(
+                        controller: _controller,
+                        child: Column(
+                          children: <Widget>[
+                            TextField(),
+                            FloatingActionButton(onPressed: () {})
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 
