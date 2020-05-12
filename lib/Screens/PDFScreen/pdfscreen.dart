@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:copia/Hive/database.dart';
 import 'package:copia/Provider/prov_db.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:provider/provider.dart';
 
@@ -21,13 +24,13 @@ class _PDFScreenState extends State<PDFScreen> {
   PdfController _pdfController;
   int currentPage;
   double height = 100;
+  var scr = new GlobalKey();
   bool hideFab = false;
   Axis direction = Axis.horizontal;
   ScrollController _controller;
   @override
   void initState() {
     initPage();
-
     _controller = ScrollController();
     super.initState();
   }
@@ -57,6 +60,21 @@ class _PDFScreenState extends State<PDFScreen> {
     super.dispose();
   }
 
+  takescrshot() async {
+    RenderRepaintBoundary boundary = scr.currentContext.findRenderObject();
+    var image = await boundary.toImage();
+    var byteData = await image.toByteData(format: ImageByteFormat.png);
+    var pngBytes = byteData.buffer.asUint8List();
+    ImageGallerySaver.saveImage(pngBytes).then(
+      (value) => showDialog(
+        context: context,
+        builder: (_) => Container(
+          child: Text("Finished!"),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final _dbProvider = Provider.of<ProviderDB>(context);
@@ -68,29 +86,32 @@ class _PDFScreenState extends State<PDFScreen> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          child: PdfView(
-            controller: _pdfController,
-            documentLoader: Center(child: CircularProgressIndicator()),
-            pageLoader: Center(child: CircularProgressIndicator()),
-            onDocumentError: (err) => Navigator.of(context).pop(),
-            renderer: (PdfPage page) => page.render(
-              width: page.width * 2,
-              height: page.height * 2,
-              format: PdfPageFormat.JPEG,
-              backgroundColor: '#FFFFFF',
+          child: RepaintBoundary(
+            key: scr,
+            child: PdfView(
+              controller: _pdfController,
+              documentLoader: Center(child: CircularProgressIndicator()),
+              pageLoader: Center(child: CircularProgressIndicator()),
+              onDocumentError: (err) => Navigator.of(context).pop(),
+              renderer: (PdfPage page) => page.render(
+                width: page.width * 2,
+                height: page.height * 2,
+                format: PdfPageFormat.JPEG,
+                backgroundColor: '#FFFFFF',
+              ),
+              errorBuilder: (e) {
+                return Container(
+                  child: Text('error'),
+                  width: 200,
+                  height: 200,
+                );
+              },
+              pageSnapping: true,
+              scrollDirection: direction,
+              physics: BouncingScrollPhysics(),
+              onPageChanged: (int currPage) =>
+                  setState(() => currentPage = currPage),
             ),
-            errorBuilder: (e) {
-              return Container(
-                child: Text('error'),
-                width: 200,
-                height: 200,
-              );
-            },
-            pageSnapping: true,
-            scrollDirection: direction,
-            physics: BouncingScrollPhysics(),
-            onPageChanged: (int currPage) =>
-                setState(() => currentPage = currPage),
           ),
         ),
       ),
@@ -176,7 +197,8 @@ class _PDFScreenState extends State<PDFScreen> {
                 );
               },
             ),
-          )
+          ),
+          IconButton(icon: Icon(Icons.camera), onPressed: () => takescrshot()),
         ],
       ),
     );
