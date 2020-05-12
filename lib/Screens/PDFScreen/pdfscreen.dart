@@ -1,14 +1,19 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:copia/Hive/database.dart';
 import 'package:copia/Provider/prov_db.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_sound/flutter_sound_player.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class PDFScreen extends StatefulWidget {
@@ -24,6 +29,7 @@ class _PDFScreenState extends State<PDFScreen> {
   PdfController _pdfController;
   int currentPage;
   double height = 100;
+  FlutterSoundPlayer flutterSoundPlayer;
   var scr = new GlobalKey();
   bool hideFab = false;
   Axis direction = Axis.horizontal;
@@ -43,7 +49,7 @@ class _PDFScreenState extends State<PDFScreen> {
 
   @override
   void dispose() {
-    final _lastPdf = Hive.box('name').getAt(index);
+    final PDFDB _lastPdf = Hive.box('name').getAt(index);
     final _pdf = PDFDB(
       bookmarked: _lastPdf.bookmarked,
       insertedDate: _lastPdf.insertedDate,
@@ -52,11 +58,16 @@ class _PDFScreenState extends State<PDFScreen> {
       pdfAsset: _lastPdf.pdfAsset,
       pdfName: _lastPdf.pdfName,
       thumb: _lastPdf.thumb,
+      documentPath: _lastPdf.documentPath,
+      pageNote: _lastPdf.pageNote,
+      soundPath: _lastPdf.soundPath,
       totalHours: _lastPdf.totalHours,
     );
     Hive.box('name')
         .putAt(index, _pdf)
         .then((value) => _pdfController.dispose());
+    flutterSoundPlayer.release();
+
     super.dispose();
   }
 
@@ -65,14 +76,17 @@ class _PDFScreenState extends State<PDFScreen> {
     var image = await boundary.toImage();
     var byteData = await image.toByteData(format: ImageByteFormat.png);
     var pngBytes = byteData.buffer.asUint8List();
-    ImageGallerySaver.saveImage(pngBytes).then(
-      (value) => showDialog(
-        context: context,
-        builder: (_) => Container(
-          child: Text("Finished!"),
-        ),
-      ),
-    );
+    ImageGallerySaver.saveImage(pngBytes);
+    final directory = await getApplicationDocumentsDirectory();
+    File imgFile = new File('$directory/pdfScreenshot.png');
+    imgFile.writeAsBytes(pngBytes).then(
+          (value) => showDialog(
+            context: context,
+            builder: (_) => Container(
+              child: Text("Finished!"),
+            ),
+          ),
+        );
   }
 
   @override
@@ -81,6 +95,7 @@ class _PDFScreenState extends State<PDFScreen> {
     return Scaffold(
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
       floatingActionButton: _circularFab(_dbProvider, index),
+      bottomNavigationBar: _bottomAudioPlayer(),
       body: GestureDetector(
         onTap: () => _hideFloatingActionBar(),
         child: Container(
@@ -128,6 +143,37 @@ class _PDFScreenState extends State<PDFScreen> {
         hideFab = true;
       });
     }
+  }
+
+  _bottomAudioPlayer() {
+    if (Hive.box('name').getAt(index).soundPath != null)
+      return AnimatedOpacity(
+        opacity: hideFab ? 0.0 : 1.0,
+        duration: Duration(milliseconds: 400),
+        child: Container(
+          color: Colors.red,
+          height: 50,
+          child: Row(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.play_arrow),
+                onPressed: () {
+                  var audio = Hive.box('name').getAt(index).soundPath;
+                  print(audio);
+                  Future<String> result = flutterSoundPlayer.startPlayer(audio);
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.pause),
+                onPressed: () {
+                  Future<String> result = flutterSoundPlayer.pausePlayer();
+                },
+              )
+            ],
+          ),
+        ),
+      );
+    return SizedBox();
   }
 
   AnimatedOpacity _circularFab(ProviderDB _bloc, int index) {
@@ -199,6 +245,13 @@ class _PDFScreenState extends State<PDFScreen> {
             ),
           ),
           IconButton(icon: Icon(Icons.camera), onPressed: () => takescrshot()),
+          IconButton(icon: Icon(Icons.headset), onPressed: () => pdfAudio()),
+          CircleAvatar(
+            child: IconButton(
+              icon: Icon(Icons.group_work),
+              onPressed: () => {},
+            ),
+          ),
         ],
       ),
     );
@@ -214,6 +267,58 @@ class _PDFScreenState extends State<PDFScreen> {
     } else {
       return Colors.white;
     }
+  }
+
+  void pdfAudio() {
+    showModalBottomSheet(
+      context: context,
+      useRootNavigator: true,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (_, StateSetter setState) {
+            return ValueListenableBuilder(
+              valueListenable: Hive.box('name').listenable(),
+              builder: (_, Box box, child) {
+                PDFDB _pdf = box.getAt(index);
+                if (box.getAt(index).soundPath == null) {
+                  return Column(
+                    children: <Widget>[
+                      Container(
+                        child: Text("You don't have an audio for this PDF"),
+                      ),
+                      Container(
+                        child: IconButton(
+                          icon: Icon(Icons.update),
+                          onPressed: () async {
+                            File _file =
+                                await FilePicker.getFile(type: FileType.audio);
+                            final _modifiedPDF = PDFDB(
+                                bookmarked: _pdf.bookmarked,
+                                insertedDate: _pdf.insertedDate,
+                                lastSeenDate: _pdf.lastSeenDate,
+                                lastVisitedPage: _pdf.lastVisitedPage,
+                                pageNote: _pdf.pageNote,
+                                pdfAsset: _pdf.pdfAsset,
+                                pdfName: _pdf.pdfName,
+                                soundPath: _file.path ?? null,
+                                thumb: _pdf.thumb,
+                                totalHours: _pdf.totalHours,
+                                documentPath: _pdf.documentPath);
+                            box.putAt(index, _modifiedPDF);
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            );
+          },
+        );
+      },
+    );
   }
 
   void bookmark(ProviderDB _bloc, PDFDB _pdf) {
@@ -276,12 +381,22 @@ class _PDFScreenState extends State<PDFScreen> {
     _bloc.updateLastSeen(widget.snapshot, widget.index);
   }
 
-  void initPage() {
+  void initPage() async {
     setState(() => index = widget.index);
     _pdfController = PdfController(
-        document: PdfDocument.openFile(widget.snapshot.pdfAsset),
-        initialPage: Hive.box('name').getAt(index).lastVisitedPage ?? 1,
-        viewportFraction: 2);
+      document: PdfDocument.openFile(widget.snapshot.pdfAsset),
+      initialPage: Hive.box('name').getAt(index).lastVisitedPage ?? 1,
+      viewportFraction: 1.5,
+    );
     setState(() => currentPage = _pdfController.initialPage);
+    flutterSoundPlayer = await FlutterSoundPlayer().initialize();
+    _speak();
+  }
+
+  Future _speak() async {
+    FlutterTts flutterTts = FlutterTts();
+
+    flutterTts..setVoice("en-us-x-sfg#male_2-local");
+    await flutterTts.speak("What");
   }
 }

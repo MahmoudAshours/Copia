@@ -26,13 +26,15 @@ class PDFDBAdapter extends TypeAdapter<PDFDB> {
       bookmarked: (fields[6] as List)?.cast<int>(),
       lastVisitedPage: fields[7] as int,
       pageNote: fields[8] as String,
+      soundPath: fields[9] as String,
+      documentPath: fields[10] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, PDFDB obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.pdfName)
       ..writeByte(1)
@@ -50,6 +52,10 @@ class PDFDBAdapter extends TypeAdapter<PDFDB> {
       ..writeByte(7)
       ..write(obj.lastVisitedPage)
       ..writeByte(8)
-      ..write(obj.pageNote);
+      ..write(obj.pageNote)
+      ..writeByte(9)
+      ..write(obj.soundPath)
+      ..writeByte(10)
+      ..write(obj.documentPath);
   }
 }

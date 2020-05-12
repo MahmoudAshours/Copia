@@ -36,13 +36,18 @@ class ProviderDB with ChangeNotifier {
     return Hive.box('name').putAt(
       index,
       PDFDB(
-          insertedDate: snapshot.insertedDate,
-          lastSeenDate: DateTime.now(),
-          pdfAsset: snapshot.pdfAsset,
-          pdfName: snapshot.pdfName,
-          totalHours: snapshot.totalHours,
-          thumb: snapshot.thumb,
-          bookmarked: snapshot.bookmarked),
+        insertedDate: snapshot.insertedDate,
+        lastSeenDate: DateTime.now(),
+        pdfAsset: snapshot.pdfAsset,
+        pdfName: snapshot.pdfName,
+        totalHours: snapshot.totalHours,
+        lastVisitedPage: snapshot.lastVisitedPage,
+        documentPath: snapshot.documentPath,
+        pageNote: snapshot.pageNote,
+        soundPath: snapshot.soundPath,
+        thumb: snapshot.thumb,
+        bookmarked: snapshot.bookmarked,
+      ),
     );
   }
 }

@@ -21,6 +21,10 @@ class PDFDB {
   int lastVisitedPage;
   @HiveField(8)
   String pageNote;
+  @HiveField(9)
+  String soundPath;
+  @HiveField(10)
+  String documentPath;
   PDFDB(
       {this.pdfName,
       this.thumb,
@@ -30,5 +34,7 @@ class PDFDB {
       this.lastSeenDate,
       this.bookmarked,
       this.lastVisitedPage,
-      this.pageNote});
+      this.pageNote,
+      this.soundPath,
+      this.documentPath});
 }
