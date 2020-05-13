@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 part 'database.g.dart';
 
@@ -37,4 +38,23 @@ class PDFDB {
       this.pageNote,
       this.soundPath,
       this.documentPath});
+
+  updatePDf({@required int index, @required PDFDB snapshot}) {
+    Hive.box('name').putAt(
+      index,
+      PDFDB(
+        insertedDate: snapshot.insertedDate,
+        lastSeenDate: snapshot.lastSeenDate,
+        pdfAsset: snapshot.pdfAsset,
+        pdfName: snapshot.pdfName,
+        totalHours: snapshot.totalHours,
+        thumb: snapshot.thumb,
+        bookmarked: snapshot.bookmarked,
+        documentPath: snapshot.documentPath,
+        lastVisitedPage: snapshot.lastVisitedPage,
+        pageNote: snapshot.pageNote,
+        soundPath: snapshot.soundPath,
+      ),
+    );
+  }
 }

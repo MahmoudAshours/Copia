@@ -17,7 +17,7 @@ void main() async {
     Providers(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: await checkIntro()==false ? IntroScreen() : ControllerScreen(),
+        home: await checkIntro() ? IntroScreen() : ControllerScreen(),
       ),
     ),
   );

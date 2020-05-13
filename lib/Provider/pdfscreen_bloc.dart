@@ -1,15 +1,12 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class PDFScreenBloc with ChangeNotifier {
-  String _path = '';
   int _currentPage = 0;
   bool _isReady = false;
   String _errorMessage = '';
 
-  set path(String path) {
-    _path = path;
-    notifyListeners();
-  }
+  var scr = GlobalKey();
 
   set currentPage(int page) {
     _currentPage = page;
@@ -26,8 +23,6 @@ class PDFScreenBloc with ChangeNotifier {
     _isReady = isReady;
     notifyListeners();
   }
-
-  String get path => _path;
 
   int get currpage => _currentPage;
 

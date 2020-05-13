@@ -50,9 +50,7 @@ class _IntroScreenState extends State<IntroScreen> {
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
+          decoration: BoxDecoration(color: Colors.white),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 40.0),
             child: Column(
@@ -174,16 +172,9 @@ class _IntroScreenState extends State<IntroScreen> {
               ),
             ),
           ),
-          SizedBox(
-            height: 9.0,
-          ),
-          Text(
-            nameTitle,
-            style: kTitleStyle,
-          ),
-          SizedBox(
-            height: 10.0,
-          ),
+          SizedBox(height: 9.0),
+          Text(nameTitle, style: kTitleStyle),
+          SizedBox(height: 10.0),
           Text(
             nameSubTitle,
             style: kSubtitleStyle,
