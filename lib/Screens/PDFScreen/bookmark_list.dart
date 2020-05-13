@@ -16,26 +16,54 @@ class BookmarkList extends StatelessWidget {
   void _bookmarksSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      backgroundColor: Colors.transparent,
       builder: (_) => Container(
         height: 400,
-        child: ValueListenableBuilder(
-          valueListenable: Hive.box('name').listenable(),
-          builder: (_, Box snap, __) => ListView(
-            children: snap
-                .getAt(index)
-                .bookmarked
-                .map<Widget>(
-                  (int e) => ListTile(
-                    title: Text('Page number $e'),
-                    onTap: () => pdfController
-                        .animateToPage(e,
-                            duration: Duration(seconds: 1),
-                            curve: Curves.easeInOutBack)
-                        .then((_) => Navigator.of(context).pop()),
-                  ),
-                )
-                .toList(),
-          ),
+        decoration: BoxDecoration(
+            color: const Color(0xffEEEEED),
+            borderRadius: BorderRadius.circular(40)),
+        child: Stack(
+          children: <Widget>[
+            Center(
+              child: Opacity(
+                opacity: 0.3,
+                child: Icon(
+                  Icons.favorite_border,
+                  color: Colors.red,
+                  size: MediaQuery.of(context).size.width,
+                ),
+              ),
+            ),
+            ValueListenableBuilder(
+              valueListenable: Hive.box('name').listenable(),
+              builder: (_, Box snap, __) {
+                if (snap.getAt(index).bookmarked == null ||
+                    snap.getAt(index).bookmarked.isEmpty) {
+                  return Center(
+                      child: Text('You dont have any favorites yet!'));
+                }
+                return ListView(
+                  children: snap.getAt(index).bookmarked.map<Widget>(
+                    (int pageNumber) {
+                      return ListTile(
+                        title: Text('Page number $pageNumber'),
+                        leading: Icon(Icons.favorite_border, color: Colors.red),
+                        onTap: () => pdfController
+                            .animateToPage(
+                              pageNumber,
+                              duration: Duration(seconds: 1),
+                              curve: Curves.easeInOutBack,
+                            )
+                            .then((_) => Navigator.of(context).pop()),
+                      );
+                    },
+                  ).toList(),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

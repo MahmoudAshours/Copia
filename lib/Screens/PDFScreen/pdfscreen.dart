@@ -28,6 +28,7 @@ class _PDFScreenState extends State<PDFScreen> {
   int currentPage;
   bool hideFab = false;
   Axis direction = Axis.horizontal;
+
   @override
   void initState() {
     initPage();
@@ -123,6 +124,14 @@ class _PDFScreenState extends State<PDFScreen> {
       opacity: hideFab ? 0.0 : 1.0,
       duration: Duration(milliseconds: 400),
       child: FabCircularMenu(
+        fabCloseColor: Color(0xffA64848),
+        ringColor: Color(0xffA64848),
+        fabColor: Color(0xff3E4243),
+        fabSize: 40,
+        fabElevation: 2.5,
+        animationCurve: Curves.easeInOutCirc,
+        animationDuration: Duration(milliseconds:500),
+        fabOpenIcon: Icon(Icons.blur_on , color: Colors.white),
         children: <Widget>[
           BookmarkPdf(index: index, currentPage: currentPage),
           BookmarkList(index: index, pdfController: _pdfController),

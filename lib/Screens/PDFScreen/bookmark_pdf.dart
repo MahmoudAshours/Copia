@@ -17,10 +17,16 @@ class BookmarkPdf extends StatelessWidget {
       valueListenable: hive.listenable(),
       builder: (_, Box snapshot, Widget child) {
         final PDFDB _pdf = hive.getAt(index);
-        return IconButton(
-            icon: Icon(Icons.favorite),
-            color: _bookmarkColorChecker(_pdf),
-            onPressed: () => bookmark(_bloc, _pdf));
+        return CircleAvatar(
+          backgroundColor: Colors.black,
+          child: GestureDetector(
+            onTap: () => bookmark(_bloc, _pdf),
+            child: Icon(
+              Icons.favorite,
+              color: _bookmarkColorChecker(_pdf),
+            ),
+          ),
+        );
       },
     );
   }
