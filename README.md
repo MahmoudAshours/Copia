@@ -18,7 +18,7 @@ Copia is an application used to store PDFs as books.
 
 
 ## Tasks : 
-- [ ]  Intro screen
+- [x] Intro screen
 - [ ]  Audio Screen
 - [ ]  Document Screen
 - [ ]  Doc Text to Speech
