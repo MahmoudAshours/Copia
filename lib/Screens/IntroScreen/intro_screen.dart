@@ -1,6 +1,7 @@
 import 'package:copia/Screens/ControllerScreen/controller_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'styles.dart';
 import 'circle_progress_bar.dart';
@@ -12,10 +13,10 @@ class IntroScreen extends StatefulWidget {
 
 class _IntroScreenState extends State<IntroScreen> {
   List<String> nameImages = [
-    'assets/images/onboarding3.png',
-    'assets/images/onboarding4.png',
-    'assets/images/onboarding5.png',
-    'assets/images/onboarding3.png'
+    'assets/images/introImages/intro_books.svg',
+    'assets/images/introImages/reading.svg',
+    'assets/images/introImages/reading_time.svg',
+    'assets/images/introImages/statistics.svg'
   ];
 
   List<String> nameTitles = [
@@ -25,12 +26,12 @@ class _IntroScreenState extends State<IntroScreen> {
     '',
   ];
 
-  List<String> nameSubTitles = [
-    'Browse the menu and order directly from the application',
-    'Your order will be immediately collected and',
-    'Pick up delivery at your door and enjoy groceries',
-    'Browse the menu and order directly from the application'
-  ];
+  final List<String> nameSubTitles = List.unmodifiable([
+    'Browse your favorite PDF books in Copia',
+    'You can upload your own PDF now & enjoy reading',
+    'You can Add your favorite Audio along reading books!',
+    'Copia will also give you statistical records about your books and how much you read it'
+  ]);
 
   final int _numPages = 4;
   final PageController _pageController = PageController(initialPage: 0);
@@ -164,11 +165,13 @@ class _IntroScreenState extends State<IntroScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(
-            child: Image(
-              image: AssetImage(nameImage),
-              height: 360.0,
-              width: 360.0,
+          Expanded(
+            child: Center(
+              child: SvgPicture.asset(
+                nameImage,
+                height: 360.0,
+                width: 360.0,
+              ),
             ),
           ),
           SizedBox(

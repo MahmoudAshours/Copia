@@ -15,6 +15,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pdf_text/pdf_text.dart';
 import 'package:provider/provider.dart';
 
 class PDFScreen extends StatefulWidget {
@@ -31,11 +32,14 @@ class _PDFScreenState extends State<PDFScreen> {
   int currentPage;
   double height = 100;
   FlutterSoundPlayer flutterSoundPlayer;
+  PDFDoc doc;
+
   var scr = new GlobalKey();
   bool hideFab = false;
   Axis direction = Axis.horizontal;
   ScrollController _controller;
   FlutterTts flutterTts;
+  String text = "";
   @override
   void initState() {
     initPage();
@@ -282,50 +286,38 @@ class _PDFScreenState extends State<PDFScreen> {
               valueListenable: Hive.box('name').listenable(),
               builder: (_, Box box, child) {
                 PDFDB _pdf = box.getAt(index);
-                if (box.getAt(index).documentPath == null) {
-                  return Column(
-                    children: <Widget>[
-                      Container(
-                        child: Text("You don't have an audio for this PDF"),
-                      ),
-                      Container(
-                        child: IconButton(
-                          icon: Icon(Icons.update),
-                          onPressed: () async {
-                            File _file = await FilePicker.getFile(
-                                type: FileType.custom,
-                                allowedExtensions: ['doc']);
-                            final _modifiedPDF = PDFDB(
-                              bookmarked: _pdf.bookmarked,
-                              insertedDate: _pdf.insertedDate,
-                              lastSeenDate: _pdf.lastSeenDate,
-                              lastVisitedPage: _pdf.lastVisitedPage,
-                              pageNote: _pdf.pageNote,
-                              pdfAsset: _pdf.pdfAsset,
-                              pdfName: _pdf.pdfName,
-                              soundPath: _pdf.soundPath,
-                              thumb: _pdf.thumb,
-                              totalHours: _pdf.totalHours,
-                              documentPath: _file.path ?? null,
-                            );
-                            box.putAt(index, _modifiedPDF);
-                          },
-                        ),
-                      ),
-                    ],
-                  );
-                } else {
-                  return Row(
-                    children: <Widget>[
-                      FileReaderView(
-                        filePath: _pdf.documentPath,
-                        openSuccess: (v) {
-                          print(v);
+
+                return Column(
+                  children: <Widget>[
+                    Container(
+                      child: Text("You don't have an audio for this PDF"),
+                    ),
+                    Container(
+                      child: IconButton(
+                        icon: Icon(Icons.update),
+                        onPressed: () async {
+                          File _file = await FilePicker.getFile(
+                              type: FileType.custom,
+                              allowedExtensions: ['doc', 'docx']);
+                          final _modifiedPDF = PDFDB(
+                            bookmarked: _pdf.bookmarked,
+                            insertedDate: _pdf.insertedDate,
+                            lastSeenDate: _pdf.lastSeenDate,
+                            lastVisitedPage: _pdf.lastVisitedPage,
+                            pageNote: _pdf.pageNote,
+                            pdfAsset: _pdf.pdfAsset,
+                            pdfName: _pdf.pdfName,
+                            soundPath: _pdf.soundPath,
+                            thumb: _pdf.thumb,
+                            totalHours: _pdf.totalHours,
+                            documentPath: _file.path ?? null,
+                          );
+                          box.putAt(index, _modifiedPDF);
                         },
                       ),
-                    ],
-                  );
-                }
+                    ),
+                  ],
+                );
               },
             );
           },
@@ -453,6 +445,7 @@ class _PDFScreenState extends State<PDFScreen> {
       initialPage: Hive.box('name').getAt(index).lastVisitedPage ?? 1,
       viewportFraction: 1.5,
     );
+
     setState(() => currentPage = _pdfController.initialPage);
     flutterSoundPlayer = await FlutterSoundPlayer().initialize();
     _speak();
