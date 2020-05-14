@@ -29,7 +29,7 @@ Copia is an application used to store PDFs as books.
 - [x] Bookmarks Screen
 - [ ] Upload PDF Screen
 - [ ] Code Refactor
-- [ ] App Logo & Splash Screen
+- [x] App Logo & Splash Screen
 
 First : Intro Screen 
 
