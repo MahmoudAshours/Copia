@@ -12,11 +12,19 @@ class BottomAudioPlayer extends StatefulWidget {
   _BottomAudioPlayerState createState() => _BottomAudioPlayerState();
 }
 
-class _BottomAudioPlayerState extends State<BottomAudioPlayer> {
+class _BottomAudioPlayerState extends State<BottomAudioPlayer>
+    with SingleTickerProviderStateMixin {
   FlutterSoundPlayer flutterSoundPlayer;
+  AnimationController _controller;
+  bool _isPlaying = false;
+  Stream<PlayStatus> _playerSubscription;
+  double _currentPosition;
   @override
   void initState() {
     _initializeSoundPlayer();
+    _controller =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    _currentPosition = 0.0;
     super.initState();
   }
 
@@ -28,37 +36,80 @@ class _BottomAudioPlayerState extends State<BottomAudioPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    if (Hive.box('name').getAt(widget.index).soundPath != null)
+    if (Hive.box('name').getAt(widget.index).soundPath != null) {
+      final _soundPath = Hive.box('name').getAt(widget.index).soundPath;
       return AnimatedOpacity(
         opacity: widget.hideFab ? 0.0 : 1.0,
         duration: Duration(milliseconds: 400),
         child: Container(
-          color: Colors.red,
+          color: Colors.black,
           height: 50,
           child: Row(
             children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.play_arrow),
-                onPressed: () {
-                  var audio = Hive.box('name').getAt(widget.index).soundPath;
-                  print(audio);
-                  flutterSoundPlayer.startPlayer(audio);
+              GestureDetector(
+                onTap: () {
+                  setState(
+                    () {
+                      if (_isPlaying) {
+                        _pauseAudio();
+                      } else {
+                        _playAudio(_soundPath);
+                      }
+                    },
+                  );
                 },
+                child: AnimatedIcon(
+                  icon: AnimatedIcons.play_pause,
+                  progress: _controller,
+                  color: Colors.red,
+                ),
               ),
-              IconButton(
-                icon: Icon(Icons.pause),
-                onPressed: () {
-                  flutterSoundPlayer.pausePlayer();
-                },
-              )
+              Container(
+                width: 200,
+                child: Slider(
+                  value: _currentPosition,
+                  inactiveColor: Colors.green,
+                  activeColor: Colors.green,
+                  onChanged: (double time) {
+                    setState(() => _currentPosition = time);
+                    seekToPlayer((time * 100).round());
+                  },
+                  max: 1,
+                  min: 0,
+                ),
+              ),
             ],
           ),
         ),
       );
-    return SizedBox();
+    }
+    return SizedBox.shrink();
   }
 
-  Future _initializeSoundPlayer() async {
-    flutterSoundPlayer = await FlutterSoundPlayer().initialize();
+  Future<void> _initializeSoundPlayer() async =>
+      flutterSoundPlayer = await FlutterSoundPlayer().initialize();
+
+  void seekToPlayer(int milliSecs) async {
+    String result = await flutterSoundPlayer.seekToPlayer(milliSecs);
+    print('seekToPlayer: $result');
+  }
+
+  Future<void> _pauseAudio() async {
+    _isPlaying = false;
+    _controller.reverse();
+    await flutterSoundPlayer.pausePlayer();
+  }
+
+  Future<void> _playAudio(String _soundPath) async {
+    _isPlaying = true;
+    _controller.forward();
+    await flutterSoundPlayer.startPlayer(_soundPath);
+    // _playerSubscription = flutterSoundPlayer.onPlayerStateChanged
+    //   ..listen(
+    //     (PlayStatus e) {
+    //       if (e != null)
+    //         setState(() => _currentPosition = e.currentPosition / e.duration);
+    //     },
+    //   );
   }
 }

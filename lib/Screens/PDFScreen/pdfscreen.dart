@@ -11,6 +11,8 @@ import 'package:copia/Screens/PDFScreen/pdf_screenshot.dart';
 import 'package:copia/Utils/owl_icons.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hive/hive.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:provider/provider.dart';
@@ -68,40 +70,46 @@ class _PDFScreenState extends State<PDFScreen> {
   Widget build(BuildContext context) {
     final _dbProvider = Provider.of<ProviderDB>(context);
     final _pdfProvider = Provider.of<PDFScreenBloc>(context);
-    return Scaffold(
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-      floatingActionButton: _circularFab(_dbProvider, index),
-      bottomNavigationBar: BottomAudioPlayer(index: index, hideFab: hideFab),
-      body: GestureDetector(
-        onTap: () => _hideFloatingActionBar(),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: RepaintBoundary(
-            key: _pdfProvider.scr,
-            child: PdfView(
-                controller: _pdfController,
-                documentLoader: Center(child: CircularProgressIndicator()),
-                pageLoader: Center(child: CircularProgressIndicator()),
-                onDocumentError: (err) => Navigator.of(context).pop(),
-                renderer: (PdfPage page) => page.render(
-                      width: page.width * 2,
-                      height: page.height * 2,
-                      format: PdfPageFormat.JPEG,
-                      backgroundColor: '#FFFFFF',
-                    ),
-                errorBuilder: (e) {
-                  return Container(
-                    child: Text('error'),
-                    width: 200,
-                    height: 200,
-                  );
-                },
-                pageSnapping: true,
-                scrollDirection: direction,
-                physics: BouncingScrollPhysics(),
-                onPageChanged: (int currPage) =>
-                    setState(() => currentPage = currPage)),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+        floatingActionButton: _circularFab(_dbProvider, index),
+        bottomNavigationBar: BottomAudioPlayer(index: index, hideFab: hideFab),
+        backgroundColor: const Color(0xffEEEEED),
+        body: GestureDetector(
+          onTap: () => _hideFloatingActionBar(),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            color: const Color(0xffEEEEED),
+            child: RepaintBoundary(
+              key: _pdfProvider.scr,
+              child: PdfView(
+                  controller: _pdfController,
+                  documentLoader: Center(
+                    child: const SpinKitPouringHourglass(color: Colors.black),
+                  ),
+                  onDocumentError: (err) => Navigator.of(context).pop(),
+                  renderer: (PdfPage page) => page.render(
+                        width: page.width * 2,
+                        height: page.height * 2,
+                        format: PdfPageFormat.PNG,
+                        backgroundColor: '#EEEEED',
+                      ),
+                  errorBuilder: (e) {
+                    return Container(
+                      child: Text('error'),
+                      width: 200,
+                      height: 200,
+                    );
+                  },
+                  pageSnapping: true,
+                  scrollDirection: direction,
+                  physics: BouncingScrollPhysics(),
+                  onPageChanged: (int currPage) =>
+                      setState(() => currentPage = currPage)),
+            ),
           ),
         ),
       ),
@@ -170,7 +178,7 @@ class _PDFScreenState extends State<PDFScreen> {
     _pdfController = PdfController(
       document: PdfDocument.openFile(widget.snapshot.pdfAsset),
       initialPage: Hive.box('name').getAt(index).lastVisitedPage ?? 1,
-      viewportFraction: 1.5,
+      viewportFraction: 1.2,
     );
     setState(() => currentPage = _pdfController.initialPage);
   }

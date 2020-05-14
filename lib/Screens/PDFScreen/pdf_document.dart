@@ -12,14 +12,11 @@ class PdfDocumentViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      child: IconButton(
-        icon: Icon(Icons.group_work),
-        onPressed: () => _pdfDoc(context),
-      ),
-    );
+        child: IconButton(
+            icon: Icon(Icons.group_work), onPressed: () => _pdfDoc(context)));
   }
 
-  void _pdfDoc(context) {
+  void _pdfDoc(BuildContext context) {
     showModalBottomSheet(
       context: context,
       useRootNavigator: true,
@@ -30,12 +27,10 @@ class PdfDocumentViewer extends StatelessWidget {
               valueListenable: Hive.box('name').listenable(),
               builder: (_, Box box, child) {
                 PDFDB _pdf = box.getAt(index);
-
                 return Column(
                   children: <Widget>[
                     Container(
-                      child: Text("You don't have an audio for this PDF"),
-                    ),
+                        child: Text("You don't have a document for this PDF")),
                     Container(
                       child: IconButton(
                         icon: Icon(Icons.update),
