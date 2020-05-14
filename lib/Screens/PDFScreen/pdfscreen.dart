@@ -8,6 +8,7 @@ import 'package:copia/Screens/PDFScreen/pdf_audio.dart';
 import 'package:copia/Screens/PDFScreen/pdf_document.dart';
 import 'package:copia/Screens/PDFScreen/pdf_notes.dart';
 import 'package:copia/Screens/PDFScreen/pdf_screenshot.dart';
+import 'package:copia/Utils/owl_icons.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -124,14 +125,15 @@ class _PDFScreenState extends State<PDFScreen> {
       opacity: hideFab ? 0.0 : 1.0,
       duration: Duration(milliseconds: 400),
       child: FabCircularMenu(
-        fabCloseColor: Color(0xffA64848),
+        fabCloseColor: Colors.black,
         ringColor: Color(0xffA64848),
-        fabColor: Color(0xff3E4243),
+        fabColor: Colors.white,
         fabSize: 40,
         fabElevation: 2.5,
         animationCurve: Curves.easeInOutCirc,
-        animationDuration: Duration(milliseconds:500),
-        fabOpenIcon: Icon(Icons.blur_on , color: Colors.white),
+        fabCloseIcon: Icon(Owl.animal, color: Colors.black),
+        animationDuration: Duration(milliseconds: 500),
+        fabOpenIcon: Icon(Owl.animal, color: Colors.white),
         children: <Widget>[
           BookmarkPdf(index: index, currentPage: currentPage),
           BookmarkList(index: index, pdfController: _pdfController),

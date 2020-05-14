@@ -42,13 +42,13 @@ class _BottomAudioPlayerState extends State<BottomAudioPlayer> {
                 onPressed: () {
                   var audio = Hive.box('name').getAt(widget.index).soundPath;
                   print(audio);
-                  Future<String> result = flutterSoundPlayer.startPlayer(audio);
+                  flutterSoundPlayer.startPlayer(audio);
                 },
               ),
               IconButton(
                 icon: Icon(Icons.pause),
                 onPressed: () {
-                  Future<String> result = flutterSoundPlayer.pausePlayer();
+                  flutterSoundPlayer.pausePlayer();
                 },
               )
             ],
