@@ -21,7 +21,7 @@ Copia is an application used to store PDFs as books.
 
 ## Tasks : 
 - [x] Intro screen
-- [ ] Audio Screen
+- [x] Audio Screen
 - [ ] Document Screen
 - [ ] Doc Text to Speech
 - [ ] Search PDF Screen
@@ -29,9 +29,12 @@ Copia is an application used to store PDFs as books.
 - [ ] Statistics Screen
 - [x] Bookmarks Screen
 - [ ] Upload PDF Screen
-- [ ] Code Refactor
+- [ ] Complete Code Refactor
+- [ ] Ensure Clean code
 - [x] App Logo & Splash Screen
-- [ ] Share PDF or share a screenshot of the current page.
+- [ ] Share PDF 
+- [x] Save Screenshot to gallery
+- [ ] Share a screenshot of the current page
 
 
 
