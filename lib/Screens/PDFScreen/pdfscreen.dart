@@ -8,6 +8,7 @@ import 'package:copia/Screens/PDFScreen/pdf_audio.dart';
 import 'package:copia/Screens/PDFScreen/pdf_document.dart';
 import 'package:copia/Screens/PDFScreen/pdf_notes.dart';
 import 'package:copia/Screens/PDFScreen/pdf_screenshot.dart';
+import 'package:copia/Screens/PDFScreen/share_page.dart';
 import 'package:copia/Utils/owl_icons.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
@@ -113,7 +114,12 @@ class _PDFScreenState extends State<PDFScreen> {
                       onPageChanged: (int currPage) =>
                           setState(() => currentPage = currPage)),
                   SafeArea(
-                      minimum: EdgeInsets.all(10), child: Icon(Owl.animal)),
+                    minimum: EdgeInsets.all(10),
+                    child: Icon(
+                      Owl.animal,
+                      color: Colors.white,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -169,7 +175,8 @@ class _PDFScreenState extends State<PDFScreen> {
           ),
           PdfNotes(),
           PdfScreenshot(),
-          PdfDocumentViewer(index)
+          PdfDocumentViewer(index),
+          SharePage(),
         ],
       ),
     );

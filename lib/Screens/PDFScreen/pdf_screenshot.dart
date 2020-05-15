@@ -33,7 +33,7 @@ class PdfScreenshot extends StatelessWidget {
       ImageGallerySaver.saveImage(pngBytes).then((_) => Scaffold.of(context)
           .showSnackBar(SnackBar(content: Text('Saved to gallery!'))));
     } else {
-      print('NOOOO');
+      await Permission.storage.request();
     }
   }
 }
