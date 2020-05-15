@@ -544,12 +544,12 @@ packages:
     source: hosted
     version: "1.9.0"
   permission_handler:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: permission_handler
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0+hotfix.5"
+    version: "5.0.0+hotfix.6"
   permission_handler_platform_interface:
     dependency: transitive
     description:

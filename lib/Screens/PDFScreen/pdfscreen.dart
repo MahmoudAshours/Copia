@@ -85,30 +85,37 @@ class _PDFScreenState extends State<PDFScreen> {
             color: const Color(0xffEEEEED),
             child: RepaintBoundary(
               key: _pdfProvider.scr,
-              child: PdfView(
-                  controller: _pdfController,
-                  documentLoader: Center(
-                    child: const SpinKitPouringHourglass(color: Colors.black),
-                  ),
-                  onDocumentError: (err) => Navigator.of(context).pop(),
-                  renderer: (PdfPage page) => page.render(
-                        width: page.width * 2,
-                        height: page.height * 2,
-                        format: PdfPageFormat.PNG,
-                        backgroundColor: '#EEEEED',
+              child: Stack(
+                children: <Widget>[
+                  PdfView(
+                      controller: _pdfController,
+                      documentLoader: Center(
+                        child:
+                            const SpinKitPouringHourglass(color: Colors.black),
                       ),
-                  errorBuilder: (e) {
-                    return Container(
-                      child: Text('error'),
-                      width: 200,
-                      height: 200,
-                    );
-                  },
-                  pageSnapping: true,
-                  scrollDirection: direction,
-                  physics: BouncingScrollPhysics(),
-                  onPageChanged: (int currPage) =>
-                      setState(() => currentPage = currPage)),
+                      onDocumentError: (err) => Navigator.of(context).pop(),
+                      renderer: (PdfPage page) => page.render(
+                            width: page.width * 2,
+                            height: page.height * 2,
+                            format: PdfPageFormat.PNG,
+                            backgroundColor: '#EEEEED',
+                          ),
+                      errorBuilder: (e) {
+                        return Container(
+                          child: Text('error'),
+                          width: 200,
+                          height: 200,
+                        );
+                      },
+                      pageSnapping: true,
+                      scrollDirection: direction,
+                      physics: BouncingScrollPhysics(),
+                      onPageChanged: (int currPage) =>
+                          setState(() => currentPage = currPage)),
+                  SafeArea(
+                      minimum: EdgeInsets.all(10), child: Icon(Owl.animal)),
+                ],
+              ),
             ),
           ),
         ),
