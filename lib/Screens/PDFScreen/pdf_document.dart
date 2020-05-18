@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:copia/Hive/database.dart';
 import 'package:file_picker/file_picker.dart';
@@ -8,7 +9,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class PdfDocumentViewer extends StatelessWidget {
   final int index;
+
   PdfDocumentViewer(this.index);
+
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
@@ -27,36 +30,48 @@ class PdfDocumentViewer extends StatelessWidget {
               valueListenable: Hive.box('name').listenable(),
               builder: (_, Box box, child) {
                 PDFDB _pdf = box.getAt(index);
-                return Column(
-                  children: <Widget>[
-                    Container(
-                        child: Text("You don't have a document for this PDF")),
-                    Container(
-                      child: IconButton(
-                        icon: Icon(Icons.update),
-                        onPressed: () async {
-                          File _file = await FilePicker.getFile(
-                              type: FileType.custom,
-                              allowedExtensions: ['doc', 'docx']);
-                          final _modifiedPDF = PDFDB(
-                            bookmarked: _pdf.bookmarked,
-                            insertedDate: _pdf.insertedDate,
-                            lastSeenDate: _pdf.lastSeenDate,
-                            lastVisitedPage: _pdf.lastVisitedPage,
-                            pageNote: _pdf.pageNote,
-                            pdfAsset: _pdf.pdfAsset,
-                            pdfName: _pdf.pdfName,
-                            soundPath: _pdf.soundPath,
-                            thumb: _pdf.thumb,
-                            totalHours: _pdf.totalHours,
-                            documentPath: _file.path ?? null,
-                          );
-                          box.putAt(index, _modifiedPDF);
-                        },
+                if (_pdf.documentPath == null) {
+                  return Column(
+                    children: <Widget>[
+                      Container(
+                          child:
+                              Text("You don't have a document for this PDF")),
+                      Container(
+                        child: IconButton(
+                          icon: Icon(Icons.update),
+                          onPressed: () async {
+                            File _file = await FilePicker.getFile(
+                                type: FileType.custom,
+                                allowedExtensions: ['doc', 'docx']);
+                            final _modifiedPDF = PDFDB(
+                              bookmarked: _pdf.bookmarked,
+                              insertedDate: _pdf.insertedDate,
+                              lastSeenDate: _pdf.lastSeenDate,
+                              lastVisitedPage: _pdf.lastVisitedPage,
+                              pageNote: _pdf.pageNote,
+                              pdfAsset: _pdf.pdfAsset,
+                              pdfName: _pdf.pdfName,
+                              soundPath: _pdf.soundPath,
+                              thumb: _pdf.thumb,
+                              totalHours: _pdf.totalHours,
+                              documentPath: _file.path ?? null,
+                            );
+                            box.putAt(index, _modifiedPDF);
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return SingleChildScrollView(
+                    child: FutureBuilder(
+                      future: getContent(_pdf.documentPath),
+                      builder:(_,snapshot)=> Container(
+                        child: SelectableText('${snapshot.data}'),
                       ),
                     ),
-                  ],
-                );
+                  );
+                }
               },
             );
           },
@@ -65,18 +80,30 @@ class PdfDocumentViewer extends StatelessWidget {
     );
   }
 
-  // Future _speak() async {
-  //   FlutterTts flutterTts = FlutterTts();
-  //   print(await flutterTts.getVoices);
-  //   print(await flutterTts.getLanguages);
+  Future getContent(path) async {
+    try {
+      final file = File(path);
+      // Read the file.
+      Uint8List contents = await file.readAsBytes();
+      String s = new String.fromCharCodes(contents);
+      return s;
+    } catch (e) {
+      print(e);
+      return 0;
+    }
+  }
+// Future _speak() async {
+//   FlutterTts flutterTts = FlutterTts();
+//   print(await flutterTts.getVoices);
+//   print(await flutterTts.getLanguages);
 
-  //   flutterTts
-  //     ..setVoice("en-GB-language")
-  //     ..setLanguage('ja-JP')
-  //     ..setPitch(1)
-  //     ..setSpeechRate(1);
+//   flutterTts
+//     ..setVoice("en-GB-language")
+//     ..setLanguage('ja-JP')
+//     ..setPitch(1)
+//     ..setSpeechRate(1);
 
-  //   await flutterTts.speak(
-  //       "新型コロナウイルス対策で、与野党の一部議員が提案する国会審議のオンライン化の検討が進まない。欧州の議会では、一部でウェブ会議や電子投票の導入が実現。国内でも、企業など社会の様々な場でオンライン化が進むのに、なぜ国会の腰は重いのか");
-  // }
+//   await flutterTts.speak(
+//       "新型コロナウイルス対策で、与野党の一部議員が提案する国会審議のオンライン化の検討が進まない。欧州の議会では、一部でウェブ会議や電子投票の導入が実現。国内でも、企業など社会の様々な場でオンライン化が進むのに、なぜ国会の腰は重いのか");
+// }
 }
