@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:copia/Hive/database.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -66,8 +67,16 @@ class PdfDocumentViewer extends StatelessWidget {
                   return SingleChildScrollView(
                     child: FutureBuilder(
                       future: getContent(_pdf.documentPath),
-                      builder:(_,snapshot)=> Container(
-                        child: SelectableText('${snapshot.data}'),
+                      builder: (_, snapshot) => Column(
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () => _speak(snapshot.data),
+                            child: Icon(Icons.ac_unit),
+                          ),
+                          Container(
+                            child: SelectableText('${snapshot.data}'),
+                          ),
+                        ],
                       ),
                     ),
                   );
@@ -92,18 +101,16 @@ class PdfDocumentViewer extends StatelessWidget {
       return 0;
     }
   }
-// Future _speak() async {
-//   FlutterTts flutterTts = FlutterTts();
-//   print(await flutterTts.getVoices);
-//   print(await flutterTts.getLanguages);
 
-//   flutterTts
-//     ..setVoice("en-GB-language")
-//     ..setLanguage('ja-JP')
-//     ..setPitch(1)
-//     ..setSpeechRate(1);
+  Future _speak(text) async {
+    FlutterTts flutterTts = FlutterTts();
+    print(await flutterTts.getVoices);
+    print(await flutterTts.getLanguages);
 
-//   await flutterTts.speak(
-//       "新型コロナウイルス対策で、与野党の一部議員が提案する国会審議のオンライン化の検討が進まない。欧州の議会では、一部でウェブ会議や電子投票の導入が実現。国内でも、企業など社会の様々な場でオンライン化が進むのに、なぜ国会の腰は重いのか");
-// }
+    flutterTts
+      ..setPitch(1)
+      ..setSpeechRate(1);
+
+    await flutterTts.speak(text);
+  }
 }

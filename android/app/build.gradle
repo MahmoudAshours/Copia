@@ -41,6 +41,7 @@ android {
         applicationId "com.example.copia"
         minSdkVersion 21
         targetSdkVersion 29
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

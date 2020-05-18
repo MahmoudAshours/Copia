@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:copia/Screens/PDFScreen/pdfscreen.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_share/flutter_share.dart';
 
 class AllPDFs extends StatelessWidget {
   @override
@@ -72,12 +74,27 @@ class AllPDFs extends StatelessWidget {
                         fontSize: 20,
                         color: Colors.grey),
                   ),
-                  trailing: IconButton(
-                    icon: Icon(
-                      Icons.delete,
-                      color: Colors.red,
+                  trailing: Container(
+                    width: 100,
+                    child: Row(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(
+                            Icons.share,
+                            color: Colors.red,
+                          ),
+                          onPressed: () => _sharePdf(snapshot, index),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                          onPressed: () =>
+                              _deleteDialog(context, snapshot, index),
+                        ),
+                      ],
                     ),
-                    onPressed: () => _deleteDialog(context, snapshot, index),
                   ),
                 ),
               );
@@ -86,6 +103,12 @@ class AllPDFs extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void _sharePdf(Box snapshot, index) async {
+    final _pdf = snapshot.getAt(index);
+    final _bytes = await File(_pdf.pdfAsset).readAsBytes();
+    Share.file('Share PDF', "simplepdf.pdf", _bytes, 'image/jpg');
   }
 
   void _deleteDialog(BuildContext context, Box snapshot, index) {
