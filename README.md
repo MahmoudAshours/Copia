@@ -64,3 +64,4 @@ Fourth : PDF Screen
 - The user could add an audio to every page. 
 - A marker to mark certain parts in the page.
 - Changes in UI 
+- Adding document for every page
