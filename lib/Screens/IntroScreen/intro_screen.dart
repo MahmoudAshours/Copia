@@ -13,10 +13,10 @@ class IntroScreen extends StatefulWidget {
 
 class _IntroScreenState extends State<IntroScreen> {
   List<String> nameImages = [
-    'assets/images/introImages/intro_books.svg',
-    'assets/images/introImages/reading.svg',
-    'assets/images/introImages/reading_time.svg',
-    'assets/images/introImages/statistics.svg'
+    'assets/images/IntroImages/intro_books.svg',
+    'assets/images/IntroImages/reading.svg',
+    'assets/images/IntroImages/reading_time.svg',
+    'assets/images/IntroImages/statistics.svg'
   ];
 
   List<String> nameTitles = [
