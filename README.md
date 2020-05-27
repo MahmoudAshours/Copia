@@ -58,12 +58,13 @@ The user enters the application , then will find 4 screens known as ["On-boardin
 When the user opens the home screen page , A list of 5 books appears in the [*Your books* part](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/HomeScreen/home.dart#L18).
 
 - The user could do 3 commands : 
-  -- Add new PDF
   ![copiaAddPdf](https://user-images.githubusercontent.com/50237142/82972238-d560de80-9fd4-11ea-8af4-4449f3875303.png)
-- The user adds a **PDF title** , the pdf source & PDF thumbnail representing the PDF. 
+
+  - Add new PDF
+  - The user adds a **PDF title** , the pdf source & PDF thumbnail representing the PDF. 
   
-  -- View All PDFs
-  -- View the last opened PDF
+  - View All PDFs
+  - View the last opened PDF
   
 ### Search Screen 
 
@@ -74,7 +75,21 @@ When the user opens the home screen page , A list of 5 books appears in the [*Yo
 ### PDF Screen 
 <img width="358" alt="Screen Shot 2020-05-14 at 8 24 29 AM" src="https://user-images.githubusercontent.com/50237142/81900092-7ce51680-95bc-11ea-9487-ab17311be7a4.png">
 
+- The [Floating action button (owl icon)](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/PDFScreen/pdfscreen.dart#L144) (bottom-right) is the main PDF icon manager , it controls the PDF screen features
+- It expands and minimizes once clicked on.
+- It dissapears once clicked on the PDF itself. (to give the reader comfort time while reading) 
+
 ![copiaPdfMenu](https://user-images.githubusercontent.com/50237142/82972390-38eb0c00-9fd5-11ea-9cb6-ff3176d45ae4.png)
+
+### Owl Fab components : 
+#### Bookmarks (Heart icon) 
+- The user can [bookmark](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/PDFScreen/pdfscreen.dart#L159) a certain page in the PDF. It has 2 expected behaviours : 
+- When clicked at first (assuming that the page isn't bookmarked) , the heart turns to red , and the page number is updated in the database. 
+- When clicked (assuming that the page is already bookmarked) , the heart returns to the original color , and the page number is removed from the database.
+
+#### Bookmarks List 
+- The [bookmarks list](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/PDFScreen/pdfscreen.dart#L160) contains a list with the bookmarked pages in the PDF , if there's no bookmarked page , then it displays nothing rather than "You don't have any bookmarked pages! ". 
+if there's items , then it displays the list of items. on clicking on *each item* the PDF view animates forward to the selected bookmarked page. 
 
 #### Upcoming features : 
 - Connect it to cloud database. 
