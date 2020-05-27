@@ -22,8 +22,8 @@ Copia is an application used to store PDFs as books.
 ## Tasks : 
 - [x] Intro screen
 - [x] Audio Screen
-- [ ] Document Screen
-- [ ] Doc Text to Speech
+- [x] Document Screen
+- [ ] Doc Text to Speech *Postponed to next update*
 - [ ] Search PDF Screen
 - [ ] Add notes screen
 - [ ] Statistics Screen
@@ -34,6 +34,7 @@ Copia is an application used to store PDFs as books.
 - [x] App Logo & Splash Screen
 - [ ] Share PDF 
 - [x] Save Screenshot to gallery
+- [ ] Handling all errors , exceptions with dialogs. (For User experience)
 - [x] Share a screenshot of the current page
 
 
@@ -51,17 +52,35 @@ The user enters the application , then will find 4 screens known as ["On-boardin
 - The next screen is the controller screen which controls the home screen.
 
 ### Controller Screen 
+#### Home screen
+![copiaHomeScreen](https://user-images.githubusercontent.com/50237142/82972025-59ff2d00-9fd4-11ea-9ced-a6ddbc771f49.png)
 
-Third : Search Screen 
+When the user opens the home screen page , A list of 5 books appears in the [*Your books* part](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/HomeScreen/home.dart#L18).
 
-Fourth : PDF Screen 
+- The user could do 3 commands : 
+  -- Add new PDF
+  ![copiaAddPdf](https://user-images.githubusercontent.com/50237142/82972238-d560de80-9fd4-11ea-8af4-4449f3875303.png)
+- The user adds a **PDF title** , the pdf source & PDF thumbnail representing the PDF. 
+  
+  -- View All PDFs
+  -- View the last opened PDF
+  
+### Search Screen 
 
+![copiaSearchScreen](https://user-images.githubusercontent.com/50237142/82972306-07724080-9fd5-11ea-8dd6-bf8b36c740b5.png)
+
+- When the user views all PDFs listed in the local storage , they can search for a specific pdfTitle , if title isn't found then searches within the filename basename (path).
+
+### PDF Screen 
 <img width="358" alt="Screen Shot 2020-05-14 at 8 24 29 AM" src="https://user-images.githubusercontent.com/50237142/81900092-7ce51680-95bc-11ea-9487-ab17311be7a4.png">
 
+![copiaPdfMenu](https://user-images.githubusercontent.com/50237142/82972390-38eb0c00-9fd5-11ea-9cb6-ff3176d45ae4.png)
 
 #### Upcoming features : 
 - Connect it to cloud database. 
 - The user could add an audio to every page. 
 - A marker to mark certain parts in the page.
-- Changes in UI 
-- Adding document for every page
+- Changes in UI.
+- Adding document for every page.
+- Document text to speech.
+- Adding new brochures , Posters and fixing bugs.
