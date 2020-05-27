@@ -173,7 +173,7 @@ class _PDFScreenState extends State<PDFScreen> {
               );
             },
           ),
-          PdfNotes(),
+          PdfNotes(widget.index,currentPage),
           PdfScreenshot(),
           PdfDocumentViewer(index),
           SharePage(),

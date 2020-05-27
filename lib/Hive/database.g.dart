@@ -25,7 +25,7 @@ class PDFDBAdapter extends TypeAdapter<PDFDB> {
       lastSeenDate: fields[5] as DateTime,
       bookmarked: (fields[6] as List)?.cast<int>(),
       lastVisitedPage: fields[7] as int,
-      pageNote: fields[8] as String,
+      pageNote: (fields[8] as Map)?.cast<int, String>(),
       soundPath: fields[9] as String,
       documentPath: fields[10] as String,
     );

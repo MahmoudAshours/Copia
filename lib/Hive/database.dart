@@ -21,7 +21,7 @@ class PDFDB {
   @HiveField(7)
   int lastVisitedPage;
   @HiveField(8)
-  String pageNote;
+  Map<int,String> pageNote = Map<int,String>();
   @HiveField(9)
   String soundPath;
   @HiveField(10)
