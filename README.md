@@ -18,6 +18,12 @@ Copia is an application used to store PDFs as books.
 - Also , gives you statistics of how many hours have you read a certain PDF , when was the last time you opened it and when did you create the file.
 - No internet access needed , all stored locally.
 
+## Project technical structures : 
+- Uses **Hive** as local storage database.
+- Uses **flutter_sound** as the flutter audio player.
+- Uses **Provider** as state management solution.
+- Uses **SharedPerefences** as key-value holder. (Can use Hive) 
+- Uses **GoogleFonts** for Font UI perefrences. 
 
 ## Tasks : 
 - [x] Intro screen
@@ -25,7 +31,7 @@ Copia is an application used to store PDFs as books.
 - [x] Document Screen
 - [ ] Doc Text to Speech *Postponed to next update*
 - [ ] Search PDF Screen
-- [ ] Add notes screen
+- [x] Add notes screen
 - [ ] Statistics Screen
 - [x] Bookmarks Screen
 - [ ] Upload PDF Screen
@@ -36,6 +42,7 @@ Copia is an application used to store PDFs as books.
 - [x] Save Screenshot to gallery
 - [ ] Handling all errors , exceptions with dialogs. (For User experience)
 - [x] Share a screenshot of the current page
+- [ ] Complete UI update. 
 
 
 
@@ -61,8 +68,7 @@ When the user opens the home screen page , A list of 5 books appears in the [*Yo
   ![copiaAddPdf](https://user-images.githubusercontent.com/50237142/82972238-d560de80-9fd4-11ea-8af4-4449f3875303.png)
 
   - Add new PDF
-  - The user adds a **PDF title** , the pdf source & PDF thumbnail representing the PDF. 
-  
+  - The user adds a **PDF title** , the pdf source & PDF thumbnail representing the PDF.   
   - View All PDFs
   - View the last opened PDF
   
@@ -91,6 +97,39 @@ When the user opens the home screen page , A list of 5 books appears in the [*Yo
 - The [bookmarks list](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/PDFScreen/pdfscreen.dart#L160) contains a list with the bookmarked pages in the PDF , if there's no bookmarked page , then it displays nothing rather than "You don't have any bookmarked pages! ". 
 if there's items , then it displays the list of items. on clicking on *each item* the PDF view animates forward to the selected bookmarked page. 
 
+#### PDF audio
+- The user can choose any [audio](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/PDFScreen/pdfscreen.dart#L161) they want to play along the PDF while reading. 
+- At first the audio is null (assuming that the user didn't add any audio yet) , then when the user adds a new audio , the audio bar appears in the bottom navigation bar of PDFScreen.
+- The user can **Play** ,**Pause** & **Seek** to a certain duration through the audio.
+
+##### Use case : 
+- Say that there's a PDF about technological topic i.e. *"Scrum vs Kanban"* , The user would like to add an audio of technical debate between Kanban and Scrum while reading the PDF. 
+
+#### Orientation 
+- The user can decide whether the PDF [orientation](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/PDFScreen/pdfscreen.dart#L162) is vertical or horizontal.
+
+#### Add notes 
+- The user can add a [note](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/PDFScreen/pdfscreen.dart#L176) per page (similar to bookmarks).
+##### The note structure is as follows : 
+- The notes are *Map<int,String>* where the *int* is the currentPage number (The page where the note is written into) , and the String is the note content. 
+- If the notes are null (assuming that this is the first time for the user to open application & didn't add yet any notes) then a TextField appears to add a new note to the page.
+
+#### PdfScreenshot
+- The user can [save the current page](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/PDFScreen/pdfscreen.dart#L177) to gallery.
+- All pictures saved are under a folder named "Copia".
+
+#### Pdf Document
+- Sometimes , Users want an [alternative document](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/PDFScreen/pdfscreen.dart#L178) to the PDF file , or a supporting document file.
+- Each Pdf can add one document only attached to it. 
+- The user can add a certain document of **doc,docx** extenstion. 
+- The user then can open the document using a helper application such as *Word , google docs or any other application*.
+- The user can replace , delete or open the document wherever they want.
+
+#### Share PDF page 
+- Similar to PdfScreenshot , The user can [share the pdf page](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/PDFScreen/pdfscreen.dart#L179) with other users through the social media apps or email or any other media. 
+- The outputed picture is a screenshot of the current Page with copia logo appearing top-left the screen. 
+- A companion message is delivered with the outputted picture.
+
 #### Upcoming features : 
 - Connect it to cloud database. 
 - The user could add an audio to every page. 
@@ -98,4 +137,7 @@ if there's items , then it displays the list of items. on clicking on *each item
 - Changes in UI.
 - Adding document for every page.
 - Document text to speech.
-- Adding new brochures , Posters and fixing bugs.
+
+#### Continuous development Strategy : 
+- Adding new brochures , Posters & fixing bugs.
+- Running an online survey to see what to add next to the application.
