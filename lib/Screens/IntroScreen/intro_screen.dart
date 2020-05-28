@@ -49,53 +49,55 @@ class _IntroScreenState extends State<IntroScreen> {
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
-        child: Container(
-          decoration: BoxDecoration(color: Colors.white),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height: 35,
-                      width: 35,
-                      alignment: Alignment.centerRight,
-                      margin: EdgeInsets.only(left: 20),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFFBD5D9),
-                        borderRadius: BorderRadius.circular(15),
+        child: SingleChildScrollView(
+          child: Container(
+            decoration: BoxDecoration(color: Colors.white),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 40.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 35,
+                        width: 35,
+                        alignment: Alignment.centerRight,
+                        margin: EdgeInsets.only(left: 20),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFFBD5D9),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Center(child: Icon(Icons.book)),
                       ),
-                      child: Center(child: Icon(Icons.book)),
-                    ),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: FlatButton(
-                        onPressed: () => checkIntro().then((_) =>
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => ControllerScreen()))),
-                        child: Text(
-                          'Skip',
-                          style: TextStyle(color: Colors.black, fontSize: 20),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: FlatButton(
+                          onPressed: () => checkIntro().then((_) =>
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (_) => ControllerScreen()))),
+                          child: Text(
+                            'Skip',
+                            style: TextStyle(color: Colors.black, fontSize: 20),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: 550.0,
-                  child: PageView(
-                    physics: ClampingScrollPhysics(),
-                    controller: _pageController,
-                    onPageChanged: (int page) =>
-                        setState(() => _currentPage = page),
-                    children: _buildListContentPage(),
+                    ],
                   ),
-                ),
-                _customProgress(),
-              ],
+                  Container(
+                    height: 550.0,
+                    child: PageView(
+                      physics: ClampingScrollPhysics(),
+                      controller: _pageController,
+                      onPageChanged: (int page) =>
+                          setState(() => _currentPage = page),
+                      children: _buildListContentPage(),
+                    ),
+                  ),
+                  _customProgress(),
+                ],
+              ),
             ),
           ),
         ),
