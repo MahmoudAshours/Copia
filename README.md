@@ -43,6 +43,7 @@ Copia is an application used to store PDFs as books.
 - [ ] Handling all errors , exceptions with dialogs. (For User experience)
 - [x] Share a screenshot of the current page
 - [ ] Complete UI update. 
+- [ ] Complete API documentation.
 
 
 
