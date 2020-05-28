@@ -26,25 +26,24 @@ Copia is an application used to store PDFs as books.
 - Uses **GoogleFonts** for Font UI perefrences. 
 
 ## Tasks : 
+- [x] App Logo & Splash Screen
 - [x] Intro screen
 - [x] Audio Screen
 - [x] Document Screen
-- [ ] Doc Text to Speech *Postponed to next update*
-- [ ] Search PDF Screen
+- [x] Save Screenshot to gallery.
+- [x] Share a screenshot of the current page
+- [x] Search PDF Screen
 - [x] Add notes screen
-- [ ] Statistics Screen
 - [x] Bookmarks Screen
+- [ ] Statistics Screen
 - [ ] Upload PDF Screen
 - [ ] Complete Code Refactor
 - [ ] Ensure Clean code
-- [x] App Logo & Splash Screen
 - [ ] Share PDF 
-- [x] Save Screenshot to gallery
 - [ ] Handling all errors , exceptions with dialogs. (For User experience)
-- [x] Share a screenshot of the current page
 - [ ] Complete UI update. 
 - [ ] Complete API documentation.
-
+- [xx] Doc Text to Speech *Postponed to next update*
 
 
 ### Intro Screen 
@@ -65,19 +64,13 @@ The user enters the application , then will find 4 screens known as ["On-boardin
 
 When the user opens the home screen page , A list of 5 books appears in the [*Your books* part](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/HomeScreen/home.dart#L18).
 
-- The user could do 3 commands : 
   ![copiaAddPdf](https://user-images.githubusercontent.com/50237142/82972238-d560de80-9fd4-11ea-8af4-4449f3875303.png)
-
+- The user could do 3 commands : 
   - Add new PDF
   - The user adds a **PDF title** , the pdf source & PDF thumbnail representing the PDF.   
   - View All PDFs
   - View the last opened PDF
   
-### Search Screen 
-
-![copiaSearchScreen](https://user-images.githubusercontent.com/50237142/82972306-07724080-9fd5-11ea-8dd6-bf8b36c740b5.png)
-
-- When the user views all PDFs listed in the local storage , they can search for a specific pdfTitle , if title isn't found then searches within the filename basename (path).
 
 ### PDF Screen 
 <img width="358" alt="Screen Shot 2020-05-14 at 8 24 29 AM" src="https://user-images.githubusercontent.com/50237142/81900092-7ce51680-95bc-11ea-9487-ab17311be7a4.png">
@@ -131,13 +124,30 @@ if there's items , then it displays the list of items. on clicking on *each item
 - The outputed picture is a screenshot of the current Page with copia logo appearing top-left the screen. 
 - A companion message is delivered with the outputted picture.
 
-#### Upcoming features : 
+## Search PDF page 
+
+![copiaSearchScreen](https://user-images.githubusercontent.com/50237142/83204098-43c7ad00-a14b-11ea-8442-32eef7c13e2f.png)
+
+- The user can view all pdfs they entered in the Copia application.
+- The user has 3 options in this page : 
+  - *Search*
+  - *Delete PDF*
+  - *Share PDF*
+  
+ ![searchscreen](https://user-images.githubusercontent.com/50237142/83204100-44f8da00-a14b-11ea-9be1-736803657790.png)
+
+- The user can [search](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/AllPdfs/all_pdfs.dart#L19) whatever terminlogy they want , they can search for a specific pdfTitle , if title isn't found then searches within the filename basename (path).
+
+- Also the user can delete the PDF permenantly or share it with other users on social media.
+
+## Upcoming features : 
 - Connect it to cloud database. 
 - The user could add an audio to every page. 
 - A marker to mark certain parts in the page.
 - Changes in UI.
 - Adding document for every page.
 - Document text to speech.
+- Implementing night mode.
 
 #### Continuous development Strategy : 
 - Adding new brochures , Posters & fixing bugs.
