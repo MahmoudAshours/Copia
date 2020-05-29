@@ -141,13 +141,15 @@ if there's items , then it displays the list of items. on clicking on *each item
 - Also the user can delete the PDF permenantly or share it with other users on social media.
 
 ## Upcoming features : 
-- Connect it to cloud database. 
-- The user could add an audio to every page. 
-- A marker to mark certain parts in the page.
-- Changes in UI.
-- Adding document for every page.
-- Document text to speech.
-- Implementing night mode.
+- [ ] Connect it to cloud database. 
+- [ ] The user could add an audio to every page. 
+- [ ] A marker to mark certain parts in the page.
+- [ ] Changes in UI.
+- [ ] Adding document for every page.
+- [ ] Document text to speech.
+- [ ] Adding reading streaks (for concecutive days) with trophies.
+- [ ] Adding a detailed daily statistics about time and pages read.
+- [ ] Implementing night mode.
 
 #### Continuous development Strategy : 
 - Adding new brochures , Posters & fixing bugs.
