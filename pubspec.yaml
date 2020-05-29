@@ -34,6 +34,9 @@ dependencies:
   esys_flutter_share: ^1.0.2
   flutter_share: ^1.0.2+1
   open_file: ^3.0.1
+  fl_chart: ^0.9.4
+
+
 
 
 flutter_icons:

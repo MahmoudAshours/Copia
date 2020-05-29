@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path/path.dart';
 
 class AllPDFs extends StatelessWidget {
   @override
@@ -283,7 +284,7 @@ class PDFsearchDelegate extends SearchDelegate {
           itemBuilder: (_, int index) {
             final PDFDB _pdfSnapshot = snapshot.getAt(index);
             if (_pdfSnapshot.pdfName.contains(query) ||
-                _pdfSnapshot.pdfAsset.contains(query))
+                basename(_pdfSnapshot.pdfAsset).contains(query))
               return Padding(
                 padding: EdgeInsets.only(top: 20),
                 child: ListTile(
