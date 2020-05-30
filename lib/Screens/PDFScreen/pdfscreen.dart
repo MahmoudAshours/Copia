@@ -32,7 +32,7 @@ class _PDFScreenState extends State<PDFScreen> {
   int currentPage;
   bool hideFab = false;
   Axis direction = Axis.horizontal;
-
+  final DateTime _initDateTime = DateTime.now();
   @override
   void initState() {
     initPage();
@@ -48,6 +48,8 @@ class _PDFScreenState extends State<PDFScreen> {
   @override
   void dispose() {
     final PDFDB _lastPdf = Hive.box('name').getAt(index);
+    var _timeSpentReading = DateTime.now().difference(_initDateTime).inSeconds;
+    print('Operation ${(_lastPdf.totalHours ?? 0) + _timeSpentReading}');
     final _pdf = PDFDB(
       bookmarked: _lastPdf.bookmarked,
       insertedDate: _lastPdf.insertedDate,
@@ -59,8 +61,10 @@ class _PDFScreenState extends State<PDFScreen> {
       documentPath: _lastPdf.documentPath,
       pageNote: _lastPdf.pageNote,
       soundPath: _lastPdf.soundPath,
-      totalHours: _lastPdf.totalHours,
+      totalHours: (_lastPdf.totalHours ?? 0) + _timeSpentReading,
     );
+    print(_timeSpentReading);
+    print(_pdf.totalHours);
     Hive.box('name')
         .putAt(index, _pdf)
         .then((value) => _pdfController.dispose());
@@ -129,7 +133,7 @@ class _PDFScreenState extends State<PDFScreen> {
     );
   }
 
-  _hideFloatingActionBar() {
+  void _hideFloatingActionBar() {
     if (hideFab) {
       setState(() {
         hideFab = false;
@@ -173,7 +177,7 @@ class _PDFScreenState extends State<PDFScreen> {
               );
             },
           ),
-          PdfNotes(widget.index,currentPage),
+          PdfNotes(widget.index, currentPage),
           PdfScreenshot(),
           PdfDocumentViewer(index),
           SharePage(),
