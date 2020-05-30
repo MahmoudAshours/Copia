@@ -36,7 +36,7 @@ Copia is an application used to store PDFs as books.
 - [x] Add notes screen
 - [x] Bookmarks Screen
 - [x] Statistics Screen
-- [ ] Share PDF file  
+- [x] Share PDF file  
 - [ ] Complete UI refactor.
 - [ ] Handling all errors & exceptions with dialogs. (For User experience)
 - [ ] Complete Code Refactor
@@ -169,7 +169,7 @@ Which shows :
 Also , all above statistics are supported by different kind of charts .
 
 ## Upcoming features : 
-- [ ] Connect it to cloud database. 
+- [ ] Connect Copia to cloud database. 
 - [ ] The user could add an audio to every page. 
 - [ ] A marker to mark certain parts in the page.
 - [ ] Changes in UI.
@@ -178,7 +178,11 @@ Also , all above statistics are supported by different kind of charts .
 - [ ] The user could share their stats on social media platforms.
 - [ ] Adding reading streaks (for concecutive days) with trophies.
 - [ ] Adding a detailed daily statistics about time and pages read.
+- [ ] Make Copia app an open PDF file suggestion.
 - [ ] Implementing night mode.
+
+## Far upcoming features :
+- [ ] Deploy IOS version.
 
 #### Continuous development Strategy : 
 - Adding new brochures , Posters & fixing bugs.
