@@ -141,11 +141,13 @@ if there's items , then it displays the list of items. on clicking on *each item
 
 ## Statistics Screen 
 
+![statsScreen](https://user-images.githubusercontent.com/50237142/83333619-bc408200-a2a1-11ea-8cfe-e33ebf21124e.png)
+
 - The user could see their reading statistics through the Statistics screen. 
 
 ### The Statistics screen structure is as follows : 
 
-There are two types of statistics : 
+There are two types of [statistics](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/StatsScreen/stats_screen.dart#L7) : 
 
 **Statistics for every PDF. (Specific Statistics)**
 
@@ -173,6 +175,7 @@ Also , all above statistics are supported by different kind of charts .
 - [ ] Changes in UI.
 - [ ] Adding document for every page.
 - [ ] Document text to speech.
+- [ ] The user could share their stats on social media platforms.
 - [ ] Adding reading streaks (for concecutive days) with trophies.
 - [ ] Adding a detailed daily statistics about time and pages read.
 - [ ] Implementing night mode.
