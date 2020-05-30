@@ -35,13 +35,12 @@ Copia is an application used to store PDFs as books.
 - [x] Search PDF Screen
 - [x] Add notes screen
 - [x] Bookmarks Screen
-- [ ] Statistics Screen
-- [ ] Upload PDF Screen
+- [x] Statistics Screen
+- [ ] Share PDF file  
+- [ ] Complete UI refactor.
+- [ ] Handling all errors & exceptions with dialogs. (For User experience)
 - [ ] Complete Code Refactor
 - [ ] Ensure Clean code
-- [ ] Share PDF 
-- [ ] Handling all errors , exceptions with dialogs. (For User experience)
-- [ ] Complete UI update. 
 - [ ] Complete API documentation.
 - [xx] Doc Text to Speech *Postponed to next update*
 
@@ -139,6 +138,33 @@ if there's items , then it displays the list of items. on clicking on *each item
 - The user can [search](https://github.com/MeitanteiAshour/Copia/blob/master/lib/Screens/AllPdfs/all_pdfs.dart#L19) whatever terminlogy they want , they can search for a specific pdfTitle , if title isn't found then searches within the filename basename (path).
 
 - Also the user can delete the PDF permenantly or share it with other users on social media.
+
+## Statistics Screen 
+
+- The user could see their reading statistics through the Statistics screen. 
+
+### The Statistics screen structure is as follows : 
+
+There are two types of statistics : 
+
+**Statistics for every PDF. (Specific Statistics)**
+
+Which shows :
+• Last PDF opened.
+• Date of creation of every PDF.
+• How much hours , minutes did the reader read a specific PDF
+• Most opened PDF.
+• Total bookmarks of the PDF.
+
+**Statistics for all PDFs (General Statistics)**
+
+• Number of PDfs the user has.
+• Total hours spent on the application.
+• Total audio files on the application. 
+• Total document files on the application.
+• Total pages bookmarked in the application. 
+
+Also , all above statistics are supported by different kind of charts .
 
 ## Upcoming features : 
 - [ ] Connect it to cloud database. 
