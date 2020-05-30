@@ -117,7 +117,8 @@ class AllPDFs extends StatelessWidget {
   void _sharePdf(Box snapshot, index) async {
     final _pdf = snapshot.getAt(index);
     final _bytes = await File(_pdf.pdfAsset).readAsBytes();
-    Share.file('Share PDF', "simplepdf.pdf", _bytes, 'image/jpg');
+    Share.file(
+        'Share PDF', "${basename(_pdf.pdfAsset)}", _bytes, 'application/pdf');
   }
 
   void _deleteDialog(BuildContext context, Box snapshot, index) {
