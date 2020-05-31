@@ -96,8 +96,7 @@ class LastOpened extends StatelessWidget {
                               child: Container(
                                 child: Text(
                                   '${_pdf.pdfName}',
-                                  style: TextStyle(
-                                      fontFamily: 'cormorant',
+                                  style: GoogleFonts.cormorant(
                                       fontSize: 25,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.white),

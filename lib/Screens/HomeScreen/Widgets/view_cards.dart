@@ -25,10 +25,8 @@ class ViewCards extends StatelessWidget {
                 children: [
                   Text(
                     'View all',
-                    style: TextStyle(
-                        fontFamily: 'cormorant',
-                        color: Color(0xffF3BB84),
-                        fontWeight: FontWeight.w700),
+                    style: GoogleFonts.cormorant(
+                        color: Color(0xffF3BB84), fontWeight: FontWeight.w700),
                   ),
                   Icon(
                     Icons.arrow_forward_ios,

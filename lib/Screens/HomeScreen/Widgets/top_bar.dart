@@ -1,3 +1,4 @@
+import 'package:copia/Screens/StatsScreen/stats_screen.dart';
 import 'package:copia/Screens/UploadPDF/uploadpdf.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +17,12 @@ class TopBar extends StatelessWidget {
             children: <Widget>[
               Positioned(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 20.0 , bottom: 20.0),
+                  padding: const EdgeInsets.only(
+                      left: 10.0, right: 20.0, bottom: 20.0),
                   child: Text(
                     '${DateTime.now().day}',
-                    style: TextStyle(
-                        fontFamily: 'cormorant',
-                        fontSize: 42,
-                        fontWeight: FontWeight.w600),
+                    style: GoogleFonts.cormorant(
+                        fontSize: 42, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -33,10 +33,8 @@ class TopBar extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     _getYear() + ' ${DateTime.now().year}',
-                    style: TextStyle(
-                        fontFamily: 'cormorant',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600),
+                    style: GoogleFonts.cormorant(
+                        fontSize: 18, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -49,10 +47,22 @@ class TopBar extends StatelessWidget {
             onTap: () => Navigator.of(context)
                 .push(MaterialPageRoute(builder: (_) => UploadPDF())),
             child: Container(
-              child: Text(
-                'Add new PDF',
-                style: GoogleFonts.cormorant(
-                    fontSize: 18, fontWeight: FontWeight.w600),
+              child: CircleAvatar(
+                backgroundColor: Colors.black26,
+                child: Icon(Icons.add, color: Colors.amber, size: 30),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => StatsScreen())),
+            child: Container(
+              child: CircleAvatar(
+                backgroundColor: Colors.purple,
+                child: Icon(Icons.straighten, color: Colors.amber, size: 30),
               ),
             ),
           ),

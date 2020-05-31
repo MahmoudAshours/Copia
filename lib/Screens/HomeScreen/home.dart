@@ -18,16 +18,6 @@ class HomeScreen extends StatelessWidget {
           Divider(),
           BookCards(),
           LastOpened(),
-          Center(
-            child: RaisedButton(
-              child: Text('Statistics'),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => StatsScreen(),
-                ),
-              ),
-            ),
-          )
         ],
       ),
     );
