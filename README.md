@@ -152,23 +152,27 @@ There are two types of [statistics](https://github.com/MeitanteiAshour/Copia/blo
 **Statistics for every PDF. (Specific Statistics)**
 
 Which shows :
-• Last PDF opened.
-• Date of creation of every PDF.
-• How much hours , minutes did the reader read a specific PDF
-• Most opened PDF.
-• Total bookmarks of the PDF.
+- Last PDF opened.
+- Date of creation of every PDF.
+- How much hours , minutes did the reader read a specific PDF
+- Most opened PDF.
+- Total bookmarks of the PDF.
 
 **Statistics for all PDFs (General Statistics)**
 
-• Number of PDfs the user has.
-• Total hours spent on the application.
-• Total audio files on the application. 
-• Total document files on the application.
-• Total pages bookmarked in the application. 
+- Number of PDfs the user has.
+- Total hours spent on the application.
+- Total audio files on the application. 
+- Total document files on the application.
+- Total pages bookmarked in the application. 
 
 Also , all above statistics are supported by different kind of charts .
 
 ## Upcoming features : 
+The Upcoming features will be divided to certain Patches during a 9 months period 
+
+**Overall Patches : 
+
 - [ ] Connect Copia to cloud database. 
 - [ ] The user could add an audio to every page. 
 - [ ] A marker to mark certain parts in the page.
@@ -180,6 +184,7 @@ Also , all above statistics are supported by different kind of charts .
 - [ ] Adding a detailed daily statistics about time and pages read.
 - [ ] Make Copia app an open PDF file suggestion.
 - [ ] Implementing night mode.
+- [ ] Add drawing pages (Can draw or write whatever the user wants) for every PDF.
 
 ## Far upcoming features :
 - [ ] Deploy IOS version.
