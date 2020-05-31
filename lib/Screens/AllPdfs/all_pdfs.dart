@@ -10,106 +10,133 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path/path.dart';
 
-class AllPDFs extends StatelessWidget {
+class AllPDFs extends StatefulWidget {
+  @override
+  _AllPDFsState createState() => _AllPDFsState();
+}
+
+class _AllPDFsState extends State<AllPDFs> with SingleTickerProviderStateMixin {
+  final _listKey = GlobalKey<AnimatedListState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[
-          GestureDetector(
-            onTap: () => _search(context, PDFsearchDelegate()),
-            child: Icon(Icons.search),
-          )
-        ],
-      ),
-      body: ValueListenableBuilder(
-        valueListenable: Hive.box('name').listenable(),
-        builder: (_, Box snapshot, Widget child) {
-          return ListView.builder(
-            itemCount: snapshot.length,
-            cacheExtent: 7,
-            shrinkWrap: true,
-            addSemanticIndexes: true,
-            itemBuilder: (_, int index) {
-              final _pdfSnapshot = snapshot.getAt(index);
-              return Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: ListTile(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          PDFScreen(index: index, snapshot: _pdfSnapshot),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: Colors.cyan,
+            elevation: 4,
+            actions: <Widget>[
+              GestureDetector(
+                onTap: () => _search(context, PDFsearchDelegate()),
+                child: Icon(Icons.search),
+              )
+            ],
+          ),
+          ValueListenableBuilder(
+            valueListenable: Hive.box('name').listenable(),
+            builder: (_, Box snapshot, Widget child) {
+              if (snapshot.isEmpty)
+                return SliverFillRemaining(
+                  fillOverscroll: true,
+                  hasScrollBody: false,
+                  child: SizedBox(
+                    child: Center(
+                      child: Text('There is no items'),
                     ),
                   ),
-                  leading: Container(
-                    height: 300,
-                    width: 100,
-                    foregroundDecoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white10,
-                          spreadRadius: 0.1,
-                          blurRadius: 3,
-                          offset: Offset.zero,
-                        )
-                      ],
-                    ),
-                    decoration: BoxDecoration(
-                      color: Color(0xffEEEEED),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        bottomLeft: Radius.circular(5),
-                        bottomRight: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black38,
-                          spreadRadius: 1,
-                          blurRadius: 3,
-                          offset: Offset.zero,
-                        ),
-                      ],
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: FileImage(File(_pdfSnapshot.thumb)),
-                      ),
-                    ),
-                  ),
-                  title: Text(
-                    '${_pdfSnapshot.pdfName}',
-                    style: GoogleFonts.cormorant(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 20,
-                        color: Colors.grey),
-                  ),
-                  trailing: Container(
-                    width: 100,
-                    child: Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Icons.share,
-                            color: Colors.red,
-                          ),
-                          onPressed: () => _sharePdf(snapshot, index),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.red,
-                          ),
-                          onPressed: () =>
-                              _deleteDialog(context, snapshot, index),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                );
+              return SliverAnimatedList(
+                initialItemCount: snapshot.length,
+                key: _listKey,
+                itemBuilder: (_, int index, Animation animation) {
+                  final _pdfSnapshot = snapshot.getAt(index);
+                  return _buildListItem(
+                      animation, context, index, _pdfSnapshot, snapshot);
+                },
               );
             },
-          );
-        },
+          ),
+        ],
+      ),
+    );
+  }
+
+  SizeTransition _buildListItem(Animation animation, BuildContext context,
+      int index, _pdfSnapshot, Box snapshot) {
+    return SizeTransition(
+      sizeFactor: animation,
+      axis: Axis.vertical,
+      child: Padding(
+        padding: EdgeInsets.only(top: 20),
+        child: ListTile(
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => PDFScreen(index: index, snapshot: _pdfSnapshot),
+            ),
+          ),
+          leading: Container(
+            height: 300,
+            width: 100,
+            foregroundDecoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white10,
+                  spreadRadius: 0.1,
+                  blurRadius: 3,
+                  offset: Offset.zero,
+                )
+              ],
+            ),
+            decoration: BoxDecoration(
+              color: Color(0xffEEEEED),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                bottomLeft: Radius.circular(5),
+                bottomRight: Radius.circular(10),
+                topRight: Radius.circular(10),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black38,
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: Offset.zero,
+                ),
+              ],
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: FileImage(File(_pdfSnapshot.thumb)),
+              ),
+            ),
+          ),
+          title: Text(
+            '${_pdfSnapshot.pdfName}',
+            style: GoogleFonts.cormorant(
+                fontWeight: FontWeight.w900, fontSize: 20, color: Colors.grey),
+          ),
+          trailing: Container(
+            width: 100,
+            child: Row(
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.share,
+                    color: Colors.red,
+                  ),
+                  onPressed: () => _sharePdf(snapshot, index),
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                  onPressed: () => _deleteDialog(context, snapshot, index),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -133,6 +160,10 @@ class AllPDFs extends StatelessWidget {
                 snapshot
                     .deleteAt(index)
                     .whenComplete(() => Navigator.pop(context));
+                _listKey.currentState.removeItem(
+                    index,
+                    (context, animation) => _buildListItem(animation, context,
+                        index, snapshot.getAt(index), snapshot));
               },
               child: Text('Yes', style: TextStyle(color: Colors.red)),
             ),
@@ -146,9 +177,8 @@ class AllPDFs extends StatelessWidget {
     );
   }
 
-  void _search(context, delegate) {
-    showSearch(context: context, delegate: delegate);
-  }
+  void _search(context, delegate) =>
+      showSearch(context: context, delegate: delegate);
 }
 
 class PDFsearchDelegate extends SearchDelegate {

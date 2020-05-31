@@ -122,9 +122,12 @@ class MostReadChartState extends State<MostReadChart> {
   }
 
   double _getMaxTime() {
-    widget.pdfs.sort((b, a) => a.totalHours.compareTo(b.totalHours));
-    final _sortedPDF = widget.pdfs[0];
-    return (_sortedPDF.totalHours / 60).round().toDouble();
+    if (widget.pdfs.isNotEmpty) {
+      widget.pdfs.sort((b, a) => a.totalHours.compareTo(b.totalHours));
+      final _sortedPDF = widget.pdfs[0];
+      return (_sortedPDF.totalHours / 60).round().toDouble();
+    }
+    return 0;
   }
 }
 
@@ -138,7 +141,7 @@ class MostBookmarkedChart extends StatefulWidget {
 class MostBookmarkedChartState extends State<MostBookmarkedChart> {
   @override
   Widget build(BuildContext context) {
-    var _maximumTime = _getMaxTime();
+    var _maximumTime = _getMaxBookmarks();
     return AspectRatio(
       aspectRatio: 1.7,
       child: Card(
@@ -225,12 +228,15 @@ class MostBookmarkedChartState extends State<MostBookmarkedChart> {
     );
   }
 
-  double _getMaxTime() {
-    widget.pdfs.sort((b, a) => a.totalHours.compareTo(b.totalHours));
-    final _sortedPDF = widget.pdfs[0];
+  double _getMaxBookmarks() {
+    if (widget.pdfs.isNotEmpty) {
+      widget.pdfs.sort((b, a) => a.totalHours.compareTo(b.totalHours));
+      final _sortedPDF = widget.pdfs[0];
 
-    return (_sortedPDF?.bookmarked == null ? 0 : _sortedPDF.bookmarked.length)
-        ?.toDouble();
+      return (_sortedPDF?.bookmarked == null ? 0 : _sortedPDF.bookmarked.length)
+          ?.toDouble();
+    }
+    return 0;
   }
 }
 
