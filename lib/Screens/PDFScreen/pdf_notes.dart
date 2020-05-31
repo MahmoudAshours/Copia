@@ -6,7 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 class PdfNotes extends StatefulWidget {
   final int index;
   final int currentPage;
-  PdfNotes(this.index, this.currentPage);
+  PdfNotes({this.index, this.currentPage});
   @override
   _PdfNotesState createState() => _PdfNotesState();
 }

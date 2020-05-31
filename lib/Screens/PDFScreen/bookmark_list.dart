@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
@@ -29,8 +31,8 @@ class BookmarkList extends StatelessWidget {
             Center(
               child: Opacity(
                 opacity: 0.3,
-                child: Icon(
-                  Icons.favorite_border,
+                child: FaIcon(
+                  FontAwesomeIcons.bookOpen,
                   color: Colors.red,
                   size: MediaQuery.of(context).size.width,
                 ),
@@ -48,8 +50,12 @@ class BookmarkList extends StatelessWidget {
                   children: snap.getAt(index).bookmarked.map<Widget>(
                     (int pageNumber) {
                       return ListTile(
-                        title: Text('Page number $pageNumber'),
-                        leading: Icon(Icons.favorite_border, color: Colors.red),
+                        title: Text(
+                          'Page number $pageNumber',
+                          style: GoogleFonts.cagliostro(
+                              fontWeight: FontWeight.w700),
+                        ),
+                        leading: Icon(Icons.bookmark, color: Colors.black),
                         onTap: () => pdfController
                             .animateToPage(
                               pageNumber,

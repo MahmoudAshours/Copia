@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound_player.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:intl/date_symbol_data_local.dart';
@@ -51,7 +52,10 @@ class _BottomAudioPlayerState extends State<BottomAudioPlayer>
         opacity: widget.hideFab ? 0.0 : 1.0,
         duration: Duration(milliseconds: 400),
         child: Container(
-          color: Colors.black,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.black87,
+          ),
           height: 50,
           child: Row(
             children: <Widget>[
@@ -67,17 +71,20 @@ class _BottomAudioPlayerState extends State<BottomAudioPlayer>
                     },
                   );
                 },
-                child: AnimatedIcon(
-                  icon: AnimatedIcons.play_pause,
-                  progress: _controller,
-                  color: Colors.red,
+                child: CircleAvatar(
+                  backgroundColor: Colors.red,
+                  child: AnimatedIcon(
+                    icon: AnimatedIcons.play_pause,
+                    progress: _controller,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               Container(
                 width: 200,
                 child: Slider(
                   value: min(sliderCurrentPosition, maxDuration),
-                  inactiveColor: Colors.green,
+                  inactiveColor: Colors.white24,
                   activeColor: Colors.green,
                   onChanged: (double time) async {
                     if (flutterSoundPlayer.playerState !=
@@ -95,9 +102,8 @@ class _BottomAudioPlayerState extends State<BottomAudioPlayer>
               ),
               Text(
                 '$_playerTxt',
-                style: TextStyle(color: Colors.white),
+                style: GoogleFonts.cabin(color: Colors.white , fontSize: 17),
               ),
-              Icon(Icons.library_music, color: Colors.orange)
             ],
           ),
         ),

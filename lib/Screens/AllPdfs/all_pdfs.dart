@@ -24,12 +24,13 @@ class _AllPDFsState extends State<AllPDFs> with SingleTickerProviderStateMixin {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            backgroundColor: Colors.cyan,
+            backgroundColor: Color(0xffC05E4E),
             elevation: 4,
             actions: <Widget>[
               GestureDetector(
                 onTap: () => _search(context, PDFsearchDelegate()),
-                child: Icon(Icons.search),
+                child: SafeArea(
+                    child: Icon(Icons.search, color: Colors.cyanAccent)),
               )
             ],
           ),

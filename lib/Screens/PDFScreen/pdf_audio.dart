@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:copia/Hive/database.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path/path.dart';
 
 class PdfAudio extends StatelessWidget {
   final int index;
@@ -56,7 +59,37 @@ class PdfAudio extends StatelessWidget {
                     ],
                   );
                 } else {
-                  return Container();
+                  return Stack(
+                    children: <Widget>[
+                      Center(
+                        child: Opacity(
+                          opacity: 0.1,
+                          child: FaIcon(
+                            FontAwesomeIcons.music,
+                            color: Colors.purple,
+                            size: MediaQuery.of(context).size.width,
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'You have audio file ${basename(_pdf.soundPath)}',
+                                style: GoogleFonts.cormorant(fontSize: 28),
+                              ),
+                            ),
+                            IconButton(
+                                icon: Icon(Icons.delete), onPressed: () {})
+                          ],
+                        ),
+                      )
+                    ],
+                  );
                 }
               },
             );

@@ -33,6 +33,7 @@ class _PDFScreenState extends State<PDFScreen> {
   bool hideFab = false;
   Axis direction = Axis.horizontal;
   final DateTime _initDateTime = DateTime.now();
+
   @override
   void initState() {
     initPage();
@@ -49,7 +50,6 @@ class _PDFScreenState extends State<PDFScreen> {
   void dispose() {
     final PDFDB _lastPdf = Hive.box('name').getAt(index);
     var _timeSpentReading = DateTime.now().difference(_initDateTime).inSeconds;
-    print('Operation ${(_lastPdf.totalHours ?? 0) + _timeSpentReading}');
     final _pdf = PDFDB(
       bookmarked: _lastPdf.bookmarked,
       insertedDate: _lastPdf.insertedDate,
@@ -63,8 +63,6 @@ class _PDFScreenState extends State<PDFScreen> {
       soundPath: _lastPdf.soundPath,
       totalHours: (_lastPdf.totalHours ?? 0) + _timeSpentReading,
     );
-    print(_timeSpentReading);
-    print(_pdf.totalHours);
     Hive.box('name')
         .putAt(index, _pdf)
         .then((value) => _pdfController.dispose());
@@ -94,10 +92,7 @@ class _PDFScreenState extends State<PDFScreen> {
                 children: <Widget>[
                   PdfView(
                       controller: _pdfController,
-                      documentLoader: Center(
-                        child:
-                            const SpinKitPouringHourglass(color: Colors.black),
-                      ),
+                      pageLoader: SpinKitChasingDots(color: Colors.blue),
                       onDocumentError: (err) => Navigator.of(context).pop(),
                       renderer: (PdfPage page) => page.render(
                             width: page.width * 2,
@@ -163,26 +158,30 @@ class _PDFScreenState extends State<PDFScreen> {
           BookmarkPdf(index: index, currentPage: currentPage),
           BookmarkList(index: index, pdfController: _pdfController),
           PdfAudio(index),
-          IconButton(
-            icon: Icon(Icons.border_horizontal),
-            onPressed: () {
-              setState(
-                () {
-                  if (direction == Axis.horizontal) {
-                    direction = Axis.vertical;
-                  } else {
-                    direction = Axis.horizontal;
-                  }
-                },
-              );
-            },
-          ),
-          PdfNotes(widget.index, currentPage),
+          _orientation(),
+          PdfNotes(index: index, currentPage: currentPage),
           PdfScreenshot(),
           PdfDocumentViewer(index),
           SharePage(),
         ],
       ),
+    );
+  }
+
+  IconButton _orientation() {
+    return IconButton(
+      icon: Icon(Icons.border_horizontal),
+      onPressed: () {
+        setState(
+          () {
+            if (direction == Axis.horizontal) {
+              direction = Axis.vertical;
+            } else {
+              direction = Axis.horizontal;
+            }
+          },
+        );
+      },
     );
   }
 
