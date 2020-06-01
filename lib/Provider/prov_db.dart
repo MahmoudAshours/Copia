@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 
 class ProviderDB with ChangeNotifier {
   void addBookmark(bool bookmark, {int index, PDFDB snapshot, int currPage}) {
-    Hive.box('name').putAt(
+    Hive.box('pdfDB').putAt(
       index,
       PDFDB(
         insertedDate: snapshot.insertedDate,
@@ -26,9 +26,9 @@ class ProviderDB with ChangeNotifier {
       PDFDB snapshot, int index, int currentPage, bool bookmark) {
     if (snapshot.bookmarked != null) {
       if (bookmark) {
-        return [currentPage, ...Hive.box('name')?.getAt(index)?.bookmarked];
+        return [currentPage, ...Hive.box('pdfDB')?.getAt(index)?.bookmarked];
       } else {
-        return [...Hive.box('name')?.getAt(index)?.bookmarked]
+        return [...Hive.box('pdfDB')?.getAt(index)?.bookmarked]
           ..remove(currentPage);
       }
     } else {
@@ -37,7 +37,7 @@ class ProviderDB with ChangeNotifier {
   }
 
   Future<void> updateLastSeen(PDFDB snapshot, int index) {
-    return Hive.box('name').putAt(
+    return Hive.box('pdfDB').putAt(
       index,
       PDFDB(
         insertedDate: snapshot.insertedDate,

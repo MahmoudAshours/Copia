@@ -14,10 +14,7 @@ class PdfScreenshot extends StatelessWidget {
       message: 'Save this page to gallery',
       child: GestureDetector(
         onTap: () => _takeScreenshot(context, _pdfProvider),
-        child: CircleAvatar(
-          backgroundColor: Colors.amber,
-          child: Icon(Icons.camera_alt, color: Colors.black),
-        ),
+        child: Icon(Icons.camera_alt, color: Colors.amber),
       ),
     );
   }
@@ -30,8 +27,13 @@ class PdfScreenshot extends StatelessWidget {
       final image = await boundary.toImage();
       final byteData = await image.toByteData(format: ImageByteFormat.png);
       final pngBytes = byteData.buffer.asUint8List();
-      ImageGallerySaver.saveImage(pngBytes).then((_) => Scaffold.of(context)
-          .showSnackBar(SnackBar(content: Text('Saved to gallery!'))));
+      ImageGallerySaver.saveImage(pngBytes).then(
+        (_) => Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Saved to gallery!'),
+          ),
+        ),
+      );
     } else {
       await Permission.storage.request();
     }

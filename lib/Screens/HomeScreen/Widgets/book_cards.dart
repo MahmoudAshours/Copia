@@ -17,7 +17,7 @@ class BookCards extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: 300,
         child: ValueListenableBuilder(
-          valueListenable: Hive.box('name').listenable(),
+          valueListenable: Hive.box('pdfDB').listenable(),
           builder: (_, Box snapshot, Widget child) {
             if (snapshot.isEmpty) return NoBooks();
             return ListView.separated(

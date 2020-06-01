@@ -2,6 +2,7 @@ import 'package:copia/Screens/StatsScreen/stats_screen.dart';
 import 'package:copia/Screens/UploadPDF/uploadpdf.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TopBar extends StatelessWidget {
@@ -62,7 +63,8 @@ class TopBar extends StatelessWidget {
             child: Container(
               child: CircleAvatar(
                 backgroundColor: Colors.purple,
-                child: Icon(Icons.straighten, color: Colors.amber, size: 30),
+                child: FaIcon(FontAwesomeIcons.chartLine,
+                    color: Colors.amber, size: 25),
               ),
             ),
           ),

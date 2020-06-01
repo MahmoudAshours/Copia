@@ -1,5 +1,6 @@
 import 'package:copia/Provider/uppdf_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class UploadFile extends StatelessWidget {
@@ -12,9 +13,16 @@ class UploadFile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text('Upload your PDF file'),
-          SizedBox(height: 10.0),
-          Icon(Icons.picture_as_pdf)
+          SizedBox(width: 10.0),
+          FaIcon(
+            FontAwesomeIcons.filePdf,
+            color: Colors.redAccent,
+            size: 30,
+          ),
+          SizedBox(width: 20.0),
+          _bloc.pdfUploaded
+              ? FaIcon(FontAwesomeIcons.solidCheckCircle, color: Colors.green)
+              : Container()
         ],
       ),
     );

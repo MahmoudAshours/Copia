@@ -29,8 +29,7 @@ class PDFScreen extends StatefulWidget {
 class _PDFScreenState extends State<PDFScreen> {
   int index;
   PdfController _pdfController;
-  int currentPage;
-  bool hideFab = false;
+  int currentPage; 
   Axis direction = Axis.horizontal;
   final DateTime _initDateTime = DateTime.now();
 
@@ -48,7 +47,7 @@ class _PDFScreenState extends State<PDFScreen> {
 
   @override
   void dispose() {
-    final PDFDB _lastPdf = Hive.box('name').getAt(index);
+    final PDFDB _lastPdf = Hive.box('pdfDB').getAt(index);
     var _timeSpentReading = DateTime.now().difference(_initDateTime).inSeconds;
     final _pdf = PDFDB(
       bookmarked: _lastPdf.bookmarked,
@@ -63,7 +62,7 @@ class _PDFScreenState extends State<PDFScreen> {
       soundPath: _lastPdf.soundPath,
       totalHours: (_lastPdf.totalHours ?? 0) + _timeSpentReading,
     );
-    Hive.box('name')
+    Hive.box('pdfDB')
         .putAt(index, _pdf)
         .then((value) => _pdfController.dispose());
     super.dispose();
@@ -77,11 +76,11 @@ class _PDFScreenState extends State<PDFScreen> {
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-        floatingActionButton: _circularFab(_dbProvider, index),
-        bottomNavigationBar: BottomAudioPlayer(index: index, hideFab: hideFab),
+        floatingActionButton: _circularFab(_dbProvider, index, _pdfProvider),
+        bottomNavigationBar: BottomAudioPlayer(index: index),
         backgroundColor: const Color(0xffEEEEED),
         body: GestureDetector(
-          onTap: () => _hideFloatingActionBar(),
+          onTap: () => _hideFloatingActionBar(_pdfProvider),
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
@@ -128,21 +127,18 @@ class _PDFScreenState extends State<PDFScreen> {
     );
   }
 
-  void _hideFloatingActionBar() {
-    if (hideFab) {
-      setState(() {
-        hideFab = false;
-      });
+  void _hideFloatingActionBar(PDFScreenBloc _bloc) {
+    if (_bloc.hideFab) {
+      _bloc.hideFabButton = false;
     } else {
-      setState(() {
-        hideFab = true;
-      });
+      _bloc.hideFabButton = true;
     }
   }
 
-  AnimatedOpacity _circularFab(ProviderDB _bloc, int index) {
+  AnimatedOpacity _circularFab(
+      ProviderDB _bloc, int index, PDFScreenBloc _pdfBloc) {
     return AnimatedOpacity(
-      opacity: hideFab ? 0.0 : 1.0,
+      opacity: _pdfBloc.hideFab ? 0.0 : 1.0,
       duration: Duration(milliseconds: 400),
       child: FabCircularMenu(
         fabCloseColor: Colors.black,
@@ -194,8 +190,8 @@ class _PDFScreenState extends State<PDFScreen> {
     setState(() => index = widget.index);
     _pdfController = PdfController(
       document: PdfDocument.openFile(widget.snapshot.pdfAsset),
-      initialPage: Hive.box('name').getAt(index).lastVisitedPage ?? 1,
-      viewportFraction: 1.2,
+      initialPage: Hive.box('pdfDB').getAt(index).lastVisitedPage ?? 1,
+      viewportFraction: 1.0,
     );
     setState(() => currentPage = _pdfController.initialPage);
   }

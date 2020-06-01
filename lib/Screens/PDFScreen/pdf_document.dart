@@ -4,6 +4,7 @@ import 'package:copia/Hive/database.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flat_icons_flutter/flat_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:open_file/open_file.dart';
@@ -16,9 +17,8 @@ class PdfDocumentViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-        child: IconButton(
-            icon: Icon(Icons.group_work), onPressed: () => _pdfDoc(context)));
+    return IconButton(
+        icon: FaIcon(FontAwesomeIcons.solidFileWord,color: Colors.white,), onPressed: () => _pdfDoc(context));
   }
 
   void _pdfDoc(BuildContext context) {
@@ -29,18 +29,20 @@ class PdfDocumentViewer extends StatelessWidget {
         return StatefulBuilder(
           builder: (_, StateSetter setState) {
             return ValueListenableBuilder(
-              valueListenable: Hive.box('name').listenable(),
+              valueListenable: Hive.box('pdfDB').listenable(),
               builder: (_, Box box, child) {
                 PDFDB _pdf = box.getAt(index);
                 if (_pdf.documentPath == null) {
                   return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Container(
                         child: Text("You don't have a document for this PDF"),
                       ),
                       Container(
                         child: IconButton(
-                          icon: Icon(Icons.update),
+                          icon: FaIcon(FontAwesomeIcons.file,color:Colors.red),
                           onPressed: () async {
                             File _file = await FilePicker.getFile(
                                 type: FileType.custom,
@@ -56,7 +58,7 @@ class PdfDocumentViewer extends StatelessWidget {
                               soundPath: _pdf.soundPath,
                               thumb: _pdf.thumb,
                               totalHours: _pdf.totalHours,
-                              documentPath: _file.path ?? null,
+                              documentPath: _file?.path ?? null,
                             );
                             box.putAt(index, _modifiedPDF);
                           },

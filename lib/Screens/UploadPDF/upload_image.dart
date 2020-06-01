@@ -1,5 +1,6 @@
 import 'package:copia/Provider/uppdf_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class UploadImage extends StatelessWidget {
@@ -12,9 +13,15 @@ class UploadImage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text('Upload an image preview'),
-          SizedBox(height: 10.0),
-          Icon(Icons.image),
+          FaIcon(
+            FontAwesomeIcons.fileImage,
+            color: Colors.blue,
+            size: 30,
+          ),
+          SizedBox(width: 20.0),
+          _bloc.ifImageUploaded
+              ? FaIcon(FontAwesomeIcons.solidCheckCircle, color: Colors.green)
+              : Container()
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:copia/Hive/database.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -10,12 +11,22 @@ class StatsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xffEEEEED),
       body: ValueListenableBuilder(
-        valueListenable: Hive.box('name').listenable(),
+        valueListenable: Hive.box('pdfDB').listenable(),
         builder: (_, Box snapshot, Widget widget) {
-          List<PDFDB> _pdfs = Hive.box('name').values.toList().cast<PDFDB>();
+          List<PDFDB> _pdfs = Hive.box('pdfDB').values.toList().cast<PDFDB>();
           return SingleChildScrollView(
             child: Column(
               children: <Widget>[
+                Text(
+                  'Your Statistics',
+                  style:
+                      GoogleFonts.tangerine(fontSize: 50, color: Colors.blue),
+                ),
+                Divider(
+                  height: 10,
+                  thickness: 2,
+                  color: Colors.black38,
+                ),
                 MostReadChart(_pdfs),
                 MostBookmarkedChart(_pdfs),
                 AudioDocsChart(_pdfs)
@@ -39,86 +50,99 @@ class MostReadChartState extends State<MostReadChart> {
   @override
   Widget build(BuildContext context) {
     var _maximumTime = _getMaxTime();
-    return AspectRatio(
-      aspectRatio: 1.7,
-      child: Card(
-        elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-        color: const Color(0xff2c4260),
-        child: BarChart(
-          BarChartData(
-            alignment: BarChartAlignment.spaceAround,
-            maxY: _maximumTime,
-            barTouchData: BarTouchData(
-              enabled: false,
-              touchTooltipData: BarTouchTooltipData(
-                tooltipBgColor: Colors.transparent,
-                tooltipPadding: const EdgeInsets.all(0),
-                tooltipBottomMargin: 8,
-                getTooltipItem: (
-                  BarChartGroupData group,
-                  int groupIndex,
-                  BarChartRodData rod,
-                  int rodIndex,
-                ) {
-                  return BarTooltipItem(
-                    rod.y.round().toString() + ' mins',
-                    TextStyle(
-                      color: Colors.yellow,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  );
-                },
-              ),
-            ),
-            axisTitleData: FlAxisTitleData(
-              topTitle: AxisTitle(
-                titleText: 'Most Read books',
-                reservedSize: 30,
-                margin: 50,
-                textStyle: TextStyle(color: Colors.white, fontSize: 27),
-                showTitle: true,
-              ),
-              show: true,
-            ),
-            titlesData: FlTitlesData(
-              show: true,
-              bottomTitles: SideTitles(
-                showTitles: true,
-                textStyle: TextStyle(
-                  color: const Color(0xff7589a2),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
+    return _maximumTime == 0
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                child: Center(
+                  child: Text('There is no Statistics Yet'),
                 ),
-                margin: 20,
-                getTitles: (double value) {
-                  for (var i = 0; i < widget.pdfs.length; i++) {
-                    if (value.toInt() == i)
-                      return widget.pdfs[i].pdfName.toUpperCase();
-                  }
-                  return 'Nothing to show';
-                },
               ),
-              leftTitles: SideTitles(showTitles: false),
-            ),
-            borderData: FlBorderData(show: false),
-            barGroups: [
-              for (var i = 0; i < widget.pdfs.length; i++)
-                BarChartGroupData(
-                  x: i,
-                  barRods: [
-                    BarChartRodData(
-                      y: widget.pdfs[i].totalHours.toDouble() / 60,
-                      color: Colors.lightBlueAccent,
-                    )
-                  ],
-                  showingTooltipIndicators: [0],
-                ),
             ],
-          ),
-        ),
-      ),
-    );
+          )
+        : AspectRatio(
+            aspectRatio: 1.7,
+            child: Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4)),
+              color: const Color(0xff2c4260),
+              child: BarChart(
+                BarChartData(
+                  alignment: BarChartAlignment.spaceAround,
+                  maxY: _maximumTime,
+                  barTouchData: BarTouchData(
+                    enabled: false,
+                    touchTooltipData: BarTouchTooltipData(
+                      tooltipBgColor: Colors.transparent,
+                      tooltipPadding: const EdgeInsets.all(0),
+                      tooltipBottomMargin: 8,
+                      getTooltipItem: (
+                        BarChartGroupData group,
+                        int groupIndex,
+                        BarChartRodData rod,
+                        int rodIndex,
+                      ) {
+                        return BarTooltipItem(
+                          rod.y.round().toString() + ' mins',
+                          TextStyle(
+                            color: Colors.yellow,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  axisTitleData: FlAxisTitleData(
+                    topTitle: AxisTitle(
+                      titleText: 'Most Read books',
+                      reservedSize: 30,
+                      margin: 50,
+                      textStyle: TextStyle(color: Colors.white, fontSize: 27),
+                      showTitle: true,
+                    ),
+                    show: true,
+                  ),
+                  titlesData: FlTitlesData(
+                    show: true,
+                    bottomTitles: SideTitles(
+                      showTitles: true,
+                      textStyle: TextStyle(
+                        color: const Color(0xff7589a2),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      margin: 20,
+                      getTitles: (double value) {
+                        for (var i = 0; i < widget.pdfs.length; i++) {
+                          if (value.toInt() == i)
+                            return widget.pdfs[i].pdfName.toUpperCase();
+                        }
+                        return 'Nothing to show';
+                      },
+                    ),
+                    leftTitles: SideTitles(showTitles: false),
+                  ),
+                  borderData: FlBorderData(show: false),
+                  barGroups: [
+                    for (var i = 0; i < widget.pdfs.length; i++)
+                      BarChartGroupData(
+                        x: i,
+                        barRods: [
+                          BarChartRodData(
+                            y: widget.pdfs[i].totalHours.toDouble() / 60,
+                            color: Colors.lightBlueAccent,
+                          )
+                        ],
+                        showingTooltipIndicators: [0],
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          );
   }
 
   double _getMaxTime() {
@@ -141,91 +165,94 @@ class MostBookmarkedChart extends StatefulWidget {
 class MostBookmarkedChartState extends State<MostBookmarkedChart> {
   @override
   Widget build(BuildContext context) {
-    var _maximumTime = _getMaxBookmarks();
-    return AspectRatio(
-      aspectRatio: 1.7,
-      child: Card(
-        elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-        color: const Color(0xff2c4260),
-        child: BarChart(
-          BarChartData(
-            alignment: BarChartAlignment.spaceAround,
-            maxY: _maximumTime,
-            barTouchData: BarTouchData(
-              enabled: false,
-              touchTooltipData: BarTouchTooltipData(
-                tooltipBgColor: Colors.transparent,
-                tooltipPadding: const EdgeInsets.all(10),
-                fitInsideVertically: true,
-                tooltipBottomMargin: 1,
-                getTooltipItem: (
-                  BarChartGroupData group,
-                  int groupIndex,
-                  BarChartRodData rod,
-                  int rodIndex,
-                ) {
-                  return BarTooltipItem(
-                    rod.y.round().toString() + ' bookmarked',
-                    TextStyle(
-                      color: Colors.yellow,
-                      fontWeight: FontWeight.bold,
+    var _maximumBookmarks = _getMaxBookmarks();
+    return _maximumBookmarks == 0
+        ? Container()
+        : AspectRatio(
+            aspectRatio: 1.7,
+            child: Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4)),
+              color: const Color(0xff2c4260),
+              child: BarChart(
+                BarChartData(
+                  alignment: BarChartAlignment.spaceAround,
+                  maxY: _maximumBookmarks,
+                  barTouchData: BarTouchData(
+                    enabled: false,
+                    touchTooltipData: BarTouchTooltipData(
+                      tooltipBgColor: Colors.transparent,
+                      tooltipPadding: const EdgeInsets.all(10),
+                      fitInsideVertically: true,
+                      tooltipBottomMargin: 1,
+                      getTooltipItem: (
+                        BarChartGroupData group,
+                        int groupIndex,
+                        BarChartRodData rod,
+                        int rodIndex,
+                      ) {
+                        return BarTooltipItem(
+                          rod.y.round().toString() + ' bookmarked',
+                          TextStyle(
+                            color: Colors.yellow,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            ),
-            axisTitleData: FlAxisTitleData(
-              topTitle: AxisTitle(
-                titleText: 'Most Bookmarked books',
-                reservedSize: 30,
-                margin: 30,
-                textStyle: TextStyle(color: Colors.white, fontSize: 27),
-                showTitle: true,
-              ),
-              show: true,
-            ),
-            titlesData: FlTitlesData(
-              show: true,
-              bottomTitles: SideTitles(
-                showTitles: true,
-                textStyle: TextStyle(
-                  color: const Color(0xff7589a2),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-                margin: 20,
-                getTitles: (double value) {
-                  for (var i = 0; i < widget.pdfs.length; i++) {
-                    if (value.toInt() == i)
-                      return widget.pdfs[i].pdfName.toUpperCase();
-                  }
-                  return 'Nothing to show';
-                },
-              ),
-              leftTitles: SideTitles(showTitles: false),
-            ),
-            borderData: FlBorderData(show: false),
-            barGroups: [
-              for (var i = 0; i < widget.pdfs.length; i++)
-                BarChartGroupData(
-                  x: i,
-                  barRods: [
-                    BarChartRodData(
-                      y: (widget.pdfs[i].bookmarked != null
-                              ? widget.pdfs[i].bookmarked.length
-                              : 0)
-                          .toDouble(),
-                      color: Colors.lightBlueAccent,
-                    )
+                  ),
+                  axisTitleData: FlAxisTitleData(
+                    topTitle: AxisTitle(
+                      titleText: 'Most Bookmarked books',
+                      reservedSize: 30,
+                      margin: 30,
+                      textStyle: TextStyle(color: Colors.white, fontSize: 27),
+                      showTitle: true,
+                    ),
+                    show: true,
+                  ),
+                  titlesData: FlTitlesData(
+                    show: true,
+                    bottomTitles: SideTitles(
+                      showTitles: true,
+                      textStyle: TextStyle(
+                        color: const Color(0xff7589a2),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      margin: 20,
+                      getTitles: (double value) {
+                        for (var i = 0; i < widget.pdfs.length; i++) {
+                          if (value.toInt() == i)
+                            return widget.pdfs[i].pdfName.toUpperCase();
+                        }
+                        return 'Nothing to show';
+                      },
+                    ),
+                    leftTitles: SideTitles(showTitles: false),
+                  ),
+                  borderData: FlBorderData(show: false),
+                  barGroups: [
+                    for (var i = 0; i < widget.pdfs.length; i++)
+                      BarChartGroupData(
+                        x: i,
+                        barRods: [
+                          BarChartRodData(
+                            y: (widget.pdfs[i].bookmarked != null
+                                    ? widget.pdfs[i].bookmarked.length
+                                    : 0)
+                                .toDouble(),
+                            color: Colors.lightBlueAccent,
+                          )
+                        ],
+                        showingTooltipIndicators: [0],
+                      ),
                   ],
-                  showingTooltipIndicators: [0],
                 ),
-            ],
-          ),
-        ),
-      ),
-    );
+              ),
+            ),
+          );
   }
 
   double _getMaxBookmarks() {
@@ -252,86 +279,91 @@ class AudioDocsChartState extends State<AudioDocsChart> {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.3,
-      child: Card(
-        color: Colors.white,
-        child: Row(
-          children: <Widget>[
-            const SizedBox(
-              height: 18,
-            ),
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: PieChart(
-                  PieChartData(
-                      pieTouchData: PieTouchData(
-                        touchCallback: (pieTouchResponse) {
-                          setState(
-                            () {
-                              if (pieTouchResponse.touchInput
-                                      is FlLongPressEnd ||
-                                  pieTouchResponse.touchInput is FlPanEnd ||
-                                  pieTouchResponse.touchInput
-                                      is FlTouchNormalInput) {
-                                touchedIndex = -1;
-                              } else {
-                                touchedIndex =
-                                    pieTouchResponse.touchedSectionIndex;
-                              }
-                            },
-                          );
-                        },
+    return _getDocumentFilesCount() == 0
+        ? Container()
+        : AspectRatio(
+            aspectRatio: 1.3,
+            child: Card(
+              color: Colors.white,
+              child: Row(
+                children: <Widget>[
+                  const SizedBox(
+                    height: 18,
+                  ),
+                  Expanded(
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: _getDocumentFilesCount() == 0
+                          ? Container()
+                          : PieChart(
+                              PieChartData(
+                                  pieTouchData: PieTouchData(
+                                    touchCallback: (pieTouchResponse) {
+                                      setState(
+                                        () {
+                                          if (pieTouchResponse.touchInput
+                                                  is FlLongPressEnd ||
+                                              pieTouchResponse.touchInput
+                                                  is FlPanEnd ||
+                                              pieTouchResponse.touchInput
+                                                  is FlTouchNormalInput) {
+                                            touchedIndex = -1;
+                                          } else {
+                                            touchedIndex = pieTouchResponse
+                                                .touchedSectionIndex;
+                                          }
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  borderData: FlBorderData(show: false),
+                                  sectionsSpace: 0,
+                                  centerSpaceRadius: 40,
+                                  sections: showingSections()),
+                            ),
+                    ),
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const <Widget>[
+                      Indicator(
+                        color: Color(0xff0293ee),
+                        text: 'Audio files',
+                        isSquare: false,
                       ),
-                      borderData: FlBorderData(show: false),
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 40,
-                      sections: showingSections()),
-                ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Indicator(
+                        color: Color(0xfff8b250),
+                        text: 'Document Files',
+                        isSquare: false,
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Indicator(
+                        color: Colors.red,
+                        text: 'Bookmarks',
+                        isSquare: false,
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Indicator(
+                        color: Colors.purple,
+                        text: 'PDFs count',
+                        isSquare: false,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 28),
+                ],
               ),
             ),
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-                Indicator(
-                  color: Color(0xff0293ee),
-                  text: 'Audio files',
-                  isSquare: false,
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Indicator(
-                  color: Color(0xfff8b250),
-                  text: 'Document Files',
-                  isSquare: false,
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Indicator(
-                  color: Colors.red,
-                  text: 'Bookmarks',
-                  isSquare: false,
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Indicator(
-                  color: Colors.purple,
-                  text: 'PDFs count',
-                  isSquare: false,
-                ),
-              ],
-            ),
-            const SizedBox(width: 28),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   List<PieChartSectionData> showingSections() {
@@ -371,7 +403,7 @@ class AudioDocsChartState extends State<AudioDocsChart> {
           case 2:
             return PieChartSectionData(
               color: Colors.red,
-              value: _getTotalBookmarksCount(),
+              value: _getTotalBookmarksCount() ?? 0,
               title: '${_getTotalBookmarksCount().toInt()}',
               radius: radius,
               titleStyle: TextStyle(
@@ -382,7 +414,7 @@ class AudioDocsChartState extends State<AudioDocsChart> {
           case 3:
             return PieChartSectionData(
               color: Colors.purple,
-              value: _getTotalPDFsCount(),
+              value: _getTotalPDFsCount() ?? 0,
               title: '${_getTotalPDFsCount().toInt()}',
               radius: radius,
               titleStyle: TextStyle(

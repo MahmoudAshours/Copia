@@ -1,19 +1,20 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:copia/Provider/pdfscreen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound_player.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class BottomAudioPlayer extends StatefulWidget {
   final int index;
-  final bool hideFab;
 
-  const BottomAudioPlayer({Key key, this.index, this.hideFab})
-      : super(key: key);
+  const BottomAudioPlayer({Key key, this.index}) : super(key: key);
   @override
   _BottomAudioPlayerState createState() => _BottomAudioPlayerState();
 }
@@ -46,70 +47,83 @@ class _BottomAudioPlayerState extends State<BottomAudioPlayer>
 
   @override
   Widget build(BuildContext context) {
-    if (Hive.box('name').getAt(widget.index).soundPath != null) {
-      final _soundPath = Hive.box('name').getAt(widget.index).soundPath;
-      return AnimatedOpacity(
-        opacity: widget.hideFab ? 0.0 : 1.0,
-        duration: Duration(milliseconds: 400),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.black87,
-          ),
-          height: 50,
-          child: Row(
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  setState(
-                    () {
-                      if (_isPlaying) {
-                        _pauseAudio();
-                      } else {
-                        _playAudio(_soundPath);
-                      }
-                    },
-                  );
-                },
-                child: CircleAvatar(
-                  backgroundColor: Colors.red,
-                  child: AnimatedIcon(
-                    icon: AnimatedIcons.play_pause,
-                    progress: _controller,
-                    color: Colors.white,
+    return ValueListenableBuilder(
+      valueListenable: Hive.box('pdfDB').listenable(),
+      builder: (_, Box box, child) {
+        return Consumer<PDFScreenBloc>(
+          builder: (_, _bloc, __) {
+            final _soundPath = box.getAt(widget.index).soundPath;
+            if (_soundPath != null) {
+              return AnimatedOpacity(
+                opacity: _bloc.hideFab ? 0.0 : 1.0,
+                duration: Duration(milliseconds: 400),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.black87,
+                  ),
+                  height: 50,
+                  child: Row(
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          setState(
+                            () {
+                              if (_isPlaying) {
+                                _pauseAudio();
+                              } else {
+                                _playAudio(_soundPath);
+                              }
+                            },
+                          );
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Colors.red,
+                          child: AnimatedIcon(
+                            icon: AnimatedIcons.play_pause,
+                            progress: _controller,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 200,
+                        child: Slider(
+                          value: min(sliderCurrentPosition, maxDuration),
+                          inactiveColor: Colors.white24,
+                          activeColor: Colors.green,
+                          onChanged: (double time) async {
+                            if (flutterSoundPlayer.playerState !=
+                                t_PLAYER_STATE.IS_STOPPED)
+                              await flutterSoundPlayer
+                                  .seekToPlayer(time.toInt());
+                          },
+                          max: maxDuration,
+                          label: '$_playerTxt',
+                          onChangeEnd: (e) {
+                            print(e);
+                          },
+                          divisions:
+                              maxDuration == 0.0 ? 1 : maxDuration.toInt(),
+                          min: 0,
+                        ),
+                      ),
+                      Text(
+                        '$_playerTxt',
+                        style: GoogleFonts.cabin(
+                            color: Colors.white, fontSize: 17),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              Container(
-                width: 200,
-                child: Slider(
-                  value: min(sliderCurrentPosition, maxDuration),
-                  inactiveColor: Colors.white24,
-                  activeColor: Colors.green,
-                  onChanged: (double time) async {
-                    if (flutterSoundPlayer.playerState !=
-                        t_PLAYER_STATE.IS_STOPPED)
-                      await flutterSoundPlayer.seekToPlayer(time.toInt());
-                  },
-                  max: maxDuration,
-                  label: '$_playerTxt',
-                  onChangeEnd: (e) {
-                    print(e);
-                  },
-                  divisions: maxDuration == 0.0 ? 1 : maxDuration.toInt(),
-                  min: 0,
-                ),
-              ),
-              Text(
-                '$_playerTxt',
-                style: GoogleFonts.cabin(color: Colors.white , fontSize: 17),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-    return SizedBox.shrink();
+              );
+            }
+
+            return SizedBox.shrink();
+          },
+        );
+      },
+    );
   }
 
   Future<void> _initializeSoundPlayer() async =>

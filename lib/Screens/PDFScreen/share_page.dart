@@ -4,6 +4,7 @@ import 'package:copia/Provider/pdfscreen_bloc.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class SharePage extends StatelessWidget {
@@ -15,10 +16,7 @@ class SharePage extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: () => _sharePage(context, _pdfProvider),
-        child: CircleAvatar(
-          radius: 20,
-          child: Icon(Icons.share),
-        ),
+        child: FaIcon(FontAwesomeIcons.share,color:Colors.cyan),
       ),
     );
   }

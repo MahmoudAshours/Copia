@@ -5,15 +5,18 @@ class PDFScreenBloc with ChangeNotifier {
   int _currentPage = 0;
   bool _isReady = false;
   String _errorMessage = '';
+  
+  bool _hideFab = false;
 
   var scr = GlobalKey();
 
-  set currentPage(int page) {
-    _currentPage = page;
-    print(_currentPage);
+  set hideFabButton(bool fab) {
+    _hideFab = fab;
     notifyListeners();
   }
 
+  get hideFab => _hideFab;
+   
   set error(String errmsg) {
     _errorMessage = errmsg;
     notifyListeners();

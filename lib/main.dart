@@ -12,7 +12,7 @@ void main() async {
   final dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
   Hive.registerAdapter(PDFDBAdapter());
-  await Hive.openBox('name');
+  await Hive.openBox('pdfDB');
   runApp(
     Providers(
       child: MaterialApp(

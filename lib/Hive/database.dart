@@ -40,7 +40,7 @@ class PDFDB {
       this.documentPath});
 
   updatePDf({@required int index, @required PDFDB snapshot}) {
-    Hive.box('name').putAt(
+    Hive.box('pdfDB').putAt(
       index,
       PDFDB(
         insertedDate: snapshot.insertedDate,

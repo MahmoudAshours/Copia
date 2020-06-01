@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:copia/Hive/database.dart';
 import 'package:copia/Screens/PDFScreen/pdfscreen.dart';
-import 'package:copia/Utils/no_books.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,11 +26,11 @@ class LastOpened extends StatelessWidget {
             ),
             Divider(),
             ValueListenableBuilder(
-              valueListenable: Hive.box('name').listenable(),
+              valueListenable: Hive.box('pdfDB').listenable(),
               builder: (_, Box snapshot, widget) {
-                if (snapshot.isEmpty) return NoBooks();
+                if (snapshot.isEmpty) return Container();
                 List<PDFDB> _pdfs =
-                    Hive.box('name').values.toList().cast<PDFDB>();
+                    Hive.box('pdfDB').values.toList().cast<PDFDB>();
                 _pdfs.sort((b, a) => a.lastSeenDate.compareTo(b.lastSeenDate));
                 final _pdf = _pdfs[0];
                 return GestureDetector(
@@ -39,7 +38,7 @@ class LastOpened extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (_) => PDFScreen(
                         snapshot: _pdf,
-                        index: Hive.box('name')
+                        index: Hive.box('pdfDB')
                             .values
                             .toList()
                             .cast<PDFDB>()

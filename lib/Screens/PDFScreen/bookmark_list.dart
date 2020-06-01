@@ -39,7 +39,7 @@ class BookmarkList extends StatelessWidget {
               ),
             ),
             ValueListenableBuilder(
-              valueListenable: Hive.box('name').listenable(),
+              valueListenable: Hive.box('pdfDB').listenable(),
               builder: (_, Box snap, __) {
                 if (snap.getAt(index).bookmarked == null ||
                     snap.getAt(index).bookmarked.isEmpty) {

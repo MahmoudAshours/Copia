@@ -12,7 +12,7 @@ class BookmarkPdf extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _bloc = Provider.of<ProviderDB>(context);
-    final hive = Hive.box('name');
+    final hive = Hive.box('pdfDB');
     return ValueListenableBuilder(
       valueListenable: hive.listenable(),
       builder: (_, Box snapshot, Widget child) {
