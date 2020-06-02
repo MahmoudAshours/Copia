@@ -7,16 +7,22 @@ Copia is an application used to store PDFs as books.
 ![owl_iphonesespacegrey_portrait](https://user-images.githubusercontent.com/50237142/81900072-70f95480-95bc-11ea-8822-d02a31f00855.png)
 
 ### It allows you to :
-
 - Choose whatever your pdf is.
 - Assign a title and a descriptive image to your pdf. 
 - Add bookmarks to pages in your pdf.
 - You can add an audio with your pdf to listen while you're reading.
 - You can add document (doc , docx) to your pdf to view while reading.
-- Also enforced with TTS (Text to speech) to listen to your doc file.
 - You can add custom notes to every page in your pdf.
 - Also , gives you statistics of how many hours have you read a certain PDF , when was the last time you opened it and when did you create the file.
 - No internet access needed , all stored locally.
+
+## Release dates & notes : 
+
+ ## 2 June 2020 
+- Copia 1.0.0 was sent to publication in google play store. 
+- The initial release contained all of the first 12 tasks.
+- Verified by play store on **/6/2020**.
+- The next update estimated to be after two months.
 
 ## Project technical structures : 
 - Uses **Hive** as local storage database.
@@ -24,6 +30,7 @@ Copia is an application used to store PDFs as books.
 - Uses **Provider** as state management solution.
 - Uses **SharedPerefences** as key-value holder. (Can use Hive) 
 - Uses **GoogleFonts** for Font UI perefrences. 
+- Uses **native_pdf_view** as a PDF renderer library.
 
 ## Tasks : 
 - [x] App Logo & Splash Screen
@@ -37,7 +44,8 @@ Copia is an application used to store PDFs as books.
 - [x] Bookmarks Screen
 - [x] Statistics Screen
 - [x] Share PDF file  
-- [ ] Complete UI refactor.
+- [x] Complete UI refactor.
+## Postponed tasks after beta production: 
 - [ ] Handling all errors & exceptions with dialogs. (For User experience)
 - [ ] Complete Code Refactor
 - [ ] Ensure Clean code
@@ -171,7 +179,7 @@ Also , all above statistics are supported by different kind of charts .
 ## Upcoming features : 
 The Upcoming features will be divided to certain Patches during a 9 months period 
 
-**Overall Patches : 
+**Overall Patches : **
 
 - [ ] Connect Copia to cloud database. 
 - [ ] The user could add an audio to every page. 
@@ -192,3 +200,24 @@ The Upcoming features will be divided to certain Patches during a 9 months perio
 #### Continuous development Strategy : 
 - Adding new brochures , Posters & fixing bugs.
 - Running an online survey to see what to add next to the application.
+
+## Patch notes 1.0.1+2 :
+- [ ] Changes in UI.
+- [ ] A marker to mark certain parts in the page.
+- [ ] Implementing night mode.
+- [ ] Document text to speech.
+- [ ] Bug fixes.
+
+## Patch notes 1.0.2+3 : 
+- [ ] Adding reading streaks (for concecutive days) with trophies.
+- [ ] Adding a detailed daily statistics about time and pages read.
+- [ ] Bug fixes
+
+## Patch notes 1.1.0 :
+- [ ] Make Copia app an open PDF file suggestion.
+- [ ] Add drawing pages (Can draw or write whatever the user wants) for every PDF.
+- [ ] The user could add an audio to every page. 
+- [ ] Bug fixes.
+
+## Patch notes 2.0 : 
+- [ ] Connect Copia to cloud database. 
