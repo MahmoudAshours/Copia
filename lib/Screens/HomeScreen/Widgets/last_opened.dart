@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:neumorphic/neumorphic.dart';
 
 class LastOpened extends StatelessWidget {
   @override
@@ -18,8 +19,10 @@ class LastOpened extends StatelessWidget {
           children: <Widget>[
             Align(
               alignment: Alignment.centerLeft,
-              child: Text(
+              child: NeuText(
                 'Last book opened',
+                depth: 20,
+                spread: 1,
                 style: GoogleFonts.cormorant(
                     fontSize: 25, fontWeight: FontWeight.w500),
               ),
@@ -33,8 +36,8 @@ class LastOpened extends StatelessWidget {
                     Hive.box('pdfDB').values.toList().cast<PDFDB>();
                 _pdfs.sort((b, a) => a.lastSeenDate.compareTo(b.lastSeenDate));
                 final _pdf = _pdfs[0];
-                return GestureDetector(
-                  onTap: () => Navigator.of(context).push(
+                return NeuButton(
+                  onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => PDFScreen(
                         snapshot: _pdf,
@@ -46,45 +49,27 @@ class LastOpened extends StatelessWidget {
                       ),
                     ),
                   ),
+                  decoration: NeumorphicDecoration(
+                    color: Color(0xff26292D),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                   child: Container(
-                    decoration: BoxDecoration(
-                        color: const Color(0xff584846),
-                        borderRadius: BorderRadius.circular(30)),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: <Widget>[
                           Container(
                             width: 200,
-                            height: 50,
-                            foregroundDecoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.white10,
-                                  spreadRadius: 0.1,
-                                  blurRadius: 3,
-                                  offset: Offset.zero,
-                                )
-                              ],
-                            ),
+                            height: 100,
                             decoration: BoxDecoration(
-                              color: Color(0xffEEEEED),
                               borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(20),
                                 bottomLeft: Radius.circular(5),
                                 bottomRight: Radius.circular(10),
                                 topRight: Radius.circular(10),
                               ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black38,
-                                  spreadRadius: 1,
-                                  blurRadius: 3,
-                                  offset: Offset.zero,
-                                ),
-                              ],
                               image: DecorationImage(
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fitWidth,
                                 image: FileImage(File(_pdf.thumb)),
                               ),
                             ),
@@ -93,12 +78,15 @@ class LastOpened extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: Container(
-                                child: Text(
+                                child: NeuText(
                                   '${_pdf.pdfName}',
+                                  depth: 30,
+                                  parentColor: Colors.grey[900],
+                                  spread: 9,
                                   style: GoogleFonts.cormorant(
                                       fontSize: 25,
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.white),
+                                      color: Color(0xf2EA4F2C)),
                                 ),
                               ),
                             ),

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:neumorphic/neumorphic.dart';
 
 class TopBar extends StatelessWidget {
   @override
@@ -20,10 +21,12 @@ class TopBar extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(
                       left: 10.0, right: 20.0, bottom: 20.0),
-                  child: Text(
+                  child: NeuText(
                     '${DateTime.now().day}',
+                    depth: 10,
+                    spread: 1,
                     style: GoogleFonts.cormorant(
-                        fontSize: 42, fontWeight: FontWeight.w600),
+                        fontSize: 42, color: Color(0xffAAABAD)),
                   ),
                 ),
               ),
@@ -32,10 +35,14 @@ class TopBar extends StatelessWidget {
                 top: 30,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
+                  child: NeuText(
                     _getYear() + ' ${DateTime.now().year}',
+                    depth: 5,
+                    spread: 0.7,
                     style: GoogleFonts.cormorant(
-                        fontSize: 18, fontWeight: FontWeight.w600),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xffAAABAD)),
                   ),
                 ),
               ),
@@ -44,28 +51,30 @@ class TopBar extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: GestureDetector(
-            onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => UploadPDF())),
-            child: Container(
-              child: CircleAvatar(
-                backgroundColor: Colors.black26,
-                child: Icon(Icons.add, color: Colors.amber, size: 30),
-              ),
+          child: NeuButton(
+            decoration: NeumorphicDecoration(
+              color: Color(0xff2D3036),
+              shape: BoxShape.circle,
             ),
+            onPressed: () => Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => UploadPDF())),
+            child: FaIcon(FontAwesomeIcons.plusCircle,
+                color: Color(0xf2EA4F2C), size: 25),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: GestureDetector(
-            onTap: () => Navigator.of(context)
+          child: NeuButton(
+            onPressed: () => Navigator.of(context)
                 .push(MaterialPageRoute(builder: (_) => StatsScreen())),
-            child: Container(
-              child: CircleAvatar(
-                backgroundColor: Colors.purple,
-                child: FaIcon(FontAwesomeIcons.chartLine,
-                    color: Colors.amber, size: 25),
-              ),
+            decoration: NeumorphicDecoration(
+              color: Color(0xff2D3036),
+              shape: BoxShape.circle,
+            ),
+            child: FaIcon(
+              FontAwesomeIcons.chartLine,
+              color: Colors.greenAccent,
+              size: 25,
             ),
           ),
         )

@@ -37,6 +37,8 @@ dependencies:
   fl_chart: ^0.9.4
   flip_card: ^0.4.4
   font_awesome_flutter: ^8.8.1
+  neumorphic: ^0.3.0
+
 
 
 

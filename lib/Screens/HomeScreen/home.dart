@@ -14,8 +14,15 @@ class HomeScreen extends StatelessWidget {
         children: <Widget>[
           TopBar(),
           ViewCards(),
-          Divider(),
+          Divider(
+            color: Color(0xffAAABAD),
+            indent: 10,
+          ),
           BookCards(),
+          Divider(
+            color: Color(0xffAAABAD),
+            indent: 10,
+          ),
           LastOpened(),
         ],
       ),

@@ -54,6 +54,7 @@ class _BottomAudioPlayerState extends State<BottomAudioPlayer>
           builder: (_, _bloc, __) {
             final _soundPath = box.getAt(widget.index).soundPath;
             if (_soundPath != null) {
+              print(_bloc.hideFab);
               return AnimatedOpacity(
                 opacity: _bloc.hideFab ? 0.0 : 1.0,
                 duration: Duration(milliseconds: 400),
