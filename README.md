@@ -21,7 +21,7 @@ Copia is an application used to store PDFs as books.
  ## 2 June 2020 
 - Copia 1.0.0 was sent to publication in google play store. 
 - The initial release contained all of the first 12 tasks.
-- Verified by play store on **/6/2020**.
+- Verified by play store on **5/6/2020**.
 - The next update estimated to be after two months.
 
 ## Project technical structures : 
@@ -202,11 +202,24 @@ The Upcoming features will be divided to certain Patches during a 9 months perio
 - Running an online survey to see what to add next to the application.
 
 ## Patch notes 1.0.1+2 :
+
+**Developed at two stages :**
+
+### First stage : 
 - [ ] Changes in UI.
+*Changes to Neumorphic design*
+- [ ] Bug fixes.
+
+**Bugs at first release:** 
+
+**Critical bugs**
+- Audio dissapears permenantly.
+- The bookmarked page dissappears from the list (in DB) randomly.
+
+### Second stage :
 - [ ] A marker to mark certain parts in the page.
 - [ ] Implementing night mode.
 - [ ] Document text to speech.
-- [ ] Bug fixes.
 
 ## Patch notes 1.0.2+3 : 
 - [ ] Adding reading streaks (for concecutive days) with trophies.
