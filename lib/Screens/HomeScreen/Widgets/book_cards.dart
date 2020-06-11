@@ -1,15 +1,24 @@
 import 'dart:io';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:copia/Screens/PDFScreen/pdfscreen.dart';
 import 'package:copia/Utils/no_books.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:neumorphic/neumorphic.dart';
+import 'package:path/path.dart';
 
-class BookCards extends StatelessWidget {
+class BookCards extends StatefulWidget {
+  @override
+  _BookCardsState createState() => _BookCardsState();
+}
+
+class _BookCardsState extends State<BookCards> {
+  bool _animateBack = false;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -28,45 +37,57 @@ class BookCards extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemBuilder: (_, int index) {
                 final _pdf = snapshot.getAt(index);
-                return FlipCard(
-                  direction: FlipDirection.VERTICAL,
-                  back: _showBookDetails(snapshot, index, context),
-                  front: Center(
-                    child: Column(
-                      children: <Widget>[
-                        NeuCard(
-                          bevel: 20,
-                          decoration: NeumorphicDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Color(0xff19170F),
-                          ),
-                          curveType: CurveType.flat,
-                          child: Container(
-                            child: Align(
-                              child: Container(
-                                width: 200,
-                                height: 240,
+                return FadeInUp(
+                  animate: true,
+                  duration: Duration(seconds: 1),
+                  child: FlipCard(
+                    direction: FlipDirection.VERTICAL,
+                    onFlipDone: (done) {
+                      print(done);
+                      setState(() {
+                        _animateBack = !done;
+                      });
+                    },
+                    back: _showBookDetails(snapshot, index, context),
+                    front: Center(
+                      child: Column(
+                        children: <Widget>[
+                          NeuCard(
+                            bevel: 10,
+                            decoration: NeumorphicDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: const Color(0xff26292D),
+                              border: Border.all(
+                                  color: const Color(0xff26292D), width: 8),
+                            ),
+                            curveType: CurveType.convex,
+                            child: Container(
+                              child: Align(
+                                child: Container(
+                                  width: 200,
+                                  height: 240,
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(File(_pdf.thumb)),
+                                ),
                               ),
                             ),
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: FileImage(File(_pdf.thumb)),
-                              ),
+                          ),
+                          NeuText(
+                            '${_pdf.pdfName}',
+                            spread: 1,
+                            depth: 10,
+                            parentColor: Colors.white30,
+                            style:  TextStyle(fontFamily: 'cormorant',
+                              fontSize: 20,
+                              color: Color(0xffAAABAD),
                             ),
                           ),
-                        ),
-                        NeuText(
-                          '${_pdf.pdfName}',
-                          spread: 1,
-                          depth: 10,
-                          parentColor: Colors.white30,
-                          style: GoogleFonts.cormorant(
-                            fontSize: 20,
-                            color: Color(0xffAAABAD),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -84,33 +105,37 @@ class BookCards extends StatelessWidget {
     return Column(
       children: <Widget>[
         NeuCard(
-          bevel: 0.1,
+          width: 200,
+          height: 300,
           decoration: NeumorphicDecoration(
             borderRadius: BorderRadius.circular(50),
-            color: Colors.white30,
-          ),
-          curveType: CurveType.concave, 
-          child: Container(
-            width: 200,
-            height: 300,
             color: const Color(0xff26292D),
-            child: SizedBox.expand(
-              child: SingleChildScrollView(
-                physics: NeverScrollableScrollPhysics(),
-                child: Column(
-                  children: [
-                    Row(
-                      children: <Widget>[
-                        Stack(
-                          children: <Widget>[
-                            SafeArea(
-                              minimum: EdgeInsets.all(30.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    height: 150,
-                                    width: 100,
+          ),
+          curveType: CurveType.convex,
+          child: SizedBox.expand(
+            child: SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  Row(
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          SafeArea(
+                            minimum: EdgeInsets.all(30.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                NeuCard(
+                                  height: 150,
+                                  bevel: 20,
+                                  width: 100,
+                                  decoration: NeumorphicDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: const Color(0xff26292D),
+                                  ),
+                                  curveType: CurveType.convex,
+                                  child: Container(
                                     decoration: BoxDecoration(
                                       image: DecorationImage(
                                         fit: BoxFit.cover,
@@ -118,65 +143,120 @@ class BookCards extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            Positioned(
-                              top: 150,
-                              child: SafeArea(
-                                minimum: EdgeInsets.all(30.0),
-                                child: Container(
-                                  width: 100,
-                                  height: 10,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xffACACAE),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
+                          ),
+                          Positioned(
+                            top: 150,
+                            child: SafeArea(
+                              minimum: EdgeInsets.all(30.0),
+                              child: NeuCard(
+                                width: 100,
+                                height: 10,
+                                curveType: CurveType.convex,
+                                decoration: NeumorphicDecoration(
+                                  color: const Color(0xff26292D),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                        SizedBox(width: 40.0),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Created on : ${_pdf.insertedDate.day}/${_pdf.insertedDate.month}/${_pdf.insertedDate.year}',
-                        style: GoogleFonts.cormorant(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 20,
-                            color: Colors.grey),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => PDFScreen(
-                              snapshot: snapshot.getAt(index), index: index))),
-                      child: Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: NeuText(
-                            'View pdf',
-                            depth: 10,
-                            spread: 1,
-                            style: GoogleFonts.cormorant(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 20,
-                                color: Colors.blue),
                           ),
+                        ],
+                      ),
+                      SizedBox(width: 40.0),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      BounceInUp(
+                        duration: Duration(seconds: 1),
+                        animate: _animateBack,
+                        child: NeuButton(
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => PDFScreen(
+                                  snapshot: snapshot.getAt(index),
+                                  index: index),
+                            ),
+                          ),
+                          decoration: NeumorphicDecoration(
+                              color: const Color(0xff26292D),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: FaIcon(FontAwesomeIcons.bookReader,
+                              color: Colors.greenAccent, size: 20),
                         ),
                       ),
-                    )
-                  ],
-                ),
+                      BounceInUp(
+                        duration: Duration(seconds: 2),
+                        animate: _animateBack,
+                        controller: (controller) {
+                          if (_animateBack) controller.forward();
+                          controller.reverse();
+                        },
+                        manualTrigger: true,
+                        child: NeuButton(
+                          onPressed: () => _sharePdf(snapshot, index),
+                          decoration: NeumorphicDecoration(
+                              color: const Color(0xff26292D),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: FaIcon(FontAwesomeIcons.share,
+                              color: Colors.orangeAccent, size: 20),
+                        ),
+                      ),
+                      BounceInUp(
+                        duration: Duration(seconds: 3),
+                        animate: _animateBack,
+                        child: NeuButton(
+                            onPressed: () =>
+                                _deleteDialog(context, snapshot, index),
+                            decoration: NeumorphicDecoration(
+                                color: const Color(0xff26292D),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: FaIcon(FontAwesomeIcons.trash,
+                                color: Colors.redAccent, size: 20)),
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
         ),
       ],
+    );
+  }
+
+  void _sharePdf(Box snapshot, index) async {
+    final _pdf = snapshot.getAt(index);
+    final _bytes = await File(_pdf.pdfAsset).readAsBytes();
+    Share.file(
+        'Share PDF', "${basename(_pdf.pdfAsset)}", _bytes, 'application/pdf');
+  }
+
+  void _deleteDialog(BuildContext context, Box snapshot, index) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          content: Text('Are you sure you want to delete this book?'),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+                snapshot
+                    .deleteAt(index)
+                    .whenComplete(() => Navigator.pop(context));
+              },
+              child: Text('Yes', style: TextStyle(color: Colors.red)),
+            ),
+            FlatButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('No'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

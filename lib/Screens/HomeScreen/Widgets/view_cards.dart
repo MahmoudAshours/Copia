@@ -16,7 +16,7 @@ class ViewCards extends StatelessWidget {
             'Your books',
             spread: 0.4,
             depth: 10,
-            style: GoogleFonts.cormorant(
+            style:  TextStyle(fontFamily: 'cormorant',
                 fontSize: 30,
                 fontWeight: FontWeight.w700,
                 color: Color(0xffAAABAD)),
@@ -30,7 +30,7 @@ class ViewCards extends StatelessWidget {
                 children: [
                   Text(
                     'View all',
-                    style: GoogleFonts.cormorant(
+                    style:  TextStyle(fontFamily: 'cormorant',
                         color: Color(0xffF3BB84),
                         fontWeight: FontWeight.w700,
                         fontSize: 17),

@@ -38,6 +38,7 @@ dependencies:
   flip_card: ^0.4.4
   font_awesome_flutter: ^8.8.1
   neumorphic: ^0.3.0
+  animate_do: ^1.7.2
 
 
 
@@ -50,8 +51,8 @@ flutter_icons:
   image_path: "assets/images/logo/owl.png"
 
 flutter_native_splash:
-  image: assets/images/logo/owl.png
-  color: "ffffff"
+  image: assets/images/logo/copia.png
+  color: "26292D"
   fill: true
 
   cupertino_icons: ^0.1.3
@@ -71,3 +72,6 @@ flutter:
     - family: owl
       fonts:
         - asset: assets/Fonts/Owl.ttf
+    - family: cormorant
+      fonts:
+        - asset: assets/Fonts/cormorant.ttf

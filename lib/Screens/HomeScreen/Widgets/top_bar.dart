@@ -25,7 +25,7 @@ class TopBar extends StatelessWidget {
                     '${DateTime.now().day}',
                     depth: 10,
                     spread: 1,
-                    style: GoogleFonts.cormorant(
+                    style:  TextStyle(fontFamily: 'cormorant',
                         fontSize: 42, color: Color(0xffAAABAD)),
                   ),
                 ),
@@ -39,7 +39,7 @@ class TopBar extends StatelessWidget {
                     _getYear() + ' ${DateTime.now().year}',
                     depth: 5,
                     spread: 0.7,
-                    style: GoogleFonts.cormorant(
+                    style:  TextStyle(fontFamily: 'cormorant',
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: Color(0xffAAABAD)),

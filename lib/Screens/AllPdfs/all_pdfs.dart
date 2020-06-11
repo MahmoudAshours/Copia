@@ -104,7 +104,7 @@ class _AllPDFsState extends State<AllPDFs> with SingleTickerProviderStateMixin {
         ),
         title: Text(
           '${_pdfSnapshot.pdfName}',
-          style: GoogleFonts.cormorant(
+          style: TextStyle(fontFamily: 'cormorant',
               fontWeight: FontWeight.w900, fontSize: 20, color: Colors.grey),
         ),
         trailing: Container(
@@ -254,7 +254,7 @@ class PDFsearchDelegate extends SearchDelegate {
                   ),
                   title: Text(
                     '${_pdfSnapshot.pdfName}',
-                    style: GoogleFonts.cormorant(
+                    style:  TextStyle(fontFamily: 'cormorant',
                         fontWeight: FontWeight.w900,
                         fontSize: 20,
                         color: Colors.grey),
@@ -353,7 +353,7 @@ class PDFsearchDelegate extends SearchDelegate {
                   ),
                   title: Text(
                     '${_pdfSnapshot.pdfName}',
-                    style: GoogleFonts.cormorant(
+                    style:  TextStyle(fontFamily: 'cormorant',
                         fontWeight: FontWeight.w900,
                         fontSize: 20,
                         color: Colors.grey),

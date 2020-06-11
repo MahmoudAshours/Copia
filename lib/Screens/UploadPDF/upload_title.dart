@@ -16,7 +16,7 @@ class UploadPdfTitle extends StatelessWidget {
                 borderRadius: BorderRadius.circular(100)),
             child: Text(
               'Upload your PDF',
-              style: GoogleFonts.cormorant( fontSize: 30),
+              style:  TextStyle(fontFamily: 'cormorant', fontSize: 30),
             ),
           ),
         ),

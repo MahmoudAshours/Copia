@@ -92,7 +92,7 @@ class PdfAudio extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               'You have audio file ${basename(_pdf.soundPath)}',
-                              style: GoogleFonts.cormorant(),
+                              style:  TextStyle(fontFamily: 'cormorant',),
                             ),
                           ),
                           IconButton(

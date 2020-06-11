@@ -23,7 +23,7 @@ class LastOpened extends StatelessWidget {
                 'Last book opened',
                 depth: 20,
                 spread: 1,
-                style: GoogleFonts.cormorant(
+                style: TextStyle(fontFamily: 'cormorant',
                     fontSize: 25, fontWeight: FontWeight.w500),
               ),
             ),
@@ -83,7 +83,7 @@ class LastOpened extends StatelessWidget {
                                   depth: 30,
                                   parentColor: Colors.grey[900],
                                   spread: 9,
-                                  style: GoogleFonts.cormorant(
+                                  style:  TextStyle(fontFamily: 'cormorant',
                                       fontSize: 25,
                                       fontWeight: FontWeight.w500,
                                       color: Color(0xf2EA4F2C)),

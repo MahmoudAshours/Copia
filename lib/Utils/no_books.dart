@@ -18,7 +18,7 @@ class NoBooks extends StatelessWidget {
         ),
         Text(
           'There is no books yet..Add one!',
-          style: GoogleFonts.cormorant(
+          style:  TextStyle(fontFamily: 'cormorant',
               fontSize: 21, fontWeight: FontWeight.w800, color: Colors.blue),
         )
       ],
