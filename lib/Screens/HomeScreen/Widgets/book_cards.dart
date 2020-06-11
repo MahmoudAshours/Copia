@@ -39,12 +39,11 @@ class _BookCardsState extends State<BookCards> {
                 final _pdf = snapshot.getAt(index);
                 return FadeInUp(
                   animate: true,
-                  duration: Duration(seconds: 1),
+                  delay: Duration(milliseconds: index*700),
                   child: FlipCard(
                     direction: FlipDirection.VERTICAL,
                     onFlipDone: (done) {
-                      print(done);
-                      setState(() {
+                       setState(() {
                         _animateBack = !done;
                       });
                     },

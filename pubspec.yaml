@@ -38,6 +38,7 @@ dependencies:
   flip_card: ^0.4.4
   font_awesome_flutter: ^8.8.1
   neumorphic: ^0.3.0
+  flutter_neumorphic: ^3.0.1
   animate_do: ^1.7.2
 
 

@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:copia/Screens/UploadPDF/add_button.dart';
 import 'package:copia/Screens/UploadPDF/book_svg.dart';
 import 'package:copia/Screens/UploadPDF/circle_svg.dart';
@@ -8,18 +9,25 @@ import 'package:copia/Screens/UploadPDF/upload_image.dart';
 import 'package:copia/Screens/UploadPDF/upload_title.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class UploadPDF extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffEEEEED),
+      backgroundColor: const Color(0xff26292D),
       resizeToAvoidBottomPadding: false,
       body: Stack(
         children: <Widget>[
-          CircleSvg(alignment: Alignment.topRight),
-          CircleSvg(alignment: Alignment.bottomLeft),
-          UploadPdfTitle(),
+          Opacity(
+            opacity: 0.6,
+            child: SvgPicture.asset(
+              'assets/images/eye.svg',
+              fit: BoxFit.fitHeight,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+            ),
+          ),
           BookSvg(),
           ReadSvg(),
           SafeArea(
@@ -32,7 +40,10 @@ class UploadPDF extends StatelessWidget {
                   PdfTitleTextField(),
                   SizedBox(height: 10.0),
                   UploadFile(),
-                  UploadImage(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: UploadImage(),
+                  ),
                   SizedBox(height: 30),
                   UploadButton()
                 ],
