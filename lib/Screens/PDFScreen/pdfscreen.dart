@@ -29,7 +29,7 @@ class PDFScreen extends StatefulWidget {
 class _PDFScreenState extends State<PDFScreen> {
   int index;
   PdfController _pdfController;
-  int currentPage; 
+  int currentPage;
   Axis direction = Axis.horizontal;
   final DateTime _initDateTime = DateTime.now();
 
@@ -78,13 +78,13 @@ class _PDFScreenState extends State<PDFScreen> {
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         floatingActionButton: _circularFab(_dbProvider, index, _pdfProvider),
         bottomNavigationBar: BottomAudioPlayer(index: index),
-        backgroundColor: const Color(0xffEEEEED),
+        backgroundColor: const Color(0xff26292D),
         body: GestureDetector(
           onTap: () => _hideFloatingActionBar(_pdfProvider),
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            color: const Color(0xffEEEEED),
+            color: const Color(0xff26292D),
             child: RepaintBoundary(
               key: _pdfProvider.scr,
               child: Stack(
@@ -142,12 +142,12 @@ class _PDFScreenState extends State<PDFScreen> {
       duration: Duration(milliseconds: 400),
       child: FabCircularMenu(
         fabCloseColor: Colors.black,
-        ringColor: Color(0xffA64848),
-        fabColor: Colors.white,
+        ringColor:  Color(0xff26292D),
+        fabColor: Color(0xf2EA4F2C),
         fabSize: 40,
         fabElevation: 2.5,
         animationCurve: Curves.easeInOutCirc,
-        fabCloseIcon: Icon(Owl.animal, color: Colors.black),
+        fabCloseIcon: Icon(Owl.animal, color: Colors.white),
         animationDuration: Duration(milliseconds: 500),
         fabOpenIcon: Icon(Owl.animal, color: Colors.white),
         children: <Widget>[

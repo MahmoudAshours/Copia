@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
+import 'package:neumorphic/neumorphic.dart' as Neu;
 
 class BookmarkList extends StatelessWidget {
   final int index;
@@ -11,8 +14,13 @@ class BookmarkList extends StatelessWidget {
   BookmarkList({this.index, this.pdfController});
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-        icon: Icon(Icons.list), onPressed: () => _bookmarksSheet(context));
+    return GestureDetector(
+      child: NeumorphicIcon(
+        FontAwesomeIcons.listOl,
+        style: NeumorphicStyle(color: Colors.deepOrange),
+      ),
+      onTap: () => _bookmarksSheet(context),
+    );
   }
 
   void _bookmarksSheet(BuildContext context) {
@@ -24,48 +32,118 @@ class BookmarkList extends StatelessWidget {
       builder: (_) => Container(
         height: 400,
         decoration: BoxDecoration(
-            color: const Color(0xffEEEEED),
+            color: const Color(0xff26292D),
             borderRadius: BorderRadius.circular(40)),
         child: Stack(
           children: <Widget>[
-            Center(
-              child: Opacity(
-                opacity: 0.3,
-                child: FaIcon(
-                  FontAwesomeIcons.bookOpen,
-                  color: Colors.red,
-                  size: MediaQuery.of(context).size.width,
-                ),
-              ),
-            ),
             ValueListenableBuilder(
               valueListenable: Hive.box('pdfDB').listenable(),
               builder: (_, Box snap, __) {
                 if (snap.getAt(index).bookmarked == null ||
                     snap.getAt(index).bookmarked.isEmpty) {
-                  return Center(
-                      child: Text('You dont have any favorites yet!'));
-                }
-                return ListView(
-                  children: snap.getAt(index).bookmarked.map<Widget>(
-                    (int pageNumber) {
-                      return ListTile(
-                        title: Text(
-                          'Page number $pageNumber',
-                          style: GoogleFonts.cagliostro(
-                              fontWeight: FontWeight.w700),
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Center(
+                        child: Text(
+                          'You dont have any favorites yet!',
+                          style: TextStyle(
+                              color: Color(0xffBFC0C2),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20),
                         ),
-                        leading: Icon(Icons.bookmark, color: Colors.black),
-                        onTap: () => pdfController
-                            .animateToPage(
-                              pageNumber,
-                              duration: Duration(seconds: 1),
-                              curve: Curves.easeInOutBack,
-                            )
-                            .then((_) => Navigator.of(context).pop()),
-                      );
-                    },
-                  ).toList(),
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                          width: 150,
+                          height: 150,
+                          child:
+                              SvgPicture.asset('assets/images/heartbroken.svg'))
+                    ],
+                  );
+                }
+                return Wrap(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(25.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Favorites',
+                            style: TextStyle(
+                              fontSize: 23,
+                              letterSpacing: 1.3,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xffD3D4D5),
+                            ),
+                          ),
+                          Neu.NeuButton(
+                            child:
+                                Icon(Icons.favorite, color: Colors.redAccent),
+                            decoration: Neu.NeumorphicDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: Color(0xff26292D),
+                            ),
+                            onPressed: () {},
+                          )
+                        ],
+                      ),
+                    ),
+                    Neumorphic(
+                      child: Divider(
+                        height: 2,
+                      ),
+                      style: NeumorphicStyle(
+                          color: Color(0xff26292D),
+                          depth: 2,
+                          lightSource: LightSource.top),
+                    ),
+                    Container(
+                      height: 400,
+                      child: ListView(
+                        children: snap.getAt(index).bookmarked.map<Widget>(
+                          (int pageNumber) {
+                            return ListTile(
+                              title: Text(
+                                'Page number $pageNumber',
+                                style: GoogleFonts.cagliostro(
+                                  fontWeight: FontWeight.w700,
+                                color: Colors.white70
+                                ),
+                              ),
+                              leading: Neumorphic(
+                                style: NeumorphicStyle(
+                                  color: Color(0xff26292D),
+                                  disableDepth: true,
+                                  shape: NeumorphicShape.concave,
+                                  boxShape: NeumorphicBoxShape.circle(),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    '${index + 1}',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ),
+                              onTap: () => pdfController
+                                  .animateToPage(
+                                    pageNumber,
+                                    duration: Duration(seconds: 1),
+                                    curve: Curves.easeInOutBack,
+                                  )
+                                  .then((_) => Navigator.of(context).pop()),
+                            );
+                          },
+                        ).toList(),
+                      ),
+                    ),
+                  ],
                 );
               },
             ),

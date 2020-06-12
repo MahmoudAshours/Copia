@@ -1,5 +1,6 @@
 import 'package:copia/Hive/database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -23,9 +24,22 @@ class _PdfNotesState extends State<PdfNotes> {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: FaIcon(FontAwesomeIcons.stickyNote),
-      onPressed: () => showModalBottomSheet(
+    return GestureDetector(
+      child: Neumorphic(
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: FaIcon(
+            FontAwesomeIcons.quoteLeft,
+            color: Color(0xff5EF0C5),
+            size: 17,
+          ),
+        ),
+        style: NeumorphicStyle(
+            color: Color(0xff26292D),
+            intensity: 0.3,
+            boxShape: NeumorphicBoxShape.circle()),
+      ),
+      onTap: () => showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         useRootNavigator: true,
@@ -33,6 +47,7 @@ class _PdfNotesState extends State<PdfNotes> {
           return StatefulBuilder(
             builder: (_, StateSetter setState) {
               return Container(
+                color: const Color(0xff26292D),
                 height: MediaQuery.of(context).size.height,
                 child: SingleChildScrollView(
                   child: ValueListenableBuilder(
@@ -124,7 +139,10 @@ class _PdfNotesState extends State<PdfNotes> {
                                   ),
                                 ),
                                 GestureDetector(
-                                  child: FaIcon(FontAwesomeIcons.trashAlt,color: Colors.redAccent,),
+                                  child: FaIcon(
+                                    FontAwesomeIcons.trashAlt,
+                                    color: Colors.redAccent,
+                                  ),
                                   onTap: () {
                                     final _modifiedPDF = PDFDB(
                                       bookmarked: _pdf.bookmarked,

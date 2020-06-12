@@ -1,10 +1,11 @@
 import 'dart:io';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:copia/Hive/database.dart';
 import 'package:copia/Screens/PDFScreen/pdfscreen.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path/path.dart';
@@ -19,41 +20,58 @@ class _AllPDFsState extends State<AllPDFs> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xffC05E4E),
-        elevation: 4,
-        actions: <Widget>[
-          GestureDetector(
-            onTap: () => _search(context, PDFsearchDelegate()),
-            child:
-                SafeArea(child: Icon(Icons.search, color: Colors.cyanAccent)),
-          )
-        ],
+    return NeumorphicTheme(
+      themeMode: ThemeMode.dark,
+      theme: NeumorphicThemeData(
+        defaultTextColor: Color(0xFF3E3E3E),
+        baseColor: const Color(0xff26292D),
+        intensity: 0.3,
+        lightSource: LightSource.bottomRight,
+        depth: 3,
       ),
-      body: ValueListenableBuilder(
-        valueListenable: Hive.box('pdfDB').listenable(),
-        builder: (_, Box snapshot, Widget child) {
-          if (snapshot.isEmpty)
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  child: Center(child: Text('There is no items')),
-                ),
-              ],
+      child: Scaffold(
+        backgroundColor: const Color(0xff26292D),
+        appBar: NeumorphicAppBar(
+          buttonStyle: NeumorphicStyle(color: const Color(0xff26292D)),
+          color: const Color(0xff26292D),
+          textStyle: TextStyle(color: Colors.red),
+          actions: <Widget>[
+            GestureDetector(
+              onTap: () => _search(context, PDFsearchDelegate()),
+              child:
+                  SafeArea(child: Icon(Icons.search, color: Colors.cyanAccent)),
+            )
+          ],
+        ),
+        body: ValueListenableBuilder(
+          valueListenable: Hive.box('pdfDB').listenable(),
+          builder: (_, Box snapshot, Widget child) {
+            if (snapshot.isEmpty)
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    child: Center(child: Text('There is no items')),
+                  ),
+                ],
+              );
+            return Container(
+              height: MediaQuery.of(context).size.height,
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemCount: snapshot.length,
+                shrinkWrap: true,
+                key: _listKey,
+                itemBuilder: (BuildContext context, int index) {
+                  final _pdfSnapshot = snapshot.getAt(index);
+                  return _buildListItem(context, index, _pdfSnapshot, snapshot);
+                },
+              ),
             );
-          return ListView.builder(
-            itemCount: snapshot.length,
-            shrinkWrap: true,
-            key: _listKey,
-            itemBuilder: (BuildContext context, int index) {
-              final _pdfSnapshot = snapshot.getAt(index);
-              return _buildListItem(context, index, _pdfSnapshot, snapshot);
-            },
-          );
-        },
+          },
+        ),
       ),
     );
   }
@@ -62,71 +80,77 @@ class _AllPDFsState extends State<AllPDFs> with SingleTickerProviderStateMixin {
       BuildContext context, int index, PDFDB _pdfSnapshot, Box snapshot) {
     return Padding(
       padding: EdgeInsets.only(top: 20),
-      child: ListTile(
+      child: GestureDetector(
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute(
               builder: (_) => PDFScreen(index: index, snapshot: _pdfSnapshot)),
         ),
-        leading: Container(
-          height: 300,
-          width: 100,
-          foregroundDecoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white10,
-                spreadRadius: 0.1,
-                blurRadius: 3,
-                offset: Offset.zero,
-              )
-            ],
-          ),
-          decoration: BoxDecoration(
-            color: Color(0xffEEEEED),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              bottomLeft: Radius.circular(5),
-              bottomRight: Radius.circular(10),
-              topRight: Radius.circular(10),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black38,
-                spreadRadius: 1,
-                blurRadius: 3,
-                offset: Offset.zero,
-              ),
-            ],
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: FileImage(File(_pdfSnapshot.thumb)),
-            ),
-          ),
-        ),
-        title: Text(
-          '${_pdfSnapshot.pdfName}',
-          style: TextStyle(fontFamily: 'cormorant',
-              fontWeight: FontWeight.w900, fontSize: 20, color: Colors.grey),
-        ),
-        trailing: Container(
-          width: 100,
-          child: Row(
-            children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.share,
-                  color: Colors.red,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Expanded(
+              child: FadeInLeft(
+                delay: Duration(milliseconds: 500 * index),
+                child: Neumorphic(
+                  curve: Curves.bounceInOut,
+                  style: NeumorphicStyle(
+                      color: const Color(0xff26292D),
+                      border: NeumorphicBorder(color: Colors.black),
+                      lightSource: LightSource.top,
+                      shadowDarkColor: Colors.black),
+                  child: Container(
+                    height: 300,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: FileImage(File(_pdfSnapshot.thumb)),
+                      ),
+                    ),
+                  ),
                 ),
-                onPressed: () => _sharePdf(snapshot, index),
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.delete,
-                  color: Colors.red,
+            ),
+            Text(
+              '${_pdfSnapshot.pdfName}',
+              style: TextStyle(
+                  fontFamily: 'cormorant',
+                  fontWeight: FontWeight.w900,
+                  fontSize: 20,
+                  color: Colors.grey),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: 100,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: BounceInUp( 
+                        child: GestureDetector(
+                          child: NeumorphicIcon(
+                            Icons.share,
+                            style: NeumorphicStyle(color: Color(0xffAE883E)),
+                            size: 20,
+                          ),
+                          onTap: () => _sharePdf(snapshot, index),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => _deleteDialog(context, snapshot, index),
+                      child: BounceInUp(
+                        child: NeumorphicIcon(
+                          Icons.delete,
+                          style: NeumorphicStyle(color: Color(0xffE03B3C)),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                onPressed: () => _deleteDialog(context, snapshot, index),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -192,201 +216,210 @@ class PDFsearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: Hive.box('pdfDB').listenable(),
-      builder: (_, Box snapshot, __) {
-        return ListView.builder(
-          itemCount: snapshot.length,
-          cacheExtent: 7,
-          shrinkWrap: true,
-          addSemanticIndexes: true,
-          itemBuilder: (_, int index) {
-            final PDFDB _pdfSnapshot = snapshot.getAt(index);
-            if (_pdfSnapshot.pdfName
-                    .toLowerCase()
-                    .contains(query.toLowerCase()) ||
-                basename(_pdfSnapshot.pdfAsset)
-                    .toLowerCase()
-                    .contains(query.toLowerCase()))
-              return Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: ListTile(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          PDFScreen(index: index, snapshot: _pdfSnapshot),
-                    ),
-                  ),
-                  leading: Container(
-                    height: 300,
-                    width: 100,
-                    foregroundDecoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white10,
-                          spreadRadius: 0.1,
-                          blurRadius: 3,
-                          offset: Offset.zero,
-                        )
-                      ],
-                    ),
-                    decoration: BoxDecoration(
-                      color: Color(0xffEEEEED),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        bottomLeft: Radius.circular(5),
-                        bottomRight: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black38,
-                          spreadRadius: 1,
-                          blurRadius: 3,
-                          offset: Offset.zero,
-                        ),
-                      ],
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: FileImage(File(_pdfSnapshot.thumb)),
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      color: const Color(0xff26292D),
+      child: ValueListenableBuilder(
+        valueListenable: Hive.box('pdfDB').listenable(),
+        builder: (_, Box snapshot, __) {
+          return ListView.builder(
+            itemCount: snapshot.length,
+            cacheExtent: 7,
+            shrinkWrap: true,
+            addSemanticIndexes: true,
+            itemBuilder: (_, int index) {
+              final PDFDB _pdfSnapshot = snapshot.getAt(index);
+              if (_pdfSnapshot.pdfName
+                      .toLowerCase()
+                      .contains(query.toLowerCase()) ||
+                  basename(_pdfSnapshot.pdfAsset)
+                      .toLowerCase()
+                      .contains(query.toLowerCase()))
+                return Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: ListTile(
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            PDFScreen(index: index, snapshot: _pdfSnapshot),
                       ),
                     ),
-                  ),
-                  title: Text(
-                    '${_pdfSnapshot.pdfName}',
-                    style:  TextStyle(fontFamily: 'cormorant',
-                        fontWeight: FontWeight.w900,
-                        fontSize: 20,
-                        color: Colors.grey),
-                  ),
-                  trailing: Container(
-                    width: 100,
-                    child: Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Icons.share,
-                            color: Colors.red,
-                          ),
-                          onPressed: () => _sharePdf(snapshot, index),
+                    leading: Container(
+                      height: 300,
+                      width: 100,
+                      foregroundDecoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.white10,
+                            spreadRadius: 0.1,
+                            blurRadius: 3,
+                            offset: Offset.zero,
+                          )
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                        color: Color(0xffEEEEED),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          bottomLeft: Radius.circular(5),
+                          bottomRight: Radius.circular(10),
+                          topRight: Radius.circular(10),
                         ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.red,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black38,
+                            spreadRadius: 1,
+                            blurRadius: 3,
+                            offset: Offset.zero,
                           ),
-                          onPressed: () =>
-                              _deleteDialog(context, snapshot, index),
+                        ],
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: FileImage(File(_pdfSnapshot.thumb)),
                         ),
-                      ],
+                      ),
+                    ),
+                    title: Text(
+                      '${_pdfSnapshot.pdfName}',
+                      style: TextStyle(
+                          fontFamily: 'cormorant',
+                          fontWeight: FontWeight.w900,
+                          fontSize: 20,
+                          color: Colors.grey),
+                    ),
+                    trailing: Container(
+                      width: 100,
+                      child: Row(
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(
+                              Icons.share,
+                              color: Colors.red,
+                            ),
+                            onPressed: () => _sharePdf(snapshot, index),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            onPressed: () =>
+                                _deleteDialog(context, snapshot, index),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            return Container();
-          },
-        );
-      },
+                );
+              return Container();
+            },
+          );
+        },
+      ),
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: Hive.box('pdfDB').listenable(),
-      builder: (_, Box snapshot, __) {
-        return ListView.builder(
-          itemCount: snapshot.length,
-          cacheExtent: 7,
-          shrinkWrap: true,
-          addSemanticIndexes: true,
-          itemBuilder: (_, int index) {
-            final PDFDB _pdfSnapshot = snapshot.getAt(index);
-            if (_pdfSnapshot.pdfName
-                    .toLowerCase()
-                    .contains(query.toLowerCase()) ||
-                basename(_pdfSnapshot.pdfAsset.toLowerCase())
-                    .contains(query.toLowerCase()))
-              return Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: ListTile(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          PDFScreen(index: index, snapshot: _pdfSnapshot),
-                    ),
-                  ),
-                  leading: Container(
-                    height: 300,
-                    width: 100,
-                    foregroundDecoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white10,
-                          spreadRadius: 0.1,
-                          blurRadius: 3,
-                          offset: Offset.zero,
-                        )
-                      ],
-                    ),
-                    decoration: BoxDecoration(
-                      color: Color(0xffEEEEED),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        bottomLeft: Radius.circular(5),
-                        bottomRight: Radius.circular(10),
-                        topRight: Radius.circular(10),
+    return Container(
+        height: MediaQuery.of(context).size.height,
+        color: const Color(0xff26292D),
+        child: ValueListenableBuilder(
+          valueListenable: Hive.box('pdfDB').listenable(),
+          builder: (_, Box snapshot, __) {
+            return ListView.builder(
+              itemCount: snapshot.length,
+              cacheExtent: 7,
+              shrinkWrap: true,
+              addSemanticIndexes: true,
+              itemBuilder: (_, int index) {
+                final PDFDB _pdfSnapshot = snapshot.getAt(index);
+                if (_pdfSnapshot.pdfName
+                        .toLowerCase()
+                        .contains(query.toLowerCase()) ||
+                    basename(_pdfSnapshot.pdfAsset.toLowerCase())
+                        .contains(query.toLowerCase()))
+                  return Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: ListTile(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              PDFScreen(index: index, snapshot: _pdfSnapshot),
+                        ),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black38,
-                          spreadRadius: 1,
-                          blurRadius: 3,
-                          offset: Offset.zero,
+                      leading: Container(
+                        height: 300,
+                        width: 100,
+                        foregroundDecoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white10,
+                              spreadRadius: 0.1,
+                              blurRadius: 3,
+                              offset: Offset.zero,
+                            )
+                          ],
                         ),
-                      ],
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: FileImage(File(_pdfSnapshot.thumb)),
+                        decoration: BoxDecoration(
+                          color: Color(0xffEEEEED),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            bottomLeft: Radius.circular(5),
+                            bottomRight: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black38,
+                              spreadRadius: 1,
+                              blurRadius: 3,
+                              offset: Offset.zero,
+                            ),
+                          ],
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: FileImage(File(_pdfSnapshot.thumb)),
+                          ),
+                        ),
+                      ),
+                      title: Text(
+                        '${_pdfSnapshot.pdfName}',
+                        style: TextStyle(
+                            fontFamily: 'cormorant',
+                            fontWeight: FontWeight.w900,
+                            fontSize: 20,
+                            color: Colors.grey),
+                      ),
+                      trailing: Container(
+                        width: 100,
+                        child: Row(
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(
+                                Icons.share,
+                                color: Colors.red,
+                              ),
+                              onPressed: () => _sharePdf(snapshot, index),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              ),
+                              onPressed: () =>
+                                  _deleteDialog(context, snapshot, index),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  title: Text(
-                    '${_pdfSnapshot.pdfName}',
-                    style:  TextStyle(fontFamily: 'cormorant',
-                        fontWeight: FontWeight.w900,
-                        fontSize: 20,
-                        color: Colors.grey),
-                  ),
-                  trailing: Container(
-                    width: 100,
-                    child: Row(
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(
-                            Icons.share,
-                            color: Colors.red,
-                          ),
-                          onPressed: () => _sharePdf(snapshot, index),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.red,
-                          ),
-                          onPressed: () =>
-                              _deleteDialog(context, snapshot, index),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            return Container();
+                  );
+                return Container();
+              },
+            );
           },
-        );
-      },
-    );
+        ));
   }
 
   void _sharePdf(Box snapshot, index) async {

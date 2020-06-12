@@ -1,6 +1,7 @@
 import 'package:copia/Hive/database.dart';
 import 'package:copia/Provider/prov_db.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -17,13 +18,14 @@ class BookmarkPdf extends StatelessWidget {
       valueListenable: hive.listenable(),
       builder: (_, Box snapshot, Widget child) {
         final PDFDB _pdf = hive.getAt(index);
-        return CircleAvatar(
-          backgroundColor: Colors.black,
-          child: GestureDetector(
-            onTap: () => bookmark(_bloc, _pdf),
-            child: Icon(
-              Icons.favorite,
+        return GestureDetector(
+          onTap: () => bookmark(_bloc, _pdf),
+          child: NeumorphicIcon(
+            Icons.favorite,
+            style: NeumorphicStyle(
               color: _bookmarkColorChecker(_pdf),
+              depth: 20,
+              shadowDarkColor: Colors.black12
             ),
           ),
         );

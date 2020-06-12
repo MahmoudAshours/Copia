@@ -1,7 +1,6 @@
 import 'package:copia/Screens/HomeScreen/home.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/material.dart'; 
 
 class ControllerScreen extends StatelessWidget {
   Widget build(BuildContext context) {

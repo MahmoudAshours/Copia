@@ -64,7 +64,7 @@ class UploadButton extends StatelessWidget {
               ),
             );
           final pdf = PDFDB(
-            pdfName: _bloc.getPdfTitle ?? '${basename(_bloc.getPdf)}',
+            pdfName: _bloc.getPdfTitle ?? '${basename(_bloc.getPdf.substring(0,8))}',
             thumb: _bloc?.getImage ?? 'assets/images/onboarding3.png',
             pdfAsset: _bloc.getPdf,
             totalHours: 0,

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:copia/Provider/pdfscreen_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_sound/flutter_sound_player.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -54,14 +55,13 @@ class _BottomAudioPlayerState extends State<BottomAudioPlayer>
           builder: (_, _bloc, __) {
             final _soundPath = box.getAt(widget.index).soundPath;
             if (_soundPath != null) {
-              print(_bloc.hideFab);
               return AnimatedOpacity(
                 opacity: _bloc.hideFab ? 0.0 : 1.0,
                 duration: Duration(milliseconds: 400),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.black87,
+                    color: Color(0xff26292D),
                   ),
                   height: 50,
                   child: Row(
@@ -78,12 +78,23 @@ class _BottomAudioPlayerState extends State<BottomAudioPlayer>
                             },
                           );
                         },
-                        child: CircleAvatar(
-                          backgroundColor: Colors.red,
-                          child: AnimatedIcon(
-                            icon: AnimatedIcons.play_pause,
-                            progress: _controller,
-                            color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Neumorphic(
+                            style: NeumorphicStyle(
+                                color: Color(0xff26292D),
+                                intensity: 0.3,
+                                depth: 30,
+                                lightSource: LightSource.bottom,
+                                boxShape: NeumorphicBoxShape.circle()),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: AnimatedIcon(
+                                icon: AnimatedIcons.play_pause,
+                                progress: _controller,
+                                color: Color(0xff26E0FB),
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -91,8 +102,8 @@ class _BottomAudioPlayerState extends State<BottomAudioPlayer>
                         width: 200,
                         child: Slider(
                           value: min(sliderCurrentPosition, maxDuration),
-                          inactiveColor: Colors.white24,
-                          activeColor: Colors.green,
+                          inactiveColor: Color(0xff26292D),
+                          activeColor: Color(0xff26E0FB),
                           onChanged: (double time) async {
                             if (flutterSoundPlayer.playerState !=
                                 t_PLAYER_STATE.IS_STOPPED)
@@ -101,9 +112,6 @@ class _BottomAudioPlayerState extends State<BottomAudioPlayer>
                           },
                           max: maxDuration,
                           label: '$_playerTxt',
-                          onChangeEnd: (e) {
-                            print(e);
-                          },
                           divisions:
                               maxDuration == 0.0 ? 1 : maxDuration.toInt(),
                           min: 0,
