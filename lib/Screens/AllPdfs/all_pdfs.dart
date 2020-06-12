@@ -52,7 +52,9 @@ class _AllPDFsState extends State<AllPDFs> with SingleTickerProviderStateMixin {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
-                    child: Center(child: Text('There is no items')),
+                    child: Center(
+                      child: Text('There is no books'),
+                    ),
                   ),
                 ],
               );
@@ -126,7 +128,7 @@ class _AllPDFsState extends State<AllPDFs> with SingleTickerProviderStateMixin {
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      child: BounceInUp( 
+                      child: BounceInUp(
                         child: GestureDetector(
                           child: NeumorphicIcon(
                             Icons.share,
