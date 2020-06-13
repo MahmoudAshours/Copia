@@ -206,9 +206,9 @@ The Upcoming features will be divided to certain Patches during a 9 months perio
 **Developed at two stages :**
 
 ### First stage : 
-- [ ] Changes in UI.
+- [x] Changes in UI.
 *Changes to Neumorphic design*
-- [ ] Bug fixes.
+- [x] Bug fixes.
 
 **Bugs at first release:** 
 
@@ -217,8 +217,10 @@ The Upcoming features will be divided to certain Patches during a 9 months perio
 - The bookmarked page dissappears from the list (in DB) randomly.
 
 ### Second stage :
+July :
 - [ ] A marker to mark certain parts in the page.
-- [ ] Implementing night mode.
+- [x] Implementing night mode. *Implemented in the first update with neumorphic design)
+- [ ] Implementing light mode.
 - [ ] Document text to speech.
 
 ## Patch notes 1.0.2+3 : 
