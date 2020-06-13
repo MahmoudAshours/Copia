@@ -179,7 +179,7 @@ Also , all above statistics are supported by different kind of charts .
 ## Upcoming features : 
 The Upcoming features will be divided to certain Patches during a 9 months period 
 
-**Overall Patches : **
+**Overall Patches:**
 
 - [ ] Connect Copia to cloud database. 
 - [ ] The user could add an audio to every page. 
@@ -217,7 +217,12 @@ The Upcoming features will be divided to certain Patches during a 9 months perio
 - The bookmarked page dissappears from the list (in DB) randomly.
 
 ### Second stage :
-July :
+
+Bugs on version 1.0.1 : 
+- [ ] Disable return button in controller screen .
+- [ ] Add Audio top bar notification.
+
+**July :**
 - [ ] A marker to mark certain parts in the page.
 - [x] Implementing night mode. *Implemented in the first update with neumorphic design)
 - [ ] Implementing light mode.
