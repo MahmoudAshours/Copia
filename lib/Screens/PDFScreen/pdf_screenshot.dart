@@ -24,7 +24,7 @@ class PdfScreenshot extends StatelessWidget {
     if (await Permission.storage.request().isGranted) {
       RenderRepaintBoundary boundary =
           pdfProvider.scr.currentContext.findRenderObject();
-      final image = await boundary.toImage();
+      final image = await boundary.toImage(pixelRatio: 2.0);
       final byteData = await image.toByteData(format: ImageByteFormat.png);
       final pngBytes = byteData.buffer.asUint8List();
       ImageGallerySaver.saveImage(pngBytes).then(

@@ -13,7 +13,9 @@ import 'package:copia/Utils/owl_icons.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +34,7 @@ class _PDFScreenState extends State<PDFScreen> {
   int currentPage;
   Axis direction = Axis.horizontal;
   final DateTime _initDateTime = DateTime.now();
-
+  bool _hideFab = false;
   @override
   void initState() {
     initPage();
@@ -77,7 +79,7 @@ class _PDFScreenState extends State<PDFScreen> {
       child: Scaffold(
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         floatingActionButton: _circularFab(_dbProvider, index, _pdfProvider),
-        bottomNavigationBar: BottomAudioPlayer(index: index),
+        bottomNavigationBar: BottomAudioPlayer(index: index,fab:_hideFab),
         backgroundColor: const Color(0xff26292D),
         body: GestureDetector(
           onTap: () => _hideFloatingActionBar(_pdfProvider),
@@ -128,21 +130,23 @@ class _PDFScreenState extends State<PDFScreen> {
   }
 
   void _hideFloatingActionBar(PDFScreenBloc _bloc) {
-    if (_bloc.hideFab) {
-      _bloc.hideFabButton = false;
-    } else {
-      _bloc.hideFabButton = true;
-    }
+    setState(() {
+      if (_hideFab) {
+        _hideFab = false;
+      } else {
+        _hideFab = true;
+      }
+    });
   }
 
   AnimatedOpacity _circularFab(
       ProviderDB _bloc, int index, PDFScreenBloc _pdfBloc) {
     return AnimatedOpacity(
-      opacity: _pdfBloc.hideFab ? 0.0 : 1.0,
+      opacity: _hideFab ? 0.0 : 1.0,
       duration: Duration(milliseconds: 400),
       child: FabCircularMenu(
         fabCloseColor: Colors.black,
-        ringColor:  Color(0xff26292D),
+        ringColor: Color(0xff26292D),
         fabColor: Color(0xf2EA4F2C),
         fabSize: 40,
         fabElevation: 2.5,
@@ -164,20 +168,29 @@ class _PDFScreenState extends State<PDFScreen> {
     );
   }
 
-  IconButton _orientation() {
-    return IconButton(
-      icon: Icon(Icons.border_horizontal),
-      onPressed: () {
-        setState(
-          () {
-            if (direction == Axis.horizontal) {
-              direction = Axis.vertical;
-            } else {
-              direction = Axis.horizontal;
-            }
-          },
-        );
-      },
+  Neumorphic _orientation() {
+    return Neumorphic(
+      style: NeumorphicStyle(
+          color: Color(0xff26292D),
+          intensity: 0.2,
+          boxShape: NeumorphicBoxShape.circle()),
+      child: IconButton(
+        icon: FaIcon(
+          FontAwesomeIcons.syncAlt,
+          color: Colors.white60,
+        ),
+        onPressed: () {
+          setState(
+            () {
+              if (direction == Axis.horizontal) {
+                direction = Axis.vertical;
+              } else {
+                direction = Axis.horizontal;
+              }
+            },
+          );
+        },
+      ),
     );
   }
 

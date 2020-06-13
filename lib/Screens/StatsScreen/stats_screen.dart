@@ -1,15 +1,17 @@
 import 'package:copia/Hive/database.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:neumorphic/neumorphic.dart' as Neu;
 
 class StatsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffEEEEED),
+      backgroundColor: const Color(0xff26292D),
       body: ValueListenableBuilder(
         valueListenable: Hive.box('pdfDB').listenable(),
         builder: (_, Box snapshot, Widget widget) {
@@ -17,18 +19,45 @@ class StatsScreen extends StatelessWidget {
           return SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                Text(
-                  'Your Statistics',
-                  style:
-                      GoogleFonts.tangerine(fontSize: 50, color: Colors.blue),
+                Padding(
+                  padding: const EdgeInsets.all(25.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        'Your statstics',
+                        style: TextStyle(
+                          fontSize: 23,
+                          letterSpacing: 1.3,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xffD3D4D5),
+                        ),
+                      ),
+                      Neu.NeuButton(
+                        child: FaIcon(FontAwesomeIcons.chartBar,
+                            color: Colors.greenAccent),
+                        decoration: Neu.NeumorphicDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: Color(0xff26292D),
+                        ),
+                        onPressed: () {},
+                      )
+                    ],
+                  ),
                 ),
-                Divider(
-                  height: 10,
-                  thickness: 2,
-                  color: Colors.black38,
+                Neumorphic(
+                  child: Divider(
+                    height: 2,
+                  ),
+                  style: NeumorphicStyle(
+                      color: Color(0xff26292D),
+                      depth: 2,
+                      lightSource: LightSource.top),
                 ),
                 MostReadChart(_pdfs),
+                SizedBox(height: 20),
                 MostBookmarkedChart(_pdfs),
+                SizedBox(height: 20),
                 AudioDocsChart(_pdfs)
               ],
             ),
@@ -64,11 +93,8 @@ class MostReadChartState extends State<MostReadChart> {
           )
         : AspectRatio(
             aspectRatio: 1.7,
-            child: Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4)),
-              color: const Color(0xff2c4260),
+            child: Neu.NeuCard(
+              color: const Color(0xff26292D),
               child: BarChart(
                 BarChartData(
                   alignment: BarChartAlignment.spaceAround,
@@ -174,7 +200,7 @@ class MostBookmarkedChartState extends State<MostBookmarkedChart> {
               elevation: 0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4)),
-              color: const Color(0xff2c4260),
+              color: const Color(0xff26292D),
               child: BarChart(
                 BarChartData(
                   alignment: BarChartAlignment.spaceAround,
@@ -195,7 +221,7 @@ class MostBookmarkedChartState extends State<MostBookmarkedChart> {
                         return BarTooltipItem(
                           rod.y.round().toString() + ' bookmarked',
                           TextStyle(
-                            color: Colors.yellow,
+                            color: Colors.redAccent,
                             fontWeight: FontWeight.bold,
                           ),
                         );
@@ -243,7 +269,7 @@ class MostBookmarkedChartState extends State<MostBookmarkedChart> {
                                     ? widget.pdfs[i].bookmarked.length
                                     : 0)
                                 .toDouble(),
-                            color: Colors.lightBlueAccent,
+                            color: Color(0xff42B2BF),
                           )
                         ],
                         showingTooltipIndicators: [0],
@@ -279,12 +305,10 @@ class AudioDocsChartState extends State<AudioDocsChart> {
 
   @override
   Widget build(BuildContext context) {
-    return _getDocumentFilesCount() == 0
-        ? Container()
-        : AspectRatio(
+    return AspectRatio(
             aspectRatio: 1.3,
-            child: Card(
-              color: Colors.white,
+            child: Neu.NeuCard(
+              color: const Color(0xff26292D),
               child: Row(
                 children: <Widget>[
                   const SizedBox(

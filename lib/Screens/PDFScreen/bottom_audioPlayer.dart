@@ -14,8 +14,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 class BottomAudioPlayer extends StatefulWidget {
   final int index;
-
-  const BottomAudioPlayer({Key key, this.index}) : super(key: key);
+  final bool fab;
+  const BottomAudioPlayer({Key key, this.index, this.fab}) : super(key: key);
   @override
   _BottomAudioPlayerState createState() => _BottomAudioPlayerState();
 }
@@ -56,7 +56,7 @@ class _BottomAudioPlayerState extends State<BottomAudioPlayer>
             final _soundPath = box.getAt(widget.index).soundPath;
             if (_soundPath != null) {
               return AnimatedOpacity(
-                opacity: _bloc.hideFab ? 0.0 : 1.0,
+                opacity: widget.fab ? 0.0 : 1.0,
                 duration: Duration(milliseconds: 400),
                 child: Container(
                   decoration: BoxDecoration(
