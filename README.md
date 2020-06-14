@@ -2,6 +2,8 @@
 
 A new Flutter project, Changes your experience with books!
 
+[Link on google play](https://bit.ly/CopiaPDF).
+
 ## Getting Started
 Copia is an application used to store PDFs as books. 
 ![owl_iphonesespacegrey_portrait](https://user-images.githubusercontent.com/50237142/81900072-70f95480-95bc-11ea-8822-d02a31f00855.png)
@@ -53,12 +55,11 @@ Copia is an application used to store PDFs as books.
 - [x] Share PDF file  
 - [x] Complete UI refactor.
 
-## Postponed tasks after beta production: 
+## Postponed tasks after production: 
 - [ ] Handling all errors & exceptions with dialogs. (For User experience)
 - [ ] Complete Code Refactor
 - [ ] Ensure Clean code
 - [ ] Complete API documentation.
-- [xx] Doc Text to Speech *Postponed to next update*
 
 
 ### Intro Screen 
@@ -187,19 +188,30 @@ Also , all above statistics are supported by different kind of charts .
 ## Upcoming features : 
 The Upcoming features will be divided to certain Patches during a 9 months period 
 
-**Overall Patches:**
-**First three updates**
+# Overall Patches:
+
+**First four updates:**
+
+**Copia  1.0.1 , 1.0.2 , 1.0.3 , 2.0.0 :** 
+
 - [ ] Connect Copia to cloud database. 
 - [ ] A marker to mark certain parts in the page.
 - [x] Changes in UI.
-- [ ] Adding document for every page.
+- [ ] Implementing light mode.
 - [ ] Document text to speech.
+- [ ] PDF to document.
 - [ ] The user could share their stats on social media platforms.
 - [ ] Adding reading streaks (for concecutive days) with trophies.
 - [ ] Adding a detailed daily statistics about time and pages read.
 - [ ] Make Copia app an open PDF file suggestion.
 - [x] Implementing night mode.
 - [ ] Add drawing pages (Can draw or write whatever the user wants) for every PDF.
+
+**Second four updates :**
+- [ ] Add Arabic language.
+- [ ] Add reading mode. (brightness)
+- [ ] Can rotate each page individually.
+- [ ] Copia users can send PDFs to each other through Copia, which copy audio , doc files , PDF , notes & bookmarks.
 
 ## Far upcoming features :
 - [ ] Deploy IOS version.
@@ -238,7 +250,17 @@ Bugs on version 1.0.1 :
 **Critical bug**
 - [ ] Onboarding screen refactor ( Causes trouble in screens) 
 
+## Features suggested by users after the second release : 
+*Added to milestones*
+
+- [ ] Convert PDF to document & make it audible.(Using firebase ghostscript)
+- [ ] Can edit the screen configurations to make it **Reading mode** for users eyes.
+- [ ] Add Arabic language.
+
+Milestone of third release : 
+
 **July -> September:**
+
 - [ ] A marker to mark certain parts in the page.
 - [x] Implementing night mode. *Implemented in the first update with neumorphic design*
 - [ ] Implementing light mode.
