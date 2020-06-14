@@ -306,88 +306,85 @@ class AudioDocsChartState extends State<AudioDocsChart> {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-            aspectRatio: 1.3,
-            child: Neu.NeuCard(
-              color: const Color(0xff26292D),
-              child: Row(
-                children: <Widget>[
-                  const SizedBox(
-                    height: 18,
-                  ),
-                  Expanded(
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: _getDocumentFilesCount() == 0
-                          ? Container()
-                          : PieChart(
-                              PieChartData(
-                                  pieTouchData: PieTouchData(
-                                    touchCallback: (pieTouchResponse) {
-                                      setState(
-                                        () {
-                                          if (pieTouchResponse.touchInput
-                                                  is FlLongPressEnd ||
-                                              pieTouchResponse.touchInput
-                                                  is FlPanEnd ||
-                                              pieTouchResponse.touchInput
-                                                  is FlTouchNormalInput) {
-                                            touchedIndex = -1;
-                                          } else {
-                                            touchedIndex = pieTouchResponse
-                                                .touchedSectionIndex;
-                                          }
-                                        },
-                                      );
-                                    },
-                                  ),
-                                  borderData: FlBorderData(show: false),
-                                  sectionsSpace: 0,
-                                  centerSpaceRadius: 40,
-                                  sections: showingSections()),
-                            ),
-                    ),
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const <Widget>[
-                      Indicator(
-                        color: Color(0xff0293ee),
-                        text: 'Audio files',
-                        isSquare: false,
+      aspectRatio: 1.3,
+      child: Neu.NeuCard(
+        color: const Color(0xff26292D),
+        child: Row(
+          children: <Widget>[
+            const SizedBox(
+              height: 18,
+            ),
+            Expanded(
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: PieChart(
+                  PieChartData(
+                      pieTouchData: PieTouchData(
+                        touchCallback: (pieTouchResponse) {
+                          setState(
+                            () {
+                              if (pieTouchResponse.touchInput
+                                      is FlLongPressEnd ||
+                                  pieTouchResponse.touchInput is FlPanEnd ||
+                                  pieTouchResponse.touchInput
+                                      is FlTouchNormalInput) {
+                                touchedIndex = -1;
+                              } else {
+                                touchedIndex =
+                                    pieTouchResponse.touchedSectionIndex;
+                              }
+                            },
+                          );
+                        },
                       ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Color(0xfff8b250),
-                        text: 'Document Files',
-                        isSquare: false,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Colors.red,
-                        text: 'Bookmarks',
-                        isSquare: false,
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Indicator(
-                        color: Colors.purple,
-                        text: 'PDFs count',
-                        isSquare: false,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 28),
-                ],
+                      borderData: FlBorderData(show: false),
+                      sectionsSpace: 0,
+                      centerSpaceRadius: 40,
+                      sections: showingSections()),
+                ),
               ),
             ),
-          );
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const <Widget>[
+                Indicator(
+                  color: Color(0xff0293ee),
+                  text: 'Audio files',
+                  isSquare: false,
+                ),
+                SizedBox(
+                  height: 4,
+                ),
+                Indicator(
+                  color: Color(0xfff8b250),
+                  text: 'Document Files',
+                  isSquare: false,
+                ),
+                SizedBox(
+                  height: 4,
+                ),
+                Indicator(
+                  color: Colors.red,
+                  text: 'Bookmarks',
+                  isSquare: false,
+                ),
+                SizedBox(
+                  height: 4,
+                ),
+                Indicator(
+                  color: Colors.purple,
+                  text: 'PDFs count',
+                  isSquare: false,
+                ),
+              ],
+            ),
+            const SizedBox(width: 28),
+          ],
+        ),
+      ),
+    );
   }
 
   List<PieChartSectionData> showingSections() {
