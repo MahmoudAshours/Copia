@@ -24,6 +24,13 @@ Copia is an application used to store PDFs as books.
 - Verified by play store on **5/6/2020**.
 - The next update estimated to be after two months.
 
+## 13 June 2020 
+- Copia 1.0.1 was the new update on google play store.
+- The second release covered the first update milestone.
+- Verified by play store after 3 hours from the release.
+- The next update estimated to be after 1 month.
+- Clicks on link to store at 14 June 11:16 am are **477 clicks**
+
 ## Project technical structures : 
 - Uses **Hive** as local storage database.
 - Uses **flutter_sound** as the flutter audio player.
@@ -45,6 +52,7 @@ Copia is an application used to store PDFs as books.
 - [x] Statistics Screen
 - [x] Share PDF file  
 - [x] Complete UI refactor.
+
 ## Postponed tasks after beta production: 
 - [ ] Handling all errors & exceptions with dialogs. (For User experience)
 - [ ] Complete Code Refactor
@@ -180,18 +188,17 @@ Also , all above statistics are supported by different kind of charts .
 The Upcoming features will be divided to certain Patches during a 9 months period 
 
 **Overall Patches:**
-
+**First three updates**
 - [ ] Connect Copia to cloud database. 
-- [ ] The user could add an audio to every page. 
 - [ ] A marker to mark certain parts in the page.
-- [ ] Changes in UI.
+- [x] Changes in UI.
 - [ ] Adding document for every page.
 - [ ] Document text to speech.
 - [ ] The user could share their stats on social media platforms.
 - [ ] Adding reading streaks (for concecutive days) with trophies.
 - [ ] Adding a detailed daily statistics about time and pages read.
 - [ ] Make Copia app an open PDF file suggestion.
-- [ ] Implementing night mode.
+- [x] Implementing night mode.
 - [ ] Add drawing pages (Can draw or write whatever the user wants) for every PDF.
 
 ## Far upcoming features :
@@ -219,16 +226,27 @@ The Upcoming features will be divided to certain Patches during a 9 months perio
 ### Second stage :
 
 Bugs on version 1.0.1 : 
+
+**second release**
+
 - [ ] Disable return button in controller screen .
 - [ ] Add Audio top bar notification.
+- [ ] Screen orientation bugs. 
+- [ ] Slow animation on some devices.
+- [ ] Some UI bugs (Neumorphic dialog & add document button).
 
-**July :**
+**Critical bug**
+- [ ] Onboarding screen refactor ( Causes trouble in screens) 
+
+**July -> September:**
 - [ ] A marker to mark certain parts in the page.
-- [x] Implementing night mode. *Implemented in the first update with neumorphic design)
+- [x] Implementing night mode. *Implemented in the first update with neumorphic design*
 - [ ] Implementing light mode.
 - [ ] Document text to speech.
 
 ## Patch notes 1.0.2+3 : 
+**September -> October:**
+
 - [ ] Adding reading streaks (for concecutive days) with trophies.
 - [ ] Adding a detailed daily statistics about time and pages read.
 - [ ] Bug fixes
@@ -236,8 +254,8 @@ Bugs on version 1.0.1 :
 ## Patch notes 1.1.0 :
 - [ ] Make Copia app an open PDF file suggestion.
 - [ ] Add drawing pages (Can draw or write whatever the user wants) for every PDF.
-- [ ] The user could add an audio to every page. 
 - [ ] Bug fixes.
 
 ## Patch notes 2.0 : 
 - [ ] Connect Copia to cloud database. 
+- [ ] Bug fixes.
