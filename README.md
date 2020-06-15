@@ -250,6 +250,12 @@ Bugs on version 1.0.1 :
 **Critical bug**
 - [ ] Onboarding screen refactor ( Causes trouble in screens) 
 
+**Deadly bug** 
+- [x] Items loaded (either PDF or image) are stored in caches , which make the application *after some time* deletes it.
+*That's an experimental guess* 
+
+- **So , an update on 15 June is very important!!**
+
 ## Features suggested by users after the second release : 
 *Added to milestones*
 
