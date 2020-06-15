@@ -33,6 +33,10 @@ Copia is an application used to store PDFs as books.
 - The next update estimated to be after 1 month.
 - Clicks on link to store at 14 June 11:16 am are **477 clicks**
 
+## 15 June 2020 
+- Copia 1.0.1+3 was released as an immediate update on play store.
+- The third release was published due to bugs in the copia file picker and image picker.*discussed below* 
+
 ## Project technical structures : 
 - Uses **Hive** as local storage database.
 - Uses **flutter_sound** as the flutter audio player.
