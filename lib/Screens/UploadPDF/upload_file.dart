@@ -32,12 +32,15 @@ class UploadFile extends StatelessWidget {
           delay: Duration(milliseconds: 500),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Upload your pdf',
-                style: TextStyle(
-                    fontFamily: 'cormorant',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xffAAABAD))),
+            child: Text(
+              'Upload your pdf',
+              style: TextStyle(
+                fontFamily: 'cormorant',
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Color(0xffAAABAD),
+              ),
+            ),
           ),
         ),
         SizedBox(width: 20.0),

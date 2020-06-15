@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
 class UploadPdfBloc with ChangeNotifier {
   String _pdfTitle;
@@ -23,7 +25,12 @@ class UploadPdfBloc with ChangeNotifier {
         allowedExtensions: ['pdf'],
         type: FileType.custom,
       );
-      _pdf = _file.path;
+      final path = await getApplicationDocumentsDirectory();
+
+      final File _copiaFile =
+          await _file.copy('${path.path}/${basename(_file.path)}');
+
+      _pdf = _copiaFile.path;
       _pdfUploaded = true;
       notifyListeners();
     } catch (e) {
@@ -35,7 +42,12 @@ class UploadPdfBloc with ChangeNotifier {
   Future<Null> getImageFromGallery() async {
     try {
       File _image = await ImagePicker.pickImage(source: ImageSource.gallery);
-      _imageUploaded = _image.path;
+      final path = await getApplicationDocumentsDirectory();
+
+      final File _copiaImage =
+          await _image.copy('${path.path}/${basename(_image.path)}');
+      _imageUploaded = _copiaImage.path;
+
       _ifImageUploaded = true;
       notifyListeners();
     } catch (e) {
