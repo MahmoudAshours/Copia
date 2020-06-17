@@ -210,12 +210,15 @@ The Upcoming features will be divided to certain Patches during a 9 months perio
 - [ ] Make Copia app an open PDF file suggestion.
 - [x] Implementing night mode.
 - [ ] Add drawing pages (Can draw or write whatever the user wants) for every PDF.
+- [ ] Add Onsignal notification manager .
 
 **Second four updates :**
-- [ ] Add Arabic language.
+- [ ] Add Arabic , Japanese & hindu languages.
 - [ ] Add reading mode. (brightness)
 - [ ] Can rotate each page individually.
 - [ ] Copia users can send PDFs to each other through Copia, which copy audio , doc files , PDF , notes & bookmarks.
+- [ ] Get PDFS from URL.
+- [ ] Add Quote maker (WHich gives an image and a quote with certain font size) and make a quote. 
 
 ## Far upcoming features :
 - [ ] Deploy IOS version.
@@ -266,6 +269,7 @@ Bugs on version 1.0.1 :
 - [ ] Convert PDF to document & make it audible.(Using firebase ghostscript)
 - [ ] Can edit the screen configurations to make it **Reading mode** for users eyes.
 - [ ] Add Arabic language.
+- [ ] Get PDFS from URL. 
 
 Milestone of third release : 
 
