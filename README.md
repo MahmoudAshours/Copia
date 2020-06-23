@@ -211,6 +211,9 @@ The Upcoming features will be divided to certain Patches during a 9 months perio
 - [x] Implementing night mode.
 - [ ] Add drawing pages (Can draw or write whatever the user wants) for every PDF.
 - [ ] Add Onsignal notification manager .
+- [ ] The user can edit notes . 
+- [ ] A list contains the notes of the user and the number of their pages to easily navigate between them.
+- [ ] Include notes in statistics .
 
 **Second four updates :**
 - [ ] Add Arabic , Japanese & hindu languages.
