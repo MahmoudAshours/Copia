@@ -241,7 +241,7 @@ class _BookCardsState extends State<BookCards> {
         return AlertDialog(
           content: Text('Are you sure you want to delete this book?'),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () {
                 snapshot
                     .deleteAt(index)
@@ -249,7 +249,7 @@ class _BookCardsState extends State<BookCards> {
               },
               child: Text('Yes', style: TextStyle(color: Colors.red)),
             ),
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text('No'),
             ),

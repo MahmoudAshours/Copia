@@ -4,7 +4,6 @@ import 'package:copia/Hive/database.dart';
 import 'package:copia/Screens/PDFScreen/pdfscreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:neumorphic/neumorphic.dart';

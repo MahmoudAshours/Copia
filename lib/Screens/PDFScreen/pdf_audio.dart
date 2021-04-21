@@ -77,7 +77,7 @@ class PdfAudio extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20)),
                           ),
                           onTap: () {
-                            FilePicker.getFile(type: FileType.audio).then(
+                            FilePicker.platform.pickFiles(type: FileType.audio).then(
                               (value) {
                                 final _modifiedPDF = PDFDB(
                                     bookmarked: _pdf.bookmarked,
@@ -87,7 +87,7 @@ class PdfAudio extends StatelessWidget {
                                     pageNote: _pdf.pageNote,
                                     pdfAsset: _pdf.pdfAsset,
                                     pdfName: _pdf.pdfName,
-                                    soundPath: value?.path ?? null,
+                                    soundPath: value?.files[0].path ?? null,
                                     thumb: _pdf.thumb,
                                     totalHours: _pdf.totalHours,
                                     documentPath: _pdf.documentPath);

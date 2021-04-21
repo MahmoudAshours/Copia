@@ -73,7 +73,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       ),
                       Container(
                         alignment: Alignment.centerRight,
-                        child: FlatButton(
+                        child: TextButton(
                           onPressed: () => checkIntro().then((_) =>
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (_) => ControllerScreen()))),

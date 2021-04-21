@@ -17,7 +17,7 @@ class PDFDB {
   @HiveField(5)
   DateTime lastSeenDate;
   @HiveField(6)
-  List<int> bookmarked = new List<int>();
+  List<int> bookmarked = [];
   @HiveField(7)
   int lastVisitedPage;
   @HiveField(8)

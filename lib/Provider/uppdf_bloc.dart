@@ -21,14 +21,14 @@ class UploadPdfBloc with ChangeNotifier {
 
   Future<Null> getPDF() async {
     try {
-      File _file = await FilePicker.getFile(
+      FilePickerResult _file = await FilePicker.platform.pickFiles(
         allowedExtensions: ['pdf'],
         type: FileType.custom,
       );
       final path = await getApplicationDocumentsDirectory();
 
       final File _copiaFile =
-          await _file.copy('${path.path}/${basename(_file.path)}');
+          await File(_file.files[0].path).copy('${path.path}/${basename(_file.files[0].path)}');
 
       _pdf = _copiaFile.path;
       _pdfUploaded = true;

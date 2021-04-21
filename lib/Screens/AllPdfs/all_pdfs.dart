@@ -172,14 +172,14 @@ class _AllPDFsState extends State<AllPDFs> with SingleTickerProviderStateMixin {
         return AlertDialog(
           content: Text('Are you sure you want to delete this book?'),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () async {
                 Navigator.pop(context);
                 await snapshot.deleteAt(index);
               },
               child: Text('Yes', style: TextStyle(color: Colors.red)),
             ),
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text('No'),
             ),
@@ -437,7 +437,7 @@ class PDFsearchDelegate extends SearchDelegate {
         return AlertDialog(
           content: Text('Are you sure you want to delete this book?'),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () {
                 snapshot
                     .deleteAt(index)
@@ -445,7 +445,7 @@ class PDFsearchDelegate extends SearchDelegate {
               },
               child: Text('Yes', style: TextStyle(color: Colors.red)),
             ),
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text('No'),
             ),

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:copia/Hive/database.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flat_icons_flutter/flat_icons_flutter.dart';
@@ -92,7 +90,7 @@ class PdfDocumentViewer extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20)),
                               ),
                               onTap: () async {
-                                File _file = await FilePicker.getFile(
+                                var _file = await FilePicker.platform.pickFiles(
                                     type: FileType.custom,
                                     allowedExtensions: ['doc', 'docx']);
                                 final _modifiedPDF = PDFDB(
@@ -106,7 +104,7 @@ class PdfDocumentViewer extends StatelessWidget {
                                   soundPath: _pdf.soundPath,
                                   thumb: _pdf.thumb,
                                   totalHours: _pdf.totalHours,
-                                  documentPath: _file?.path ?? null,
+                                  documentPath: _file?.files[0].path ?? null,
                                 );
                                 box.putAt(index, _modifiedPDF);
                               },
@@ -210,7 +208,7 @@ class PdfDocumentViewer extends StatelessWidget {
                                 SizedBox(width: 50),
                                 InkWell(
                                   onTap: () async {
-                                    File _file = await FilePicker.getFile(
+                                    var _file = await FilePicker.platform.pickFiles(
                                         type: FileType.custom,
                                         allowedExtensions: ['doc', 'docx']);
                                     final _modifiedPDF = PDFDB(
@@ -224,7 +222,7 @@ class PdfDocumentViewer extends StatelessWidget {
                                       soundPath: _pdf.soundPath,
                                       thumb: _pdf.thumb,
                                       totalHours: _pdf.totalHours,
-                                      documentPath: _file.path ?? null,
+                                      documentPath: _file.files[0].path ?? null,
                                     );
                                     box.putAt(index, _modifiedPDF).whenComplete(
                                       () {

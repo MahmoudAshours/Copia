@@ -104,7 +104,7 @@ class MostReadChartState extends State<MostReadChart> {
                     touchTooltipData: BarTouchTooltipData(
                       tooltipBgColor: Colors.transparent,
                       tooltipPadding: const EdgeInsets.all(0),
-                      tooltipBottomMargin: 8,
+                     
                       getTooltipItem: (
                         BarChartGroupData group,
                         int groupIndex,
@@ -135,11 +135,7 @@ class MostReadChartState extends State<MostReadChart> {
                     show: true,
                     bottomTitles: SideTitles(
                       showTitles: true,
-                      textStyle: TextStyle(
-                        color: const Color(0xff7589a2),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
+                       
                       margin: 20,
                       getTitles: (double value) {
                         for (var i = 0; i < widget.pdfs.length; i++) {
@@ -159,7 +155,7 @@ class MostReadChartState extends State<MostReadChart> {
                         barRods: [
                           BarChartRodData(
                             y: widget.pdfs[i].totalHours.toDouble() / 60,
-                            color: Colors.lightBlueAccent,
+                             
                           )
                         ],
                         showingTooltipIndicators: [0],
@@ -211,7 +207,7 @@ class MostBookmarkedChartState extends State<MostBookmarkedChart> {
                       tooltipBgColor: Colors.transparent,
                       tooltipPadding: const EdgeInsets.all(10),
                       fitInsideVertically: true,
-                      tooltipBottomMargin: 1,
+                       
                       getTooltipItem: (
                         BarChartGroupData group,
                         int groupIndex,
@@ -242,11 +238,7 @@ class MostBookmarkedChartState extends State<MostBookmarkedChart> {
                     show: true,
                     bottomTitles: SideTitles(
                       showTitles: true,
-                      textStyle: TextStyle(
-                        color: const Color(0xff7589a2),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
+                 
                       margin: 20,
                       getTitles: (double value) {
                         for (var i = 0; i < widget.pdfs.length; i++) {
@@ -269,7 +261,7 @@ class MostBookmarkedChartState extends State<MostBookmarkedChart> {
                                     ? widget.pdfs[i].bookmarked.length
                                     : 0)
                                 .toDouble(),
-                            color: Color(0xff42B2BF),
+                            
                           )
                         ],
                         showingTooltipIndicators: [0],
@@ -323,16 +315,7 @@ class AudioDocsChartState extends State<AudioDocsChart> {
                         touchCallback: (pieTouchResponse) {
                           setState(
                             () {
-                              if (pieTouchResponse.touchInput
-                                      is FlLongPressEnd ||
-                                  pieTouchResponse.touchInput is FlPanEnd ||
-                                  pieTouchResponse.touchInput
-                                      is FlTouchNormalInput) {
-                                touchedIndex = -1;
-                              } else {
-                                touchedIndex =
-                                    pieTouchResponse.touchedSectionIndex;
-                              }
+                        
                             },
                           );
                         },
