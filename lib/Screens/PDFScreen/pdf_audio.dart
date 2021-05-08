@@ -4,11 +4,9 @@ import 'package:copia/Hive/database.dart';
 import 'package:copia/Provider/pdfscreen_bloc.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:flutter_svg/flutter_svg.dart'; 
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:neumorphic/neumorphic.dart' as Neu;
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
@@ -18,9 +16,8 @@ class PdfAudio extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: NeumorphicIcon(
+      child: Icon(
         Icons.headset,
-        style: NeumorphicStyle(color: Color(0xffDCC69B), intensity: 0.6),
       ),
       onTap: () => _pdfAudio(context),
     );
@@ -64,20 +61,16 @@ class PdfAudio extends StatelessWidget {
                         width: 100,
                         height: 50,
                         child: GestureDetector(
-                          child: Neu.NeuCard(
-                            bevel: 2,
-                            child: Center(
-                              child: Text(
-                                'Add audio',
-                                style: TextStyle(color: Colors.white),
-                              ),
+                          child: Center(
+                            child: Text(
+                              'Add audio',
+                              style: TextStyle(color: Colors.white),
                             ),
-                            decoration: Neu.NeumorphicDecoration(
-                                color: Color(0xffD44626),
-                                borderRadius: BorderRadius.circular(20)),
                           ),
                           onTap: () {
-                            FilePicker.platform.pickFiles(type: FileType.audio).then(
+                            FilePicker.platform
+                                .pickFiles(type: FileType.audio)
+                                .then(
                               (value) {
                                 final _modifiedPDF = PDFDB(
                                     bookmarked: _pdf.bookmarked,
@@ -109,18 +102,12 @@ class PdfAudio extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: <Widget>[
-                        Neu.NeuCard(
-                          decoration: Neu.NeumorphicDecoration(
-                            color: const Color(0xff26292D),
-                            shape: BoxShape.circle,
-                          ),
-                          child: CircleAvatar(
-                            radius: 100,
-                            backgroundColor: const Color(0xff1F2327),
-                            child: ClipOval(
-                              child: Image.file(
-                                File(_pdf.thumb),
-                              ),
+                        CircleAvatar(
+                          radius: 100,
+                          backgroundColor: const Color(0xff1F2327),
+                          child: ClipOval(
+                            child: Image.file(
+                              File(_pdf.thumb),
                             ),
                           ),
                         ),
@@ -140,36 +127,28 @@ class PdfAudio extends StatelessWidget {
                                       fontWeight: FontWeight.w600),
                                 ),
                               ),
-                              Neumorphic(
-                                style: NeumorphicStyle(
-                                    color: Color(0xff1E2125),
-                                    depth: 3,
-                                    intensity: 0.3,
-                                    lightSource: LightSource.topLeft,
-                                    boxShape: NeumorphicBoxShape.circle()),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(14.0),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      final _modifiedPDF = PDFDB(
-                                          bookmarked: _pdf.bookmarked,
-                                          insertedDate: _pdf.insertedDate,
-                                          lastSeenDate: _pdf.lastSeenDate,
-                                          lastVisitedPage: _pdf.lastVisitedPage,
-                                          pageNote: _pdf.pageNote,
-                                          pdfAsset: _pdf.pdfAsset,
-                                          pdfName: _pdf.pdfName,
-                                          soundPath: null,
-                                          thumb: _pdf.thumb,
-                                          totalHours: _pdf.totalHours,
-                                          documentPath: _pdf.documentPath);
-                                      box.putAt(index, _modifiedPDF);
-                                    },
-                                    child: Icon(
-                                      Icons.delete,
-                                      size: 30,
-                                      color: Colors.redAccent,
-                                    ),
+                              Padding(
+                                padding: const EdgeInsets.all(14.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    final _modifiedPDF = PDFDB(
+                                        bookmarked: _pdf.bookmarked,
+                                        insertedDate: _pdf.insertedDate,
+                                        lastSeenDate: _pdf.lastSeenDate,
+                                        lastVisitedPage: _pdf.lastVisitedPage,
+                                        pageNote: _pdf.pageNote,
+                                        pdfAsset: _pdf.pdfAsset,
+                                        pdfName: _pdf.pdfName,
+                                        soundPath: null,
+                                        thumb: _pdf.thumb,
+                                        totalHours: _pdf.totalHours,
+                                        documentPath: _pdf.documentPath);
+                                    box.putAt(index, _modifiedPDF);
+                                  },
+                                  child: Icon(
+                                    Icons.delete,
+                                    size: 30,
+                                    color: Colors.redAccent,
                                   ),
                                 ),
                               ),

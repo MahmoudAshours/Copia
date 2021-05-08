@@ -1,11 +1,9 @@
 import 'package:copia/Hive/database.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:neumorphic/neumorphic.dart' as Neu;
 
 class StatsScreen extends StatelessWidget {
   @override
@@ -33,26 +31,16 @@ class StatsScreen extends StatelessWidget {
                           color: Color(0xffD3D4D5),
                         ),
                       ),
-                      Neu.NeuButton(
+                      TextButton(
                         child: FaIcon(FontAwesomeIcons.chartBar,
                             color: Colors.greenAccent),
-                        decoration: Neu.NeumorphicDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Color(0xff26292D),
-                        ),
                         onPressed: () {},
                       )
                     ],
                   ),
                 ),
-                Neumorphic(
-                  child: Divider(
-                    height: 2,
-                  ),
-                  style: NeumorphicStyle(
-                      color: Color(0xff26292D),
-                      depth: 2,
-                      lightSource: LightSource.top),
+                Divider(
+                  height: 2,
                 ),
                 MostReadChart(_pdfs),
                 SizedBox(height: 20),
@@ -93,75 +81,69 @@ class MostReadChartState extends State<MostReadChart> {
           )
         : AspectRatio(
             aspectRatio: 1.7,
-            child: Neu.NeuCard(
-              color: const Color(0xff26292D),
-              child: BarChart(
-                BarChartData(
-                  alignment: BarChartAlignment.spaceAround,
-                  maxY: _maximumTime,
-                  barTouchData: BarTouchData(
-                    enabled: false,
-                    touchTooltipData: BarTouchTooltipData(
-                      tooltipBgColor: Colors.transparent,
-                      tooltipPadding: const EdgeInsets.all(0),
-                     
-                      getTooltipItem: (
-                        BarChartGroupData group,
-                        int groupIndex,
-                        BarChartRodData rod,
-                        int rodIndex,
-                      ) {
-                        return BarTooltipItem(
-                          rod.y.round().toString() + ' mins',
-                          TextStyle(
-                            color: Colors.yellow,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        );
-                      },
-                    ),
+            child: BarChart(
+              BarChartData(
+                alignment: BarChartAlignment.spaceAround,
+                maxY: _maximumTime,
+                barTouchData: BarTouchData(
+                  enabled: false,
+                  touchTooltipData: BarTouchTooltipData(
+                    tooltipBgColor: Colors.transparent,
+                    tooltipPadding: const EdgeInsets.all(0),
+                    getTooltipItem: (
+                      BarChartGroupData group,
+                      int groupIndex,
+                      BarChartRodData rod,
+                      int rodIndex,
+                    ) {
+                      return BarTooltipItem(
+                        rod.y.round().toString() + ' mins',
+                        TextStyle(
+                          color: Colors.yellow,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
                   ),
-                  axisTitleData: FlAxisTitleData(
-                    topTitle: AxisTitle(
-                      titleText: 'Most Read books',
-                      reservedSize: 30,
-                      margin: 50,
-                      textStyle: TextStyle(color: Colors.white, fontSize: 27),
-                      showTitle: true,
-                    ),
-                    show: true,
-                  ),
-                  titlesData: FlTitlesData(
-                    show: true,
-                    bottomTitles: SideTitles(
-                      showTitles: true,
-                       
-                      margin: 20,
-                      getTitles: (double value) {
-                        for (var i = 0; i < widget.pdfs.length; i++) {
-                          if (value.toInt() == i)
-                            return widget.pdfs[i].pdfName.toUpperCase();
-                        }
-                        return 'Nothing to show';
-                      },
-                    ),
-                    leftTitles: SideTitles(showTitles: false),
-                  ),
-                  borderData: FlBorderData(show: false),
-                  barGroups: [
-                    for (var i = 0; i < widget.pdfs.length; i++)
-                      BarChartGroupData(
-                        x: i,
-                        barRods: [
-                          BarChartRodData(
-                            y: widget.pdfs[i].totalHours.toDouble() / 60,
-                             
-                          )
-                        ],
-                        showingTooltipIndicators: [0],
-                      ),
-                  ],
                 ),
+                axisTitleData: FlAxisTitleData(
+                  topTitle: AxisTitle(
+                    titleText: 'Most Read books',
+                    reservedSize: 30,
+                    margin: 50,
+                    textStyle: TextStyle(color: Colors.white, fontSize: 27),
+                    showTitle: true,
+                  ),
+                  show: true,
+                ),
+                titlesData: FlTitlesData(
+                  show: true,
+                  bottomTitles: SideTitles(
+                    showTitles: true,
+                    margin: 20,
+                    getTitles: (double value) {
+                      for (var i = 0; i < widget.pdfs.length; i++) {
+                        if (value.toInt() == i)
+                          return widget.pdfs[i].pdfName.toUpperCase();
+                      }
+                      return 'Nothing to show';
+                    },
+                  ),
+                  leftTitles: SideTitles(showTitles: false),
+                ),
+                borderData: FlBorderData(show: false),
+                barGroups: [
+                  for (var i = 0; i < widget.pdfs.length; i++)
+                    BarChartGroupData(
+                      x: i,
+                      barRods: [
+                        BarChartRodData(
+                          y: widget.pdfs[i].totalHours.toDouble() / 60,
+                        )
+                      ],
+                      showingTooltipIndicators: [0],
+                    ),
+                ],
               ),
             ),
           );
@@ -207,7 +189,6 @@ class MostBookmarkedChartState extends State<MostBookmarkedChart> {
                       tooltipBgColor: Colors.transparent,
                       tooltipPadding: const EdgeInsets.all(10),
                       fitInsideVertically: true,
-                       
                       getTooltipItem: (
                         BarChartGroupData group,
                         int groupIndex,
@@ -238,7 +219,6 @@ class MostBookmarkedChartState extends State<MostBookmarkedChart> {
                     show: true,
                     bottomTitles: SideTitles(
                       showTitles: true,
-                 
                       margin: 20,
                       getTitles: (double value) {
                         for (var i = 0; i < widget.pdfs.length; i++) {
@@ -261,7 +241,6 @@ class MostBookmarkedChartState extends State<MostBookmarkedChart> {
                                     ? widget.pdfs[i].bookmarked.length
                                     : 0)
                                 .toDouble(),
-                            
                           )
                         ],
                         showingTooltipIndicators: [0],
@@ -299,73 +278,68 @@ class AudioDocsChartState extends State<AudioDocsChart> {
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1.3,
-      child: Neu.NeuCard(
-        color: const Color(0xff26292D),
-        child: Row(
-          children: <Widget>[
-            const SizedBox(
-              height: 18,
-            ),
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: PieChart(
-                  PieChartData(
-                      pieTouchData: PieTouchData(
-                        touchCallback: (pieTouchResponse) {
-                          setState(
-                            () {
-                        
-                            },
-                          );
-                        },
-                      ),
-                      borderData: FlBorderData(show: false),
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 40,
-                      sections: showingSections()),
-                ),
+      child: Row(
+        children: <Widget>[
+          const SizedBox(
+            height: 18,
+          ),
+          Expanded(
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: PieChart(
+                PieChartData(
+                    pieTouchData: PieTouchData(
+                      touchCallback: (pieTouchResponse) {
+                        setState(
+                          () {},
+                        );
+                      },
+                    ),
+                    borderData: FlBorderData(show: false),
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 40,
+                    sections: showingSections()),
               ),
             ),
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const <Widget>[
-                Indicator(
-                  color: Color(0xff0293ee),
-                  text: 'Audio files',
-                  isSquare: false,
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Indicator(
-                  color: Color(0xfff8b250),
-                  text: 'Document Files',
-                  isSquare: false,
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Indicator(
-                  color: Colors.red,
-                  text: 'Bookmarks',
-                  isSquare: false,
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Indicator(
-                  color: Colors.purple,
-                  text: 'PDFs count',
-                  isSquare: false,
-                ),
-              ],
-            ),
-            const SizedBox(width: 28),
-          ],
-        ),
+          ),
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const <Widget>[
+              Indicator(
+                color: Color(0xff0293ee),
+                text: 'Audio files',
+                isSquare: false,
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Indicator(
+                color: Color(0xfff8b250),
+                text: 'Document Files',
+                isSquare: false,
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Indicator(
+                color: Colors.red,
+                text: 'Bookmarks',
+                isSquare: false,
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Indicator(
+                color: Colors.purple,
+                text: 'PDFs count',
+                isSquare: false,
+              ),
+            ],
+          ),
+          const SizedBox(width: 28),
+        ],
       ),
     );
   }

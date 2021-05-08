@@ -27,13 +27,12 @@ class PdfScreenshot extends StatelessWidget {
       final image = await boundary.toImage(pixelRatio: 2.0);
       final byteData = await image.toByteData(format: ImageByteFormat.png);
       final pngBytes = byteData.buffer.asUint8List();
-      ImageGallerySaver.saveImage(pngBytes).then(
-        (_) => Scaffold.of(context).showSnackBar(
+      ImageGallerySaver.saveImage(pngBytes);
+      Scaffold.of(context).showSnackBar(
           SnackBar(
             content: Text('Saved to gallery!'),
           ),
-        ),
-      );
+        );
     } else {
       await Permission.storage.request();
     }

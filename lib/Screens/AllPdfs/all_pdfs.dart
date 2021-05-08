@@ -5,7 +5,6 @@ import 'package:copia/Hive/database.dart';
 import 'package:copia/Screens/PDFScreen/pdfscreen.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path/path.dart';
@@ -20,60 +19,47 @@ class _AllPDFsState extends State<AllPDFs> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return NeumorphicTheme(
-      themeMode: ThemeMode.dark,
-      theme: NeumorphicThemeData(
-        defaultTextColor: Color(0xFF3E3E3E),
-        baseColor: const Color(0xff26292D),
-        intensity: 0.3,
-        lightSource: LightSource.bottomRight,
-        depth: 3,
+    return Scaffold(
+      backgroundColor: const Color(0xff26292D),
+      appBar: AppBar(
+        actions: <Widget>[
+          GestureDetector(
+            onTap: () => _search(context, PDFsearchDelegate()),
+            child:
+                SafeArea(child: Icon(Icons.search, color: Colors.cyanAccent)),
+          )
+        ],
       ),
-      child: Scaffold(
-        backgroundColor: const Color(0xff26292D),
-        appBar: NeumorphicAppBar(
-          buttonStyle: NeumorphicStyle(color: const Color(0xff26292D)),
-          color: const Color(0xff26292D),
-          textStyle: TextStyle(color: Colors.red),
-          actions: <Widget>[
-            GestureDetector(
-              onTap: () => _search(context, PDFsearchDelegate()),
-              child:
-                  SafeArea(child: Icon(Icons.search, color: Colors.cyanAccent)),
-            )
-          ],
-        ),
-        body: ValueListenableBuilder(
-          valueListenable: Hive.box('pdfDB').listenable(),
-          builder: (_, Box snapshot, Widget child) {
-            if (snapshot.isEmpty)
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    child: Center(
-                      child: Text('There is no books'),
-                    ),
+      body: ValueListenableBuilder(
+        valueListenable: Hive.box('pdfDB').listenable(),
+        builder: (_, Box snapshot, Widget child) {
+          if (snapshot.isEmpty)
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  child: Center(
+                    child: Text('There is no books'),
                   ),
-                ],
-              );
-            return Container(
-              height: MediaQuery.of(context).size.height,
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                itemCount: snapshot.length,
-                shrinkWrap: true,
-                key: _listKey,
-                itemBuilder: (BuildContext context, int index) {
-                  final _pdfSnapshot = snapshot.getAt(index);
-                  return _buildListItem(context, index, _pdfSnapshot, snapshot);
-                },
-              ),
+                ),
+              ],
             );
-          },
-        ),
+          return Container(
+            height: MediaQuery.of(context).size.height,
+            child: GridView.builder(
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              itemCount: snapshot.length,
+              shrinkWrap: true,
+              key: _listKey,
+              itemBuilder: (BuildContext context, int index) {
+                final _pdfSnapshot = snapshot.getAt(index);
+                return _buildListItem(context, index, _pdfSnapshot, snapshot);
+              },
+            ),
+          );
+        },
       ),
     );
   }
@@ -93,21 +79,13 @@ class _AllPDFsState extends State<AllPDFs> with SingleTickerProviderStateMixin {
             Expanded(
               child: FadeInLeft(
                 delay: Duration(milliseconds: 500 * index),
-                child: Neumorphic(
-                  curve: Curves.bounceInOut,
-                  style: NeumorphicStyle(
-                      color: const Color(0xff26292D),
-                      border: NeumorphicBorder(color: Colors.black),
-                      lightSource: LightSource.top,
-                      shadowDarkColor: Colors.black),
-                  child: Container(
-                    height: 300,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: FileImage(File(_pdfSnapshot.thumb)),
-                      ),
+                child: Container(
+                  height: 300,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: FileImage(File(_pdfSnapshot.thumb)),
                     ),
                   ),
                 ),
@@ -130,9 +108,8 @@ class _AllPDFsState extends State<AllPDFs> with SingleTickerProviderStateMixin {
                     Expanded(
                       child: BounceInUp(
                         child: GestureDetector(
-                          child: NeumorphicIcon(
+                          child: Icon(
                             Icons.share,
-                            style: NeumorphicStyle(color: Color(0xffAE883E)),
                             size: 20,
                           ),
                           onTap: () => _sharePdf(snapshot, index),
@@ -142,9 +119,8 @@ class _AllPDFsState extends State<AllPDFs> with SingleTickerProviderStateMixin {
                     GestureDetector(
                       onTap: () => _deleteDialog(context, snapshot, index),
                       child: BounceInUp(
-                        child: NeumorphicIcon(
+                        child: Icon(
                           Icons.delete,
-                          style: NeumorphicStyle(color: Color(0xffE03B3C)),
                         ),
                       ),
                     ),

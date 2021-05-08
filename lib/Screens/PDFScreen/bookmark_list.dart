@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
-import 'package:neumorphic/neumorphic.dart' as Neu;
 
 class BookmarkList extends StatelessWidget {
   final int index;
@@ -15,9 +13,8 @@ class BookmarkList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: NeumorphicIcon(
+      child: Icon(
         FontAwesomeIcons.listOl,
-        style: NeumorphicStyle(color: Colors.deepOrange),
       ),
       onTap: () => _bookmarksSheet(context),
     );
@@ -79,26 +76,16 @@ class BookmarkList extends StatelessWidget {
                               color: Color(0xffD3D4D5),
                             ),
                           ),
-                          Neu.NeuButton(
+                          TextButton(
                             child:
                                 Icon(Icons.favorite, color: Colors.redAccent),
-                            decoration: Neu.NeumorphicDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Color(0xff26292D),
-                            ),
                             onPressed: () {},
                           )
                         ],
                       ),
                     ),
-                    Neumorphic(
-                      child: Divider(
-                        height: 2,
-                      ),
-                      style: NeumorphicStyle(
-                          color: Color(0xff26292D),
-                          depth: 2,
-                          lightSource: LightSource.top),
+                    Divider(
+                      height: 2,
                     ),
                     Container(
                       height: 400,
@@ -109,26 +96,17 @@ class BookmarkList extends StatelessWidget {
                               title: Text(
                                 'Page number $pageNumber',
                                 style: GoogleFonts.cagliostro(
-                                  fontWeight: FontWeight.w700,
-                                color: Colors.white70
-                                ),
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white70),
                               ),
-                              leading: Neumorphic(
-                                style: NeumorphicStyle(
-                                  color: Color(0xff26292D),
-                                  disableDepth: true,
-                                  shape: NeumorphicShape.concave,
-                                  boxShape: NeumorphicBoxShape.circle(),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    '${index + 1}',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                              leading: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  '${index + 1}',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ),
                               onTap: () => pdfController

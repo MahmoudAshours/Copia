@@ -1,11 +1,9 @@
 import 'package:copia/Hive/database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:neumorphic/neumorphic.dart' as Neu;
 
 class PdfNotes extends StatefulWidget {
   final int index;
@@ -26,19 +24,13 @@ class _PdfNotesState extends State<PdfNotes> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Neumorphic(
-        child: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: FaIcon(
-            FontAwesomeIcons.quoteLeft,
-            color: Color(0xff5EF0C5),
-            size: 17,
-          ),
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: FaIcon(
+          FontAwesomeIcons.quoteLeft,
+          color: Color(0xff5EF0C5),
+          size: 17,
         ),
-        style: NeumorphicStyle(
-            color: Color(0xff26292D),
-            intensity: 0.3,
-            boxShape: NeumorphicBoxShape.circle()),
       ),
       onTap: () => showModalBottomSheet(
         context: context,
@@ -89,26 +81,16 @@ class _PdfNotesState extends State<PdfNotes> {
                                       color: Color(0xffD3D4D5),
                                     ),
                                   ),
-                                  Neu.NeuButton(
+                                  TextButton(
                                     child: FaIcon(FontAwesomeIcons.quoteRight,
                                         color: Colors.redAccent),
-                                    decoration: Neu.NeumorphicDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      color: Color(0xff26292D),
-                                    ),
                                     onPressed: () {},
                                   )
                                 ],
                               ),
                             ),
-                            Neumorphic(
-                              child: Divider(
-                                height: 2,
-                              ),
-                              style: NeumorphicStyle(
-                                  color: Color(0xff26292D),
-                                  depth: 2,
-                                  lightSource: LightSource.top),
+                            Divider(
+                              height: 2,
                             ),
                             TextField(
                               maxLines: 100,
@@ -122,7 +104,7 @@ class _PdfNotesState extends State<PdfNotes> {
                             SizedBox(height: 50),
                             Container(
                               width: 80,
-                              child: Neu.NeuButton(
+                              child: TextButton(
                                 onPressed: () {
                                   final _modifiedPDF = PDFDB(
                                     bookmarked: _pdf.bookmarked,
@@ -141,9 +123,6 @@ class _PdfNotesState extends State<PdfNotes> {
                                   Hive.box('pdfDB')
                                       .putAt(widget.index, _modifiedPDF);
                                 },
-                                decoration: Neu.NeumorphicDecoration(
-                                    color: const Color(0xff26292D),
-                                    borderRadius: BorderRadius.circular(10)),
                                 child: Text(
                                   'Add',
                                   style: TextStyle(
@@ -173,28 +152,17 @@ class _PdfNotesState extends State<PdfNotes> {
                                           color: Color(0xffD3D4D5),
                                         ),
                                       ),
-                                      Neu.NeuButton(
+                                      TextButton(
                                         child: FaIcon(
                                             FontAwesomeIcons.quoteRight,
                                             color: Colors.blueAccent),
-                                        decoration: Neu.NeumorphicDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          color: Color(0xff26292D),
-                                        ),
                                         onPressed: null,
                                       )
                                     ],
                                   ),
                                 ),
-                                Neumorphic(
-                                  child: Divider(
-                                    height: 2,
-                                  ),
-                                  style: NeumorphicStyle(
-                                      color: Color(0xff26292D),
-                                      depth: 2,
-                                      lightSource: LightSource.top),
+                                Divider(
+                                  height: 2,
                                 ),
                                 Divider(),
                                 Align(
@@ -211,45 +179,39 @@ class _PdfNotesState extends State<PdfNotes> {
                                     ),
                                   ),
                                 ),
-                                Neumorphic(
-                                  style: NeumorphicStyle(
-                                      color: Color(0xff26292D),
-                                      depth: 2,
-                                      lightSource: LightSource.top),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: GestureDetector(
-                                      child: FaIcon(
-                                        FontAwesomeIcons.trashAlt,
-                                        color: Colors.redAccent,
-                                      ),
-                                      onTap: () {
-                                        final _modifiedPDF = PDFDB(
-                                          bookmarked: _pdf.bookmarked,
-                                          insertedDate: _pdf.insertedDate,
-                                          lastSeenDate: _pdf.lastSeenDate,
-                                          lastVisitedPage: _pdf.lastVisitedPage,
-                                          pageNote: _pdf.pageNote
-                                            ..remove(widget.currentPage),
-                                          pdfAsset: _pdf.pdfAsset,
-                                          pdfName: _pdf.pdfName,
-                                          soundPath: _pdf.soundPath,
-                                          thumb: _pdf.thumb,
-                                          totalHours: _pdf.totalHours,
-                                          documentPath: _pdf.documentPath,
-                                        );
-                                        Hive.box('pdfDB')
-                                            .putAt(widget.index, _modifiedPDF)
-                                            .whenComplete(
-                                          () {
-                                            _controller.clear();
-                                            Navigator.of(context).pop();
-                                          },
-                                        );
-                                      },
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: GestureDetector(
+                                    child: FaIcon(
+                                      FontAwesomeIcons.trashAlt,
+                                      color: Colors.redAccent,
                                     ),
+                                    onTap: () {
+                                      final _modifiedPDF = PDFDB(
+                                        bookmarked: _pdf.bookmarked,
+                                        insertedDate: _pdf.insertedDate,
+                                        lastSeenDate: _pdf.lastSeenDate,
+                                        lastVisitedPage: _pdf.lastVisitedPage,
+                                        pageNote: _pdf.pageNote
+                                          ..remove(widget.currentPage),
+                                        pdfAsset: _pdf.pdfAsset,
+                                        pdfName: _pdf.pdfName,
+                                        soundPath: _pdf.soundPath,
+                                        thumb: _pdf.thumb,
+                                        totalHours: _pdf.totalHours,
+                                        documentPath: _pdf.documentPath,
+                                      );
+                                      Hive.box('pdfDB')
+                                          .putAt(widget.index, _modifiedPDF)
+                                          .whenComplete(
+                                        () {
+                                          _controller.clear();
+                                          Navigator.of(context).pop();
+                                        },
+                                      );
+                                    },
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),

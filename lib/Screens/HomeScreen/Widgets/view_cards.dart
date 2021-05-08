@@ -1,7 +1,6 @@
 import 'package:copia/Screens/AllPdfs/all_pdfs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:neumorphic/neumorphic.dart';
 
 class ViewCards extends StatelessWidget {
   @override
@@ -11,11 +10,10 @@ class ViewCards extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          NeuText(
+          Text(
             'Your books',
-            spread: 0.4,
-            depth: 10,
-            style:  TextStyle(fontFamily: 'cormorant',
+            style: TextStyle(
+                fontFamily: 'cormorant',
                 fontSize: 30,
                 fontWeight: FontWeight.w700,
                 color: Color(0xffAAABAD)),
@@ -29,7 +27,8 @@ class ViewCards extends StatelessWidget {
                 children: [
                   Text(
                     'View all',
-                    style:  TextStyle(fontFamily: 'cormorant',
+                    style: TextStyle(
+                        fontFamily: 'cormorant',
                         color: Color(0xffF3BB84),
                         fontWeight: FontWeight.w700,
                         fontSize: 17),

@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:copia/Provider/pdfscreen_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_sound/flutter_sound_player.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -80,20 +79,12 @@ class _BottomAudioPlayerState extends State<BottomAudioPlayer>
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8.0),
-                          child: Neumorphic(
-                            style: NeumorphicStyle(
-                                color: Color(0xff26292D),
-                                intensity: 0.3,
-                                depth: 30,
-                                lightSource: LightSource.bottom,
-                                boxShape: NeumorphicBoxShape.circle()),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: AnimatedIcon(
-                                icon: AnimatedIcons.play_pause,
-                                progress: _controller,
-                                color: Color(0xff26E0FB),
-                              ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: AnimatedIcon(
+                              icon: AnimatedIcons.play_pause,
+                              progress: _controller,
+                              color: Color(0xff26E0FB),
                             ),
                           ),
                         ),

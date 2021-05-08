@@ -2,12 +2,10 @@ import 'package:copia/Hive/database.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flat_icons_flutter/flat_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:neumorphic/neumorphic.dart' as Neu;
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart';
 
@@ -18,21 +16,15 @@ class PdfDocumentViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Neumorphic(
-      style: NeumorphicStyle(
-          color: Color(0xff26292D),
-          intensity: 0.3,
-          boxShape: NeumorphicBoxShape.circle()),
-      child: GestureDetector(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FaIcon(
-            FontAwesomeIcons.fileWord,
-            color: Colors.blueAccent,
-          ),
+    return GestureDetector(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: FaIcon(
+          FontAwesomeIcons.fileWord,
+          color: Colors.blueAccent,
         ),
-        onTap: () => _pdfDoc(context),
       ),
+      onTap: () => _pdfDoc(context),
     );
   }
 
@@ -77,17 +69,11 @@ class PdfDocumentViewer extends StatelessWidget {
                             width: 100,
                             height: 50,
                             child: GestureDetector(
-                              child: Neu.NeuCard(
-                                bevel: 2,
-                                child: Center(
-                                  child: Text(
-                                    'Add document',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
+                              child: Center(
+                                child: Text(
+                                  'Add document',
+                                  style: TextStyle(color: Colors.white),
                                 ),
-                                decoration: Neu.NeumorphicDecoration(
-                                    color: Color(0xffD44626),
-                                    borderRadius: BorderRadius.circular(20)),
                               ),
                               onTap: () async {
                                 var _file = await FilePicker.platform.pickFiles(
@@ -139,26 +125,16 @@ class PdfDocumentViewer extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  Neu.NeuButton(
+                                  TextButton(
                                     child: FaIcon(FontAwesomeIcons.fileWord,
                                         color: Colors.redAccent),
-                                    decoration: Neu.NeumorphicDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      color: Color(0xff26292D),
-                                    ),
                                     onPressed: () {},
                                   )
                                 ],
                               ),
                             ),
-                            Neumorphic(
-                              child: Divider(
-                                height: 2,
-                              ),
-                              style: NeumorphicStyle(
-                                  color: Color(0xff26292D),
-                                  depth: 2,
-                                  lightSource: LightSource.top),
+                            Divider(
+                              height: 2,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -208,9 +184,10 @@ class PdfDocumentViewer extends StatelessWidget {
                                 SizedBox(width: 50),
                                 InkWell(
                                   onTap: () async {
-                                    var _file = await FilePicker.platform.pickFiles(
-                                        type: FileType.custom,
-                                        allowedExtensions: ['doc', 'docx']);
+                                    var _file = await FilePicker.platform
+                                        .pickFiles(
+                                            type: FileType.custom,
+                                            allowedExtensions: ['doc', 'docx']);
                                     final _modifiedPDF = PDFDB(
                                       bookmarked: _pdf.bookmarked,
                                       insertedDate: _pdf.insertedDate,
@@ -227,9 +204,10 @@ class PdfDocumentViewer extends StatelessWidget {
                                     box.putAt(index, _modifiedPDF).whenComplete(
                                       () {
                                         Scaffold.of(context).showSnackBar(
-                                            SnackBar(
-                                                content: Text(
-                                                    'Document replaced!')));
+                                          SnackBar(
+                                            content: Text('Document replaced!'),
+                                          ),
+                                        );
                                       },
                                     );
                                   },

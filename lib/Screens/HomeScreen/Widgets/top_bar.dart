@@ -3,7 +3,6 @@ import 'package:copia/Screens/UploadPDF/uploadpdf.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:neumorphic/neumorphic.dart';
 
 class TopBar extends StatelessWidget {
   @override
@@ -20,12 +19,12 @@ class TopBar extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(
                       left: 10.0, right: 20.0, bottom: 20.0),
-                  child: NeuText(
+                  child: Text(
                     '${DateTime.now().day}',
-                    depth: 10,
-                    spread: 1,
-                    style:  TextStyle(fontFamily: 'cormorant',
-                        fontSize: 42, color: Color(0xffAAABAD)),
+                    style: TextStyle(
+                        fontFamily: 'cormorant',
+                        fontSize: 42,
+                        color: Color(0xffAAABAD)),
                   ),
                 ),
               ),
@@ -34,11 +33,10 @@ class TopBar extends StatelessWidget {
                 top: 30,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: NeuText(
+                  child: Text(
                     _getYear() + ' ${DateTime.now().year}',
-                    depth: 5,
-                    spread: 0.7,
-                    style:  TextStyle(fontFamily: 'cormorant',
+                    style: TextStyle(
+                        fontFamily: 'cormorant',
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: Color(0xffAAABAD)),
@@ -50,11 +48,7 @@ class TopBar extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: NeuButton(
-            decoration: NeumorphicDecoration(
-              color: Color(0xff2D3036),
-              shape: BoxShape.circle,
-            ),
+          child: TextButton(
             onPressed: () => Navigator.of(context)
                 .push(MaterialPageRoute(builder: (_) => UploadPDF())),
             child: FaIcon(FontAwesomeIcons.plusCircle,
@@ -63,13 +57,9 @@ class TopBar extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: NeuButton(
+          child: TextButton(
             onPressed: () => Navigator.of(context)
                 .push(MaterialPageRoute(builder: (_) => StatsScreen())),
-            decoration: NeumorphicDecoration(
-              color: Color(0xff2D3036),
-              shape: BoxShape.circle,
-            ),
             child: FaIcon(
               FontAwesomeIcons.chartLine,
               color: Colors.greenAccent,

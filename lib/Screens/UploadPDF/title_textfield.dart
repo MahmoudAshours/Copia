@@ -1,6 +1,5 @@
 import 'package:copia/Provider/uppdf_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:provider/provider.dart';
 
 class PdfTitleTextField extends StatelessWidget {
@@ -11,32 +10,21 @@ class PdfTitleTextField extends StatelessWidget {
       type: MaterialType.transparency,
       child: Container(
         width: 200,
-        child: Neumorphic(
-          drawSurfaceAboveChild: true,
-          duration: Duration(seconds: 4),
-          curve: Curves.bounceInOut,
-          style: NeumorphicStyle(
-            shadowDarkColor: Color(0xf2EA4F2C),
-            shadowLightColor: Colors.black,
-            depth: 10,
-            color: Colors.black12,
-          ),
-          child: TextField(
-            onChanged: (String title) => _bloc.pdfTitle = title,
-            style: TextStyle(
+        child: TextField(
+          onChanged: (String title) => _bloc.pdfTitle = title,
+          style: TextStyle(
               color: Color(0xff45B696),
               fontFamily: 'cormorant',
-              fontSize: 21,fontWeight: FontWeight.w700
-            ),
-            decoration: InputDecoration(
-                hintText: 'Enter PDF title',
-                hintStyle: TextStyle(
-                  color: Color(0xff45B696),
-                  fontFamily: 'cormorant',
-                ),
-                contentPadding: EdgeInsets.all(4),
-                border: InputBorder.none),
-          ),
+              fontSize: 21,
+              fontWeight: FontWeight.w700),
+          decoration: InputDecoration(
+              hintText: 'Enter PDF title',
+              hintStyle: TextStyle(
+                color: Color(0xff45B696),
+                fontFamily: 'cormorant',
+              ),
+              contentPadding: EdgeInsets.all(4),
+              border: InputBorder.none),
         ),
       ),
     );

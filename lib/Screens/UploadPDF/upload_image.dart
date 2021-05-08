@@ -3,7 +3,6 @@ import 'package:copia/Provider/uppdf_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:neumorphic/neumorphic.dart' as Neu;
 
 class UploadImage extends StatelessWidget {
   @override
@@ -15,11 +14,8 @@ class UploadImage extends StatelessWidget {
       children: <Widget>[
         FadeInUp(
           animate: true,
-          child: Neu.NeuButton(
+          child: TextButton(
             onPressed: () => _bloc.getImageFromGallery(),
-            decoration: Neu.NeumorphicDecoration(
-                color: Color(0xff26292D),
-                borderRadius: BorderRadius.circular(30)),
             child: FaIcon(
               FontAwesomeIcons.fileImage,
               color: Colors.blue,

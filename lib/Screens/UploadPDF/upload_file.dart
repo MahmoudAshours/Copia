@@ -1,9 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:copia/Provider/uppdf_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:neumorphic/neumorphic.dart' as Neu;
 import 'package:provider/provider.dart';
 
 class UploadFile extends StatelessWidget {
@@ -16,11 +14,8 @@ class UploadFile extends StatelessWidget {
       children: <Widget>[
         SizedBox(width: 10.0),
         FadeInUp(
-          child: Neu.NeuButton(
+          child: TextButton(
             onPressed: () => _bloc.getPDF(),
-            decoration: Neu.NeumorphicDecoration(
-                color: Color(0xff26292D),
-                borderRadius: BorderRadius.circular(30)),
             child: FaIcon(
               FontAwesomeIcons.filePdf,
               color: Colors.redAccent,

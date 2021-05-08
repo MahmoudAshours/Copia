@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:neumorphic/neumorphic.dart';
 
 class LastOpened extends StatelessWidget {
   @override
@@ -18,12 +17,12 @@ class LastOpened extends StatelessWidget {
           children: <Widget>[
             Align(
               alignment: Alignment.centerLeft,
-              child: NeuText(
+              child: Text(
                 'Last book opened',
-                depth: 20,
-                spread: 1,
-                style: TextStyle(fontFamily: 'cormorant',
-                    fontSize: 25, fontWeight: FontWeight.w500),
+                style: TextStyle(
+                    fontFamily: 'cormorant',
+                    fontSize: 25,
+                    fontWeight: FontWeight.w500),
               ),
             ),
             Divider(),
@@ -35,7 +34,7 @@ class LastOpened extends StatelessWidget {
                     Hive.box('pdfDB').values.toList().cast<PDFDB>();
                 _pdfs.sort((b, a) => a.lastSeenDate.compareTo(b.lastSeenDate));
                 final _pdf = _pdfs[0];
-                return NeuButton(
+                return TextButton(
                   onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => PDFScreen(
@@ -47,10 +46,6 @@ class LastOpened extends StatelessWidget {
                             .indexOf(_pdf),
                       ),
                     ),
-                  ),
-                  decoration: NeumorphicDecoration(
-                    color: Color(0xff26292D),
-                    borderRadius: BorderRadius.circular(30),
                   ),
                   child: Container(
                     child: Padding(
@@ -77,12 +72,10 @@ class LastOpened extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: Container(
-                                child: NeuText(
+                                child: Text(
                                   '${_pdf.pdfName}',
-                                  depth: 30,
-                                  parentColor: Colors.grey[900],
-                                  spread: 9,
-                                  style:  TextStyle(fontFamily: 'cormorant',
+                                  style: TextStyle(
+                                      fontFamily: 'cormorant',
                                       fontSize: 25,
                                       fontWeight: FontWeight.w500,
                                       color: Color(0xf2EA4F2C)),

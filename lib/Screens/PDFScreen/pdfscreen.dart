@@ -13,7 +13,6 @@ import 'package:copia/Utils/owl_icons.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
@@ -79,7 +78,7 @@ class _PDFScreenState extends State<PDFScreen> {
       child: Scaffold(
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         floatingActionButton: _circularFab(_dbProvider, index, _pdfProvider),
-        bottomNavigationBar: BottomAudioPlayer(index: index,fab:_hideFab),
+        bottomNavigationBar: BottomAudioPlayer(index: index, fab: _hideFab),
         backgroundColor: const Color(0xff26292D),
         body: GestureDetector(
           onTap: () => _hideFloatingActionBar(_pdfProvider),
@@ -168,29 +167,23 @@ class _PDFScreenState extends State<PDFScreen> {
     );
   }
 
-  Neumorphic _orientation() {
-    return Neumorphic(
-      style: NeumorphicStyle(
-          color: Color(0xff26292D),
-          intensity: 0.2,
-          boxShape: NeumorphicBoxShape.circle()),
-      child: IconButton(
-        icon: FaIcon(
-          FontAwesomeIcons.syncAlt,
-          color: Colors.white60,
-        ),
-        onPressed: () {
-          setState(
-            () {
-              if (direction == Axis.horizontal) {
-                direction = Axis.vertical;
-              } else {
-                direction = Axis.horizontal;
-              }
-            },
-          );
-        },
+  _orientation() {
+    return IconButton(
+      icon: FaIcon(
+        FontAwesomeIcons.syncAlt,
+        color: Colors.white60,
       ),
+      onPressed: () {
+        setState(
+          () {
+            if (direction == Axis.horizontal) {
+              direction = Axis.vertical;
+            } else {
+              direction = Axis.horizontal;
+            }
+          },
+        );
+      },
     );
   }
 
