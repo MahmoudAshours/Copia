@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -19,18 +21,26 @@ class UploadPdfBloc with ChangeNotifier {
   bool get pdfUploaded => _pdfUploaded;
   bool get ifImageUploaded => _ifImageUploaded;
 
-  Future<Null> getPDF() async {
+  Future<Null> getPDF(context) async {
     try {
-      FilePickerResult _file = await FilePicker.platform.pickFiles(
-        allowedExtensions: ['pdf'],
-        type: FileType.custom,
+      final root = Directory('');
+
+      String path = await FilesystemPicker.open(
+        title: 'Open file',
+        context: context,
+        rootDirectory: root,
+        fsType: FilesystemType.file,
+        rootName: 'Downloads',
+        folderIconColor: Colors.teal,
+        allowedExtensions: [''],
+        fileTileSelectMode: FileTileSelectMode.wholeTile,
       );
-      final path = await getApplicationDocumentsDirectory();
+      // FilePickerResult _file = await FilePicker.platform.pickFiles(
+      //   allowedExtensions: ['pdf'],
+      //   type: FileType.custom,
+      // );
 
-      final File _copiaFile =
-          await File(_file.files[0].path).copy('${path.path}/${basename(_file.files[0].path)}');
-
-      _pdf = _copiaFile.path;
+      _pdf = path;
       _pdfUploaded = true;
       notifyListeners();
     } catch (e) {

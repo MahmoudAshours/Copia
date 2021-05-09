@@ -15,7 +15,7 @@ class UploadFile extends StatelessWidget {
         SizedBox(width: 10.0),
         FadeInUp(
           child: TextButton(
-            onPressed: () => _bloc.getPDF(),
+            onPressed: () => _bloc.getPDF(context),
             child: FaIcon(
               FontAwesomeIcons.filePdf,
               color: Colors.redAccent,
