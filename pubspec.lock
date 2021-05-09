@@ -239,6 +239,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.7"
+  filesystem_picker:
+    dependency: "direct main"
+    description:
+      name: filesystem_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
   fixnum:
     dependency: transitive
     description:
