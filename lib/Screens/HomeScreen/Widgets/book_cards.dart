@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:animate_do/animate_do.dart';
 import 'package:copia/Screens/PDFScreen/pdfscreen.dart';
 import 'package:copia/Utils/no_books.dart';
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -45,7 +44,10 @@ class _BookCardsState extends State<BookCards> {
                         _animateBack = !done;
                       });
                     },
-                    back: _showBookDetails(snapshot, index, context),
+                    back: Container(
+                        width: 100,
+                        height: 200,
+                        child: _showBookDetails(snapshot, index, context)),
                     front: Center(
                       child: Column(
                         children: <Widget>[
@@ -59,7 +61,9 @@ class _BookCardsState extends State<BookCards> {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: FileImage(File(_pdf.thumb)),
+                                image: FileImage(File(_pdf.thumb
+                                    .toString()
+                                    .replaceAll(' ', '\\ '))),
                               ),
                             ),
                           ),
@@ -89,79 +93,94 @@ class _BookCardsState extends State<BookCards> {
     final _pdf = snapshot.getAt(index);
     return Column(
       children: <Widget>[
-        SizedBox.expand(
+        Container(
+          width: 100,
+          height: 200,
           child: SingleChildScrollView(
             physics: NeverScrollableScrollPhysics(),
-            child: Column(
-              children: [
-                Row(
-                  children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        SafeArea(
-                          minimum: EdgeInsets.all(30.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: FileImage(File(_pdf.thumb)),
+            child: Container(
+              width: 100,
+              height: 200,
+              child: Column(
+                children: [
+                  Row(
+                    children: <Widget>[
+                      Stack(
+                        children: <Widget>[
+                          SafeArea(
+                            minimum: EdgeInsets.all(30.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                // Image.file(File(_pdf.thumb)),
+                                // Container(
+                                //   decoration: BoxDecoration(
+                                //     image: DecorationImage(
+                                //         fit: BoxFit.cover,
+                                //         image: FileImage(File(_pdf.thumb))),
+                                //   ),
+                                // ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: 40.0),
+                    ],
+                  ),
+                  Expanded(
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                            child: BounceInUp(
+                              duration: Duration(seconds: 1),
+                              animate: _animateBack,
+                              child: TextButton(
+                                onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => PDFScreen(
+                                        snapshot: snapshot.getAt(index),
+                                        index: index),
                                   ),
                                 ),
+                                child: FaIcon(FontAwesomeIcons.bookReader,
+                                    color: Colors.greenAccent, size: 20),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(width: 40.0),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    BounceInUp(
-                      duration: Duration(seconds: 1),
-                      animate: _animateBack,
-                      child: TextButton(
-                        onPressed: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => PDFScreen(
-                                snapshot: snapshot.getAt(index), index: index),
-                          ),
-                        ),
-                        child: FaIcon(FontAwesomeIcons.bookReader,
-                            color: Colors.greenAccent, size: 20),
+                          // BounceInUp(
+                          //   duration: Duration(seconds: 2),
+                          //   animate: _animateBack,
+                          //   controller: (controller) {
+                          //     if (_animateBack) controller.forward();
+                          //     controller.reverse();
+                          //   },
+                          //   manualTrigger: true,
+                          //   child: TextButton(
+                          //     onPressed: () => _sharePdf(snapshot, index),
+                          //     child: FaIcon(FontAwesomeIcons.share,
+                          //         color: Colors.orangeAccent, size: 20),
+                          //   ),
+                          // ),
+                          BounceInUp(
+                            duration: Duration(seconds: 3),
+                            animate: _animateBack,
+                            child: TextButton(
+                                onPressed: () =>
+                                    _deleteDialog(context, snapshot, index),
+                                child: FaIcon(FontAwesomeIcons.trash,
+                                    color: Colors.redAccent, size: 20)),
+                          )
+                        ],
                       ),
                     ),
-                    BounceInUp(
-                      duration: Duration(seconds: 2),
-                      animate: _animateBack,
-                      controller: (controller) {
-                        if (_animateBack) controller.forward();
-                        controller.reverse();
-                      },
-                      manualTrigger: true,
-                      child: TextButton(
-                        onPressed: () => _sharePdf(snapshot, index),
-                        child: FaIcon(FontAwesomeIcons.share,
-                            color: Colors.orangeAccent, size: 20),
-                      ),
-                    ),
-                    BounceInUp(
-                      duration: Duration(seconds: 3),
-                      animate: _animateBack,
-                      child: TextButton(
-                          onPressed: () =>
-                              _deleteDialog(context, snapshot, index),
-                          child: FaIcon(FontAwesomeIcons.trash,
-                              color: Colors.redAccent, size: 20)),
-                    )
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -172,8 +191,8 @@ class _BookCardsState extends State<BookCards> {
   void _sharePdf(Box snapshot, index) async {
     final _pdf = snapshot.getAt(index);
     final _bytes = await File(_pdf.pdfAsset).readAsBytes();
-    Share.file(
-        'Share PDF', "${basename(_pdf.pdfAsset)}", _bytes, 'application/pdf');
+    // Share.file(
+    //     'Share PDF', "${basename(_pdf.pdfAsset)}", _bytes, 'application/pdf');
   }
 
   void _deleteDialog(BuildContext context, Box snapshot, index) {
