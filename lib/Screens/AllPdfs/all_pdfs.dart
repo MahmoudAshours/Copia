@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:animate_do/animate_do.dart';
 import 'package:copia/Hive/database.dart';
 import 'package:copia/Screens/PDFScreen/pdfscreen.dart';
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -137,8 +136,8 @@ class _AllPDFsState extends State<AllPDFs> with SingleTickerProviderStateMixin {
   void _sharePdf(Box snapshot, index) async {
     final _pdf = snapshot.getAt(index);
     final _bytes = await File(_pdf.pdfAsset).readAsBytes();
-    Share.file(
-        'Share PDF', "${basename(_pdf.pdfAsset)}", _bytes, 'application/pdf');
+    // Share.file(
+    //     'Share PDF', "${basename(_pdf.pdfAsset)}", _bytes, 'application/pdf');
   }
 
   void _deleteDialog(BuildContext context, Box snapshot, int index) {
@@ -403,7 +402,7 @@ class PDFsearchDelegate extends SearchDelegate {
   void _sharePdf(Box snapshot, index) async {
     final _pdf = snapshot.getAt(index);
     final _bytes = await File(_pdf.pdfAsset).readAsBytes();
-    Share.file('Share PDF', "simplepdf.pdf", _bytes, 'image/jpg');
+    // Share.file('Share PDF', "simplepdf.pdf", _bytes, 'image/jpg');
   }
 
   void _deleteDialog(BuildContext context, Box snapshot, index) {
