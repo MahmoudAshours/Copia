@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
@@ -93,12 +92,7 @@ class BookmarkList extends StatelessWidget {
                         children: snap.getAt(index).bookmarked.map<Widget>(
                           (int pageNumber) {
                             return ListTile(
-                              title: Text(
-                                'Page number $pageNumber',
-                                style: GoogleFonts.cagliostro(
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white70),
-                              ),
+                              title: Text('Page number $pageNumber'),
                               leading: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
