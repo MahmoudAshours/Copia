@@ -1,7 +1,6 @@
 import 'package:copia/Hive/database.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -171,11 +170,6 @@ class _PdfNotesState extends State<PdfNotes> {
                                     padding: const EdgeInsets.all(18.0),
                                     child: SelectableText(
                                       '${_pdf.pageNote[widget.currentPage]}',
-                                      style: GoogleFonts.tajawal(
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white,
-                                      ),
                                     ),
                                   ),
                                 ),

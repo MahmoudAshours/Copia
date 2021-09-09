@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:copia/Provider/pdfscreen_bloc.dart';
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,7 +15,7 @@ class SharePage extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: () => _sharePage(context, _pdfProvider),
-        child: FaIcon(FontAwesomeIcons.share,color:Colors.cyan),
+        child: FaIcon(FontAwesomeIcons.share, color: Colors.cyan),
       ),
     );
   }
@@ -28,8 +27,8 @@ class SharePage extends StatelessWidget {
     final image = await boundary.toImage(pixelRatio: 2.0);
     final byteData = await image.toByteData(format: ImageByteFormat.png);
     final pngBytes = byteData.buffer.asUint8List();
-    await Share.file(
-        'Share Copia PDF page', 'copiaPdf.jpg', pngBytes, 'image/jpg',
-        text: "Check this Page! #Copia");
+    // await Share.file(
+    //     'Share Copia PDF page', 'copiaPdf.jpg', pngBytes, 'image/jpg',
+    //     text: "Check this Page! #Copia");
   }
 }

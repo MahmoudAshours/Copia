@@ -21,6 +21,7 @@ class BookmarkPdf extends StatelessWidget {
           onTap: () => bookmark(_bloc, _pdf),
           child: Icon(
             Icons.favorite,
+            color: _bookmarkColorChecker(_pdf),
           ),
         );
       },

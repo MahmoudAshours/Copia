@@ -3,7 +3,6 @@ import 'package:copia/Provider/pdfscreen_bloc.dart';
 import 'package:copia/Provider/prov_db.dart';
 import 'package:copia/Screens/PDFScreen/bookmark_list.dart';
 import 'package:copia/Screens/PDFScreen/bookmark_pdf.dart';
-import 'package:copia/Screens/PDFScreen/bottom_audioPlayer.dart';
 import 'package:copia/Screens/PDFScreen/pdf_audio.dart';
 import 'package:copia/Screens/PDFScreen/pdf_document.dart';
 import 'package:copia/Screens/PDFScreen/pdf_notes.dart';
@@ -78,7 +77,7 @@ class _PDFScreenState extends State<PDFScreen> {
       child: Scaffold(
         floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         floatingActionButton: _circularFab(_dbProvider, index, _pdfProvider),
-        bottomNavigationBar: BottomAudioPlayer(index: index, fab: _hideFab),
+        // bottomNavigationBar: BottomAudioPlayer(index: index, fab: _hideFab),
         backgroundColor: const Color(0xff26292D),
         body: GestureDetector(
           onTap: () => _hideFloatingActionBar(_pdfProvider),
@@ -157,6 +156,7 @@ class _PDFScreenState extends State<PDFScreen> {
           BookmarkPdf(index: index, currentPage: currentPage),
           BookmarkList(index: index, pdfController: _pdfController),
           PdfAudio(index),
+          IconButton(onPressed: ()=>Navigator.of(context).pop(), icon: Icon(Icons.arrow_left)),
           _orientation(),
           PdfNotes(index: index, currentPage: currentPage),
           PdfScreenshot(),
