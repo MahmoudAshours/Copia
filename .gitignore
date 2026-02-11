@@ -4,6 +4,7 @@
 *.pyc
 *.swp
 .DS_Store
+._*
 .atom/
 .buildlog/
 .history
@@ -29,6 +30,8 @@
 .pub-cache/
 .pub/
 /build/
+android/.gradle/
+ios/Flutter/ephemeral/
 
 # Web related
 lib/generated_plugin_registrant.dart
