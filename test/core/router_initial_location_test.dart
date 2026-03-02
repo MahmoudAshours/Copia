@@ -2,6 +2,17 @@ import 'package:copia/core/router/app_router.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  test(
+    'home location routes to reader when onboarding seen and doc exists',
+    () {
+      final location = resolveHomeLocation(
+        onboardingSeen: true,
+        initialDocumentId: 24,
+      );
+      expect(location, '/reader/24');
+    },
+  );
+
   test('routes to onboarding when onboarding not seen', () {
     final location = resolveInitialLocation(
       onboardingSeen: false,
@@ -51,5 +62,20 @@ void main() {
       homeLocation: '/library',
     );
     expect(redirect, '/library');
+  });
+
+  test('parses valid reader id', () {
+    final id = resolveReaderDocumentId('42');
+    expect(id, 42);
+  });
+
+  test('returns null for malformed reader id', () {
+    final id = resolveReaderDocumentId('abc');
+    expect(id, isNull);
+  });
+
+  test('returns null when reader id is missing', () {
+    final id = resolveReaderDocumentId(null);
+    expect(id, isNull);
   });
 }

@@ -16,6 +16,9 @@ String resolveHomeLocation({
   if (!onboardingSeen) {
     return '/onboarding';
   }
+  if (initialDocumentId != null) {
+    return '/reader/$initialDocumentId';
+  }
   return '/library';
 }
 
@@ -27,6 +30,13 @@ String resolveInitialLocation({
     onboardingSeen: onboardingSeen,
     initialDocumentId: initialDocumentId,
   );
+}
+
+int? resolveReaderDocumentId(String? rawId) {
+  if (rawId == null) {
+    return null;
+  }
+  return int.tryParse(rawId);
 }
 
 String? resolveGuardRedirect({
@@ -51,7 +61,10 @@ GoRouter createRouter({
   required int? initialDocumentId,
 }) {
   return GoRouter(
-    initialLocation: '/',
+    initialLocation: resolveInitialLocation(
+      onboardingSeen: onboardingSeen,
+      initialDocumentId: initialDocumentId,
+    ),
     redirect: (context, state) async {
       final prefs = await SharedPreferences.getInstance();
       final currentOnboardingSeen =
@@ -78,8 +91,18 @@ GoRouter createRouter({
       ),
       GoRoute(
         path: '/reader/:id',
+        redirect: (context, state) {
+          final id = resolveReaderDocumentId(state.pathParameters['id']);
+          if (id == null) {
+            return '/library';
+          }
+          return null;
+        },
         builder: (context, state) {
-          final id = int.parse(state.pathParameters['id']!);
+          final id = resolveReaderDocumentId(state.pathParameters['id']);
+          if (id == null) {
+            return const LibraryScreen();
+          }
           return ReaderScreen(documentId: id);
         },
       ),
